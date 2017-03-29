@@ -6,7 +6,7 @@ import java.util.LinkedList;
 /**
  * Created by rik on 29-3-17.
  */
-public class ReceiveListener implements Observeble{
+public class ReceiveListener implements Observable {
 	private LinkedList<String> incoming = new LinkedList<String>();
 	private ArrayList<Observer> following;
 

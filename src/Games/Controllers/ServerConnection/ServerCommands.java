@@ -33,4 +33,8 @@ public class ServerCommands {
 	public void move(String move) {
 		connection.addToSend("move " + move);
 	}
+
+	public void forfeit(){
+		connection.addToSend("forfeit");
+	}
 }
