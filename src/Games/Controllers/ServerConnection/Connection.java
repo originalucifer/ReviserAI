@@ -37,8 +37,6 @@ public class Connection implements Runnable{
 				if (!toSend.isEmpty()) {
 					out.println(toSend.pop());
 				}
-//				out.print("help");
-//				out.println(stdIn.readLine());
 				if (in.ready()){
 					input = in.readLine();
 					System.out.println("server: " + input);

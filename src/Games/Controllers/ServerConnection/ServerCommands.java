@@ -17,4 +17,20 @@ public class ServerCommands {
 	public void help () {
 		connection.addToSend("help");
 	}
+
+	public void logout(){
+		connection.addToSend("logout");
+	}
+
+	public void getGameList() {
+		connection.addToSend("get gamelist");
+	}
+
+	public void getPlayerList() {
+		connection.addToSend("get playerlist");
+	}
+
+	public void move(String move) {
+		connection.addToSend("move " + move);
+	}
 }

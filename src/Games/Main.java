@@ -24,7 +24,9 @@ public class Main extends Application {
     public static void main(String[] args) {
         Connection con = new Connection(new ReceiveListener());
         new Thread(con).start();
-        new ServerCommands(con).help();
-        launch(args);
+        ServerCommands s =new ServerCommands(con);
+        s.login("me");
+        s.getPlayerList();
+//        launch(args);
     }
 }
