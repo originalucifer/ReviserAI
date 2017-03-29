@@ -1,0 +1,16 @@
+.button{
+    -fx-focus-color: transparent;
+    -fx-background-insets: -1, 0, 1, 1;
+    -fx-font-weight: bold;
+    -fx-font-size: 35;
+    -fx-text-fill: black;
+}
+
+.statusBox {
+    -fx-background-color: #696969;
+}
+
+.label {
+    -fx-text-fill: white;
+    -fx-font-size: 20;
+}
