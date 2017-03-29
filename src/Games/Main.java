@@ -2,6 +2,7 @@ package Games;
 
 import Games.Controllers.ServerConnection.Connection;
 import Games.Controllers.ServerConnection.ReceiveListener;
+import Games.Controllers.ServerConnection.ServerCommands;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -21,7 +22,9 @@ public class Main extends Application {
 
 
     public static void main(String[] args) {
-        new Thread(new Connection(new ReceiveListener())).start();
+        Connection con = new Connection(new ReceiveListener());
+        new Thread(con).start();
+        new ServerCommands(con).help();
         launch(args);
     }
 }

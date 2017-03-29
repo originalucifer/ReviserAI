@@ -10,5 +10,11 @@ public class ServerCommands {
 		this.connection = connection;
 	}
 
+	public void login (String player){
+		connection.addToSend("login " + player);
+	}
 
+	public void help () {
+		connection.addToSend("help");
+	}
 }

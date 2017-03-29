@@ -4,11 +4,13 @@ import java.io.*;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
+import java.util.LinkedList;
 
 //TODO use observer pattern
 
 public class Connection implements Runnable{
 	ReceiveListener listen;
+	LinkedList<String> toSend = new LinkedList<String>();
 
 
 	public Connection(ReceiveListener listener){
@@ -32,6 +34,9 @@ public class Connection implements Runnable{
 		) {
 			String input;
 			while (true) {
+				if (!toSend.isEmpty()) {
+					out.println(toSend.pop());
+				}
 //				out.print("help");
 //				out.println(stdIn.readLine());
 				if (in.ready()){
@@ -55,7 +60,7 @@ public class Connection implements Runnable{
 	}
 
 	public void addToSend(String message){
-
+		toSend.add(message);
 	}
 
 }

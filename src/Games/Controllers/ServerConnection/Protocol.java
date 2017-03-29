@@ -1,7 +1,5 @@
 package Games.Controllers.ServerConnection;
 
-import java.util.Properties;
-
 /**
  * Created by rik on 3/28/17.
  */
