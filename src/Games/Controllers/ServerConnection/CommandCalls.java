@@ -6,7 +6,7 @@ package Games.Controllers.ServerConnection;
 public class CommandCalls implements Observer{
 
 	public CommandCalls(Observable info) {
-
+		info.follow(this);
 	}
 
 	@Override

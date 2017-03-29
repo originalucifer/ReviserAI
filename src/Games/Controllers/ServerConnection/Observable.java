@@ -5,4 +5,6 @@ package Games.Controllers.ServerConnection;
  */
 public interface Observable {
 	public void follow(Observer observer);
+
+	public void unfollow(Observer observer);
 }

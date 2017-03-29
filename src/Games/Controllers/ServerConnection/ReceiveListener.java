@@ -20,6 +20,12 @@ public class ReceiveListener implements Observable {
 		following.add(observer);
 	}
 
+	@Override
+	public void unfollow(Observer observer) {
+		following.remove(observer);
+	}
+
+
 	public void addLine(String line) {
 		incoming.add(line);
 	}
