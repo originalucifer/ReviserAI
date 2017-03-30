@@ -8,7 +8,8 @@ public class Initialize {
 		ReceiveListener listen = new ReceiveListener();
 		Connection con = new Connection(listen);
 		new Thread(con).start();
-		new Thread(listen).start();
+		Thread l = new Thread(listen);
+		l.start();
 		ServerCommands s =new ServerCommands(con);
 		new CommandCalls(listen);
 		try {
@@ -19,5 +20,6 @@ public class Initialize {
         s.login("me");
         s.getPlayerList();
 		s.custom("ewssfwef");
+
 	}
 }

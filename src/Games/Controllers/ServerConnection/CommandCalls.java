@@ -1,9 +1,6 @@
 package Games.Controllers.ServerConnection;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * Created by rik on 3/29/17.
@@ -15,7 +12,6 @@ public class CommandCalls implements Observer{
 
 	@Override
 	public void update(String line) {
-
 		if (line != null && !line.isEmpty()) {
 			findCommand(line);
 		}

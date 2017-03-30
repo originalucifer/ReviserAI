@@ -7,7 +7,7 @@ import java.util.LinkedList;
  * Created by rik on 29-3-17.
  */
 public class ReceiveListener implements Observable, Runnable {
-	private LinkedList<String> incoming = new LinkedList<String>();
+	private LinkedList<String> incoming = new LinkedList<String>();//TODO fix what is wrong
 	private ArrayList<Observer> following;
 	private boolean alive = true;
 
@@ -28,24 +28,25 @@ public class ReceiveListener implements Observable, Runnable {
 
 
 	public void addLine(String line) {
-		incoming.add(line);
+		incoming.add(line);System.out.println("RL addLine: " + line);
 	}
 
 	private void sendUpdates(){
 		String s = incoming.getFirst();
 		incoming.removeFirst();
 		for (Observer fellow : following){
+			System.out.println("sendupdates: " + s);
 			fellow.update(s);
 		}
 	}
 
+	//TODO fix this method
 	@Override
 	public void run() {
 		while (alive){
-			if (!incoming.isEmpty()) {
+			if (!incoming.isEmpty()) {System.out.println("RL run: " + incoming.getFirst());
 				sendUpdates();
 			}
 		}
-
 	}
 }
