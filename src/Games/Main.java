@@ -1,8 +1,6 @@
 package Games;
 
-import Games.Controllers.ServerConnection.Connection;
-import Games.Controllers.ServerConnection.ReceiveListener;
-import Games.Controllers.ServerConnection.ServerCommands;
+import Games.Controllers.ServerConnection.*;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -22,12 +20,7 @@ public class Main extends Application {
 
 
     public static void main(String[] args) {
-        Connection con = new Connection(new ReceiveListener());
-        new Thread(con).start();
-        ServerCommands s =new ServerCommands(con);
-        s.login("me");
-        s.getPlayerList();
-        s.custom(" ewssfwef");
+        new Initialize();
 //        launch(args);
     }
 }

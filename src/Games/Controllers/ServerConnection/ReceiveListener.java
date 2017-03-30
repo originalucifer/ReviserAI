@@ -6,9 +6,10 @@ import java.util.LinkedList;
 /**
  * Created by rik on 29-3-17.
  */
-public class ReceiveListener implements Observable {
+public class ReceiveListener implements Observable, Runnable {
 	private LinkedList<String> incoming = new LinkedList<String>();
 	private ArrayList<Observer> following;
+	private boolean alive = true;
 
 	public ReceiveListener(){
 
@@ -31,10 +32,20 @@ public class ReceiveListener implements Observable {
 	}
 
 	private void sendUpdates(){
-		String s = incoming.pop();
+		String s = incoming.getFirst();
+		incoming.removeFirst();
 		for (Observer fellow : following){
 			fellow.update(s);
 		}
 	}
 
+	@Override
+	public void run() {
+		while (alive){
+			if (!incoming.isEmpty()) {
+				sendUpdates();
+			}
+		}
+
+	}
 }

@@ -15,6 +15,7 @@ public class CommandCalls implements Observer{
 
 	@Override
 	public void update(String line) {
+
 		if (line != null && !line.isEmpty()) {
 			findCommand(line);
 		}
@@ -26,9 +27,13 @@ public class CommandCalls implements Observer{
 
 		switch (split[0]) {
 			case "ERR": error(args);
-				break;
-
+			break;
+			default: print(com);
 		}
+	}
+
+	private void print(String s) {
+		System.out.println("?: " + s);
 	}
 
 	private void error(String arguments[]) {
