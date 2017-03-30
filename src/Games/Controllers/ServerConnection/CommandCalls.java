@@ -19,11 +19,15 @@ public class CommandCalls implements Observer{
 
 	private void findCommand(String com){
 		String split[] = com.split(" ");
-		String args[] = Arrays.copyOfRange(split, 1 , split.length - 1);
+		String args[];
+//		if (split.length > 1) {
+//			args[] = Arrays.copyOfRange(split, 1 , split.length - 1);
+//		}
+
 
 		switch (split[0]) {
-			case "ERR": error(args);
-			break;
+//			case "ERR": error(args);
+//			break;
 			default: print(com);
 		}
 	}
