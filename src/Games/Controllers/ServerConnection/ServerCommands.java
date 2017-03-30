@@ -37,4 +37,8 @@ public class ServerCommands {
 	public void forfeit(){
 		connection.addToSend("forfeit");
 	}
+
+	public void custom(String command) {
+		connection.addToSend(command);
+	}
 }

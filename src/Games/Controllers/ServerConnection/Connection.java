@@ -3,10 +3,7 @@ package Games.Controllers.ServerConnection;
 import java.io.*;
 import java.net.Socket;
 import java.net.UnknownHostException;
-import java.util.ArrayList;
 import java.util.LinkedList;
-
-//TODO use observer pattern
 
 public class Connection implements Runnable{
 	ReceiveListener listen;
@@ -39,7 +36,7 @@ public class Connection implements Runnable{
 				}
 				if (in.ready()){
 					input = in.readLine();
-					System.out.println("server: " + input);
+//					System.out.println("server: " + input);
 					listen.addLine(input);
 				}
 			}

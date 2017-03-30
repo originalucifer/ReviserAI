@@ -27,6 +27,7 @@ public class Main extends Application {
         ServerCommands s =new ServerCommands(con);
         s.login("me");
         s.getPlayerList();
+        s.custom(" ewssfwef");
 //        launch(args);
     }
 }
