@@ -26,9 +26,9 @@
         <VBox prefHeight="80" styleClass="statusBox" alignment="BOTTOM_CENTER">
             <HBox prefHeight="15" styleClass="actionBox" spacing="5">
                 <Label text="choose player: " alignment="BASELINE_LEFT" styleClass="actionLabel"/>
-                <Button text="X" id="X" onAction="#actionButtonClickHandler" alignment="BASELINE_LEFT"/>
-                <Button text="O" id="O" onAction="#actionButtonClickHandler" alignment="BASELINE_LEFT"/>
-                <Button text="Reset" id="reset" onAction="#actionButtonClickHandler" alignment="BASELINE_RIGHT"/>
+                <Button text="X" id="X" onAction="#actionButtonClickHandler" styleClass="actionButton" alignment="BASELINE_LEFT"/>
+                <Button text="O" id="O" onAction="#actionButtonClickHandler" styleClass="actionButton" alignment="BASELINE_LEFT"/>
+                <Button text="Reset Game" id="reset" onAction="#actionButtonClickHandler" styleClass="actionButton" alignment="BASELINE_RIGHT"/>
             </HBox>
             <Label text="Choose a player" fx:id="statusLabel" styleClass="statusLabel"/>
         </VBox>

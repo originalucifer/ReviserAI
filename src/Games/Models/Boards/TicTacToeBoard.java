@@ -1,6 +1,8 @@
 package Games.Models.Boards;
 
 /**
+ * Class for the TicTacToeBoard.
+ *
  * Created by robin on 31-3-17.
  */
 public class TicTacToeBoard {
@@ -10,18 +12,18 @@ public class TicTacToeBoard {
     public TicTacToeBoard(){
     }
 
+    /**
+     * Adds the clicked field to the board
+     *
+     * @param column the clicked column
+     * @param row    the clicked row
+     * @param player X or O?
+     */
     public void updateBoard(int column, int row, char player){
         board[column][row] = player;
     }
 
-    public void showBoard(){
-        for (char[] chars : board){
-            for (char c : chars){
-                System.out.print(c);
-            }
-            System.out.print("\n");
-        }
-    }
+
 
     /**
      * Finds 3 in a row
@@ -46,4 +48,35 @@ public class TicTacToeBoard {
         }
         return false;
     }
+
+
+    /**
+     * Checks if the field is full (If its a tie)
+     * @return boolean field full.
+     */
+    public boolean isFull(){
+        for (char[] chars : board){
+            for (char c : chars){
+                if(c == ' '){return false;}
+            }
+        }
+        return true;
+    }
+
+
+    /**
+     * for debugging
+     * TODO remove this method
+     */
+    public void showBoard(){
+        for (char[] chars : board){
+            for (char c : chars){
+                System.out.print(c);
+            }
+            System.out.print("\n");
+        }
+    }
+
+
+
 }
