@@ -6,9 +6,13 @@ import java.util.Arrays;
  * Created by rik on 3/29/17.
  */
 public class CommandCalls implements Observer{
+	public InGameActions game;
+
 	public CommandCalls(Observable info) {
 		info.follow(this);
+		game = new emptyGame();
 	}
+
 
 	@Override
 	public void update(String line) {
@@ -34,16 +38,23 @@ public class CommandCalls implements Observer{
 		switch (arguments[0]) {
 			case "HELP":
 				break;
-			case "GAME":
+			case "GAME":game(getArguments(arguments));
 				break;
-			case "MATCH":break;
-			case "YOURTURN":break;
-			case "MOVE":break;
-			case "CHALLENGE":break;
-			case "WIN":break;
-			case "LOSS":break;
-			case "DRAW":break;
+
 			default:System.out.println("Unknown: SVR" + arguments[0]);
+		}
+	}
+
+	private void game (String[] arguments){
+		switch (arguments[0]) {
+			case "MATCH":break;
+
+			case "CHALLENGE":break;
+			case "MOVE": game.move(arguments[1]);break;
+			case "YOURTURN": game.yourTurn();break;
+			case "WIN": game.win();break;
+			case "LOSS":game.loss();break;
+			case "DRAW":game.draw();break;
 		}
 	}
 
@@ -65,5 +76,13 @@ public class CommandCalls implements Observer{
 			System.out.print(arg + " ");
 		}
 		System.out.print("\n");
+	}
+
+	public void setGame(InGameActions game) {
+		this.game = game;
+	}
+
+	public void removeGame() {
+		game = new emptyGame();
 	}
 }
