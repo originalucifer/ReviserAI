@@ -10,11 +10,6 @@ public class ReceiveListener implements Observable, Runnable {
 	private volatile LinkedList<String> incoming = new LinkedList<String>();
 	private ArrayList<Observer> following;
 	private boolean alive = true;
-	private int amount = 0;
-
-	public ReceiveListener(){
-
-	}
 
 	@Override
 	public void follow(Observer observer) {
@@ -31,7 +26,6 @@ public class ReceiveListener implements Observable, Runnable {
 	public synchronized void addLine(String line) {
 		incoming.add(line);
 	}
-
 
 	private synchronized void sendUpdates(){
 		String s = incoming.getFirst();

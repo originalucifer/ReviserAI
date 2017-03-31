@@ -17,9 +17,8 @@ public class Initialize {
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
-        s.login("me");
+        s.login("チーム改訂者");
         s.getPlayerList();
 		s.custom("ewssfwef");
-
 	}
 }

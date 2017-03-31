@@ -19,17 +19,40 @@ public class CommandCalls implements Observer{
 
 	private void findCommand(String com){
 		String split[] = com.split(" ");
-		String args[];
-//		if (split.length > 1) {
-//			args[] = Arrays.copyOfRange(split, 1 , split.length - 1);
-//		}
-
 
 		switch (split[0]) {
-//			case "ERR": error(args);
-//			break;
+			case "ERR": error(getArguments(split));
+			break;
+			case "OK": acknowledgement();
+			break;
+			case "SVR": SVR(getArguments(split));
 			default: print(com);
 		}
+	}
+
+	private void SVR(String[] arguments) {
+		switch (arguments[0]) {
+			case "HELP":
+				break;
+			case "GAME":
+				break;
+			case "MATCH":break;
+			case "YOURTURN":break;
+			case "MOVE":break;
+			case "CHALLENGE":break;
+			case "WIN":break;
+			case "LOSS":break;
+			case "DRAW":break;
+			default:System.out.println("Unknown: SVR" + arguments[0]);
+		}
+	}
+
+	public void acknowledgement(){
+
+	}
+
+	private String[] getArguments(String input[]){
+		return Arrays.copyOfRange(input, 1 , input.length);
 	}
 
 	private void print(String s) {
@@ -37,6 +60,7 @@ public class CommandCalls implements Observer{
 	}
 
 	private void error(String arguments[]) {
+		System.out.print("Warning: ");
 		for (String arg : arguments) {
 			System.out.print(arg + " ");
 		}
