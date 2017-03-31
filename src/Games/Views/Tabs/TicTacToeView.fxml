@@ -11,20 +11,26 @@
     <VBox prefHeight="480.0" prefWidth="720.0" stylesheets="@../../Style/TicTacToe.css">
 
         <!-- The idea for this tic-tac-toe board comes from https://github.com/yfain/java24hourtrainer2ndedition/blob/master/TicTacToe/src/tictactoe/TicTacToe.fxml-->
-        <GridPane fx:id="bordView" alignment="CENTER" prefHeight="400.0" prefWidth="400.0" >
-            <Button fx:id="b1" onAction="#buttonClickHandler" prefHeight="100.0" prefWidth="100.0" />
-            <Button fx:id="b2" onAction="#buttonClickHandler" prefHeight="100.0" prefWidth="100.0" GridPane.columnIndex="1" />
-            <Button fx:id="b3" onAction="#buttonClickHandler" prefHeight="100.0" prefWidth="100.0" GridPane.columnIndex="2" />
-            <Button fx:id="b4" onAction="#buttonClickHandler" prefHeight="100.0" prefWidth="100.0" GridPane.rowIndex="1" />
-            <Button fx:id="b5" onAction="#buttonClickHandler" prefHeight="100.0" prefWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-            <Button fx:id="b6" onAction="#buttonClickHandler" prefHeight="100.0" prefWidth="100.0" GridPane.columnIndex="2" GridPane.rowIndex="1" />
-            <Button fx:id="b7" onAction="#buttonClickHandler" prefHeight="100.0" prefWidth="100.0" GridPane.rowIndex="2" />
-            <Button fx:id="b8" onAction="#buttonClickHandler" prefHeight="100.0" prefWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-            <Button fx:id="b9" onAction="#buttonClickHandler" prefHeight="100.0" prefWidth="100.0" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+        <GridPane fx:id="bordView" alignment="CENTER" prefHeight="370.0" prefWidth="370.0" >
+            <Button fx:id="b0" styleClass="ticTacToeButton" onAction="#boardButtonClickHandler" prefHeight="100.0" prefWidth="100.0" />
+            <Button fx:id="b1" styleClass="ticTacToeButton" onAction="#boardButtonClickHandler" prefHeight="100.0" prefWidth="100.0" GridPane.columnIndex="1" />
+            <Button fx:id="b2" styleClass="ticTacToeButton" onAction="#boardButtonClickHandler" prefHeight="100.0" prefWidth="100.0" GridPane.columnIndex="2" />
+            <Button fx:id="b3" styleClass="ticTacToeButton" onAction="#boardButtonClickHandler" prefHeight="100.0" prefWidth="100.0" GridPane.rowIndex="1" />
+            <Button fx:id="b4" styleClass="ticTacToeButton" onAction="#boardButtonClickHandler" prefHeight="100.0" prefWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <Button fx:id="b5" styleClass="ticTacToeButton" onAction="#boardButtonClickHandler" prefHeight="100.0" prefWidth="100.0" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+            <Button fx:id="b6" styleClass="ticTacToeButton" onAction="#boardButtonClickHandler" prefHeight="100.0" prefWidth="100.0" GridPane.rowIndex="2" />
+            <Button fx:id="b7" styleClass="ticTacToeButton" onAction="#boardButtonClickHandler" prefHeight="100.0" prefWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            <Button fx:id="b8" styleClass="ticTacToeButton" onAction="#boardButtonClickHandler" prefHeight="100.0" prefWidth="100.0" GridPane.columnIndex="2" GridPane.rowIndex="2" />
         </GridPane>
 
-        <HBox prefHeight="50" styleClass="statusBox" alignment="CENTER">
-            <Label text="X's turn" fx:id="statusLabel"/>
-        </HBox>
+        <VBox prefHeight="80" styleClass="statusBox" alignment="BOTTOM_CENTER">
+            <HBox prefHeight="15" styleClass="actionBox" spacing="5">
+                <Label text="choose player: " alignment="BASELINE_LEFT" styleClass="actionLabel"/>
+                <Button text="X" id="X" onAction="#actionButtonClickHandler" alignment="BASELINE_LEFT"/>
+                <Button text="O" id="O" onAction="#actionButtonClickHandler" alignment="BASELINE_LEFT"/>
+                <Button text="Reset" id="reset" onAction="#actionButtonClickHandler" alignment="BASELINE_RIGHT"/>
+            </HBox>
+            <Label text="Choose a player" fx:id="statusLabel" styleClass="statusLabel"/>
+        </VBox>
     </VBox>
 </Tab>

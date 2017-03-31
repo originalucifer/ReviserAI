@@ -1,4 +1,4 @@
-.button{
+.ticTacToeButton{
     -fx-focus-color: transparent;
     -fx-background-insets: -1, 0, 1, 1;
     -fx-font-weight: bold;
@@ -10,7 +10,13 @@
     -fx-background-color: #696969;
 }
 
-.label {
+.actionLabel{
     -fx-text-fill: white;
-    -fx-font-size: 20;
+    -fx-font-size: 15;
+}
+
+.statusLabel {
+    -fx-text-fill: yellow;
+    -fx-label-padding: 5;
+    -fx-font-size: 25;
 }
