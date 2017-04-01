@@ -1,4 +1,4 @@
-package Games.Controllers.ServerConnection;
+package ServerConnection;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -30,6 +30,7 @@ public class ReceiveListener implements Observable, Runnable {
 	private synchronized void sendUpdates(){
 		String s = incoming.getFirst();
 		incoming.removeFirst();
+		if (following == null) return;
 		for (Observer fellow : following){
 			fellow.update(s);
 		}

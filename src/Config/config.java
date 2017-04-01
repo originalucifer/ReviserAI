@@ -4,41 +4,50 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Properties;
 
 /**
  * Created by rik on 28-3-17.
  */
 public class config {
-	public static Properties prop;
+	private static HashMap<String, Properties> configs = new HashMap<>();
 
-	//http://www.mkyong.com/java/java-properties-file-examples/
-
-	static {
-		prop = new Properties();
+	private static void addProperties(String file){
+		Properties prop = new Properties();
 		InputStream input = null;
-System.out.print("ok");
+		System.out.println("ok");
 		try {
 
-			input = new FileInputStream("config.properties");
+			input = new FileInputStream("Config/" + file + ".properties");
 
 			// load a properties file
 			prop.load(input);
-System.out.print("good");
+			System.out.println("ok");
 		} catch (IOException ex) {
-			ex.printStackTrace();
+//			ex.printStackTrace();
 		} finally {
 			if (input != null) {
 				try {
 					input.close();
 				} catch (IOException e) {
-					e.printStackTrace();
+//					e.printStackTrace();
 				}
 			}
+			configs.put(file, prop);
+
 		}
 	}
 
-	public static String get(String property){
-		return prop.getProperty(property);
+	public static Properties getConfig(String file) {System.out.println("ok");
+		if (configs.containsKey(file)) {
+			addProperties(file);
+		}
+		return configs.get(file);
 	}
+
+//	public static String get(String property){
+//		return prop.getProperty(property);
+//	}
 }

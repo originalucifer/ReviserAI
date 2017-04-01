@@ -1,4 +1,4 @@
-package Games.Controllers.ServerConnection;
+package ServerConnection;
 
 import java.util.Arrays;
 

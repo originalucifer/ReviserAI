@@ -1,11 +1,14 @@
 package Games;
 
-import Games.Controllers.ServerConnection.*;
+import Config.config;
+import ServerConnection.*;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+
+import java.util.Properties;
 
 public class Main extends Application {
 
@@ -20,7 +23,9 @@ public class Main extends Application {
 
 
     public static void main(String[] args) {
-        new Initialize();
+        Properties c = config.getConfig("config");
+        System.out.println(c.getProperty("port"));
+//        new Initialize();
 //        launch(args);
     }
 }

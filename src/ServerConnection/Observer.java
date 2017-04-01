@@ -1,4 +1,4 @@
-package Games.Controllers.ServerConnection;
+package ServerConnection;
 
 /**
  * Created by rik on 29-3-17.
