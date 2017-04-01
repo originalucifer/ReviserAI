@@ -1,6 +1,7 @@
 package Games.Controllers.TabControllers;
 
 import Games.Models.Boards.TicTacToeBoard;
+import com.sun.org.apache.xpath.internal.SourceTree;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -42,18 +43,22 @@ public class TicTacToeController{
             firstSetDone = true;
             Button clickedButton = (Button) actionEvent.getTarget();
             String buttonLabel = clickedButton.getText();
-
-            if ("".equals(buttonLabel) && playerX) {
-                clickedButton.setText("X");
-                playerX = false;
-            } else if ("".equals(buttonLabel) && !playerX) {
-                clickedButton.setText("O");
-                playerX = true;
+            if("".equals(buttonLabel)){
+                if (playerX) {
+                    clickedButton.setText("X");
+                    playerX = false;
+                } else {
+                    clickedButton.setText("O");
+                    playerX = true;
+                }
+                pressedButtons.add(clickedButton);
+                int clickedField = Integer.parseInt(clickedButton.getId().replaceAll("[^0-9]", ""));
+                updateBoard(clickedField);
+                checkStatus();
+            } else{
+                statusLabel.setText("Illegal move. Choose an empty field.");
             }
-            pressedButtons.add(clickedButton);
-            int clickedField = Integer.parseInt(clickedButton.getId().replaceAll("[^0-9]", ""));
-            updateBoard(clickedField);
-            checkStatus();
+
         }
     }
 
