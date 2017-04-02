@@ -38,6 +38,8 @@ public class ServerCommands {
 		connection.addToSend("forfeit");
 	}
 
+	public void subscribe(String game) {connection.addToSend("subscribe " + game);}
+
 	public void custom(String command) {
 		connection.addToSend(command);
 	}
