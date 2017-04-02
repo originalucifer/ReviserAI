@@ -12,7 +12,7 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception{
         Parent root = FXMLLoader.load(getClass().getResource("Views/MainLayout.fxml"));
-        primaryStage.setTitle("Reverse AI Games");
+        primaryStage.setTitle("Reviser AI Games");
         Scene scene = new Scene(root, 720, 480);
         primaryStage.setScene(scene);
         primaryStage.show();
