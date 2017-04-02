@@ -8,6 +8,7 @@ import java.util.LinkedList;
 public class Connection implements Runnable{
 	ReceiveListener listen;
 	LinkedList<String> toSend = new LinkedList<String>();
+	private volatile boolean running = true;
 
 
 	public Connection(ReceiveListener listener){
@@ -30,7 +31,7 @@ public class Connection implements Runnable{
 								new InputStreamReader(System.in))
 		) {
 			String input;
-			while (true) {
+			while (running) {
 				if (!toSend.isEmpty()) {
 					out.println(toSend.pop());
 				}
@@ -51,7 +52,11 @@ public class Connection implements Runnable{
 
 	@Override
 	public void run() {
-		connect();
+		while (running) {connect();}
+	}
+
+	public void terminate(){
+		running = false;
 	}
 
 	public void addToSend(String message){
