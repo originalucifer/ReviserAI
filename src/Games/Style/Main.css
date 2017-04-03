@@ -1,0 +1,9 @@
+.statusBox {
+    -fx-background-color: #696969;
+}
+
+.statusLabel {
+    -fx-text-fill: yellow;
+    -fx-font-size: 25;
+    -fx-label-padding: 5;
+}

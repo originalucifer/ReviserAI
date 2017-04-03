@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<Tab text="Orthello" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Games.Controllers.TabControllers.OrthelloController">
+    <VBox prefHeight="480.0" prefWidth="720.0" stylesheets="@../../Style/Orthello.css">
+
+        <GridPane fx:id="bordView" alignment="CENTER" prefHeight="370.0" prefWidth="370.0" >
+
+        </GridPane>
+
+        <VBox prefHeight="80" styleClass="statusBox" alignment="BOTTOM_CENTER">
+            <Label text="Choose a player" fx:id="statusLabel" styleClass="statusLabel"/>
+        </VBox>
+    </VBox>
+</Tab>
