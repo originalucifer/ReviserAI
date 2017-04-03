@@ -30,6 +30,7 @@ public class CommandCalls implements Observer{
 			case "OK": acknowledgement();
 			break;
 			case "SVR": SVR(getArguments(split));
+
 			default: print(com);
 		}
 	}

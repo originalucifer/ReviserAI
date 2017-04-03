@@ -37,7 +37,6 @@ public class Connection implements Runnable{
 				}
 				if (in.ready()){
 					input = in.readLine();
-//					System.out.println("server: " + input);
 					listen.addLine(input);
 				}
 			}

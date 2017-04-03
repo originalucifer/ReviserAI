@@ -1,36 +1,57 @@
 package ServerConnection;
 
+import java.io.IOException;
+
 /**
  * Created by rik on 3/30/17.
  */
-public class Initialize {
+public class ConnectionHandler {
 
 	private Connection connection;
     private ReceiveListener listen;
 	private ServerCommands serverCommands;
+	private boolean connected = false;
 
-	public Initialize() {
+	public ConnectionHandler() {
 	}
 
 	public void connect(){
+
 		listen = new ReceiveListener();
 		connection = new Connection(listen);
 		new Thread(connection).start();
 		new Thread(listen).start();
 		serverCommands =new ServerCommands(connection);
 		new CommandCalls(listen);
+
 		try {
 			Thread.sleep(50);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
-		serverCommands.login("Team Reviser");
-		serverCommands.getGameList();
-		serverCommands.getPlayerList();
-		serverCommands.help();
-		serverCommands.custom("help subscribe");
-		serverCommands.custom("subscribe Tic-tac-toe");
+		connected = true;
 	}
+
+	public void login(String name){
+		serverCommands.login(name);
+	}
+
+	public void subscribe(String game) {
+		serverCommands.subscribe(game);
+	}
+
+	public void getGameList(){
+		serverCommands.getGameList();
+	}
+
+	public void challenge(String challenge){
+		serverCommands.custom("challenge " + challenge);
+	}
+
+	public void acceptChallenge(String challengeID){
+		serverCommands.custom("challenge accept " + challengeID);
+	}
+
 	/**
 	 * Terminates all connection related threads.
 	 */
@@ -38,5 +59,10 @@ public class Initialize {
 		serverCommands.logout();
 		listen.terminate();
 		connection.terminate();
+		connected = false;
+	}
+
+	public boolean isConnected(){
+		return connected;
 	}
 }

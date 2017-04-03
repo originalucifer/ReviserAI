@@ -1,7 +1,6 @@
 package Games.Controllers.TabControllers;
 
 import Games.Models.Boards.TicTacToeBoard;
-import ServerConnection.ServerCommands;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
@@ -16,7 +15,6 @@ import java.util.ArrayList;
 
 /**
  * Class TicTacToeController
- * Maybe we can implement SuperClass gameController?
  *
  * @author Robin van Eijk
  */
@@ -62,7 +60,6 @@ public class TicTacToeController{
             } else{
                 statusLabel.setText("Illegal move. Choose an empty field.");
             }
-
         }
     }
 
@@ -133,9 +130,11 @@ public class TicTacToeController{
                 statusLabel.setText("O's Turn");
             }
         }
-
     }
 
+    /**
+     * Create new stage to display the winner
+     */
     private void gameWon(){
         statusLabel.setText("Game ended");
         Stage stage = new Stage();

@@ -1,0 +1,19 @@
+.connectBt {
+    -fx-text-fill: #008000;
+}
+.closeConnectBt {
+    -fx-text-fill: #B22222;
+}
+
+.box {
+    -fx-border-color: #808080;
+    -fx-background-color: #a6a6a6;
+}
+
+.connectionBox {
+}
+
+.status {
+    -fx-font-size: 20;
+    -fx-font-weight: bold;
+}
