@@ -21,13 +21,31 @@ public class OthelloItem extends Rectangle {
     private int row;
     private String player = null;
 
-    public OthelloItem(int column, int row) {
+    OthelloItem(int column, int row) {
+        this.column = column;
+        this.row = row;
+
         setWidth(itemSize);
         setHeight(itemSize);
         getStyleClass().add(styleClass);
         setOnMouseEntered(othelloItemHover);
         setOnMousePressed(othelloItemPressed);
         setOnMouseReleased(othelloItemReleased);
+    }
+
+    /**
+     * Get the player on this board item.
+     *
+     * @return String with the player. 'black' | 'white'. null if there is no player
+     */
+    public String getPlayer(){
+        if(hasPlayer())
+            return player;
+        return null;
+    }
+
+    public boolean hasPlayer(){
+        return player == null;
     }
 
     /**
@@ -41,16 +59,18 @@ public class OthelloItem extends Rectangle {
      * Set a nice inner shadow to create the feeling of actually
      * pressing a othelloItem down.
      */
-    EventHandler<MouseEvent> othelloItemPressed =
+    private EventHandler<MouseEvent> othelloItemPressed =
             t -> ((OthelloItem)(t.getSource())).setStyle(enableInnerShadow);
 
     /**
      * Once the mouse click is released we remove the inner shadow
      * and make our move on the x and y of the board.
      */
-    EventHandler<MouseEvent> othelloItemReleased =
+    private EventHandler<MouseEvent> othelloItemReleased =
             t -> {
                 OthelloItem rectangle = ((OthelloItem)(t.getSource()));
                 rectangle.setStyle(disableInnerShadow);
+                //TODO:
+                System.out.println("Get current player and run 'move' on "+row+":"+column);
             };
 }

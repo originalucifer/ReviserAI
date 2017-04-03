@@ -24,4 +24,8 @@ public class OrthelloController {
     public void initialize(){
         this.board = new OrthelloBoard(boardView);
     }
+
+    public void move(int row,int column){
+        System.out.println("non static: "+row+":"+column);
+    }
 }
