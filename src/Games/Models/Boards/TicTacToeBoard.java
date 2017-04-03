@@ -30,8 +30,11 @@ public class TicTacToeBoard {
      *
      * @return true if 3 in a row is found, else return false
      */
-
     public boolean find3InARow(){
+        return find3InARow(board);
+    }
+
+    public boolean find3InARow(char[][] board){
         // check diagonal rows
         if ((board[0][0] == board[1][1] && board[0][0] == board[2][2] && (board[0][0] == 'X' || board[0][0] == 'O'))
                 ||
