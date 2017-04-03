@@ -2,7 +2,7 @@ package Games.Controllers.AI;
 
 import Games.Models.Boards.TicTacToeBoard;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 
 /**
  * Created by rik on 3-4-17.
@@ -19,10 +19,32 @@ public class TicTacToeAI {
 	}
 
 	private void doNextSet(){
-		getMaxSet(playBoard.board.clone());
+		End end = new End();
+		int[][] sets = getAvailableSets(isPlaying, playBoard.board.clone(), end);
+		if (end.getEnd()) return;
+
+		ArrayList<Integer> values = new ArrayList<>();
+		for (int[] set : sets){
+			char[][] b = playBoard.board.clone();
+			b[set[0]][set[1]] = isPlaying;
+			values.add(minValue(b));
+		}
+		int i = 0;
+		int point = 0;
+		int max = values.get(0);
+		for (int number : values){
+			if (number > max){
+				max = number;
+				point = i;
+			}
+			i++;
+		}
+
+
+
 	}
 
-	private int[][] getAvailableSets(char turn, char[][] board){
+	private int[][] getAvailableSets(char turn, char[][] board, End end){
 		int[][] sets = new int[9][2];
 		int pointer = 0;
 		for (int col = 0; col < 3; col ++) {
@@ -31,6 +53,7 @@ public class TicTacToeAI {
 					sets[pointer][0] = col;
 					sets[pointer][1] = row;
 					pointer++;
+					end.setEnd(false);
 				}
 			}
 		}
@@ -49,7 +72,7 @@ return 0;
 	}
 
 	private int[] getMaxSet(char[][] board) {
-		int[][] sets = getAvailableSets(isPlaying, board);
+		int[][] sets = getAvailableSets(isPlaying, board, new End());
 		int [] values = new int[9];
 		int pointer = 0;
 		for (int[] set : sets){
@@ -70,21 +93,58 @@ return 0;
 	}
 
 	private int maxValue(char[][] board){
-		int[][] sets = getAvailableSets(isPlaying, board);
+		ArrayList<Integer> values = new ArrayList<>();
+
+		End end = new End();
+
+		int[][] sets = getAvailableSets(isPlaying, board, end);
+
+
 		if (playBoard.find3InARow(board)) {
 			return 100;
+		}else if (end.getEnd()){
+			return 50;
 		}
 
-
+		for (int[] set : sets){
+			char[][] b = board.clone();
+			b[set[0]][set[1]] = isPlaying;
+			values.add(minValue(b));
+		}
+		int max = values.get(0);
+		for (int number : values){
+			if (number > max){
+				max = number;
+			}
+		}
+		return max;
 	}
 
 	private int minValue(char[][] board){
-		int[][] sets = getAvailableSets(isNotPlaying, board);
+		ArrayList<Integer> values = new ArrayList<>();
+
+		End end = new End();
+
+		int[][] sets = getAvailableSets(isNotPlaying, board, end);
+
 		if (playBoard.find3InARow(board)) {
 			return -100;
+		}else if (end.getEnd()){
+			return 50;
 		}
 
-
+		for (int[] set : sets){
+			char[][] b = board.clone();
+			b[set[0]][set[1]] = isNotPlaying;
+			values.add(maxValue(b));
+		}
+		int min = values.get(0);
+		for (int number : values){
+			if (number < min){
+				min = number;
+			}
+		}
+		return min;
 	}
 
 }
