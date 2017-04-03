@@ -10,6 +10,9 @@ public class Initialize {
 	private ServerCommands serverCommands;
 
 	public Initialize() {
+	}
+
+	public void connect(){
 		listen = new ReceiveListener();
 		connection = new Connection(listen);
 		new Thread(connection).start();
@@ -21,14 +24,16 @@ public class Initialize {
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
-        serverCommands.login("チーム改訂者");
+		serverCommands.login("Team Reviser");
 		serverCommands.getGameList();
-        serverCommands.getPlayerList();
-        serverCommands.help();
-        serverCommands.custom("help subscribe");
-        serverCommands.custom("subscribe Tic-tac-toe");
+		serverCommands.getPlayerList();
+		serverCommands.help();
+		serverCommands.custom("help subscribe");
+		serverCommands.custom("subscribe Tic-tac-toe");
 	}
-
+	/**
+	 * Terminates all connection related threads.
+	 */
 	public void quitConnection(){
 		serverCommands.logout();
 		listen.terminate();
