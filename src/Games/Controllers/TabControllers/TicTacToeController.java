@@ -42,24 +42,28 @@ public class TicTacToeController{
         if(!board.find3InARow() && playerChosen) {
             firstSetDone = true;
             Button clickedButton = (Button) actionEvent.getTarget();
-            String buttonLabel = clickedButton.getText();
-            if("".equals(buttonLabel)){
-                if (playerX) {
-                    clickedButton.setText("X");
-                    playerX = false;
-                } else {
-                    clickedButton.setText("O");
-                    playerX = true;
-                }
-                pressedButtons.add(clickedButton);
-                int clickedField = Integer.parseInt(clickedButton.getId().replaceAll("[^0-9]", ""));
-                updateBoard(clickedField);
-                checkStatus();
-            } else{
-                statusLabel.setText("Illegal move. Choose an empty field.");
-            }
-
+            set(clickedButton);
         }
+    }
+
+    public void set(Button clickedButton){
+        String buttonLabel = clickedButton.getText();
+        if("".equals(buttonLabel)){
+            if (playerX) {
+                clickedButton.setText("X");
+                playerX = false;
+            } else {
+                clickedButton.setText("O");
+                playerX = true;
+            }
+            pressedButtons.add(clickedButton);
+            int clickedField = Integer.parseInt(clickedButton.getId().replaceAll("[^0-9]", ""));
+            updateBoard(clickedField);
+            checkStatus();
+        } else{
+            statusLabel.setText("Illegal move. Choose an empty field.");
+        }
+
     }
 
     /**
