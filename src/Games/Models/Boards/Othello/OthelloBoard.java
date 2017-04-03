@@ -90,4 +90,12 @@ public class OthelloBoard {
         boardView.getChildren().clear();
         initialize(boardView,statusLabel);
     }
+
+    public static void nextTurn() {
+        if(activePlayer == black){
+            setActivePlayer(white);
+        } else {
+            setActivePlayer(black);
+        }
+    }
 }

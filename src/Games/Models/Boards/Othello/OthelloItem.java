@@ -1,8 +1,12 @@
 package Games.Models.Boards.Othello;
 
+import Games.Models.OthelloPlayer;
 import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+
+import java.util.Objects;
 
 /**
  * Class OthelloItem
@@ -19,7 +23,7 @@ public class OthelloItem extends Rectangle {
 
     private int column;
     private int row;
-    private String player;
+    private OthelloPlayer player;
 
     OthelloItem(int column, int row) {
         this.column = column;
@@ -38,14 +42,12 @@ public class OthelloItem extends Rectangle {
      *
      * @return String with the player. 'black' | 'white'. null if there is no player
      */
-    public String getPlayer(){
-        if(hasPlayer())
-            return player;
-        return null;
+    public OthelloPlayer getPlayer(){
+        return player;
     }
 
     public boolean hasPlayer(){
-        return player == null;
+        return player != null;
     }
 
     /**
@@ -68,9 +70,28 @@ public class OthelloItem extends Rectangle {
      */
     private EventHandler<MouseEvent> othelloItemReleased =
             t -> {
-                OthelloItem rectangle = ((OthelloItem)(t.getSource()));
+                OthelloItem rectangle = ((OthelloItem) (t.getSource()));
                 rectangle.setStyle(disableInnerShadow);
-                //TODO:
-                System.out.println("Get current player and run 'move' on "+row+":"+column);
+
+                if(!OthelloBoard.hasStarted()){
+                    OthelloBoard.setStatus("Game hasn't started yet. Pick a color.");
+                } else if(hasPlayer()){
+                    setPlayer(player);
+                    OthelloBoard.setStatus("Illegal move. Try again.");
+                } else {
+                    setPlayer(OthelloBoard.getActivePlayer());
+
+                    OthelloBoard.activePlayer.makeMove(this);
+                    OthelloBoard.nextTurn();
+                }
             };
+
+    public void setPlayer(OthelloPlayer player) {
+        this.player = player;
+        if(Objects.equals(player.getColor(), "white")){
+            setStyle("-fx-fill: white;");
+        } else {
+            setStyle("-fx-fill: black;");
+        }
+    }
 }

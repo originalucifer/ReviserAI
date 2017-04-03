@@ -1,5 +1,9 @@
 package Games.Models;
 
+import Games.Models.Boards.Othello.OthelloItem;
+
+import java.util.ArrayList;
+
 /**
  * Class OthelloPlayer
  *
@@ -10,10 +14,12 @@ public class OthelloPlayer {
 
     private String color;
     private String name;
+    private ArrayList<OthelloItem> moves;
 
     public OthelloPlayer(String color, String name) {
         this.color = color;
         this.name = name;
+        this.moves = new ArrayList<>();
     }
 
     public String getColor() {
@@ -26,6 +32,10 @@ public class OthelloPlayer {
 
     public String getName() {
         return name;
+    }
+
+    public void makeMove(OthelloItem othelloItem){
+        moves.add(othelloItem);
     }
 
     public void setName(String name) {
