@@ -1,6 +1,6 @@
 package Games.Controllers.TabControllers;
 
-import Games.Models.Boards.OrthelloBoard;
+import Games.Models.Boards.Othello.OrthelloBoard;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
