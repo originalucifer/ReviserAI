@@ -5,14 +5,3 @@
     -fx-font-size: 35;
     -fx-text-fill: black;
 }
-
-.actionLabel{
-    -fx-text-fill: white;
-    -fx-font-size: 16;
-    -fx-label-padding: 2;
-}
-
-.actionButton{
-    -fx-font-size: 13;
-}
-
