@@ -7,7 +7,7 @@ package Games.Models.Boards;
  */
 public class TicTacToeBoard {
 
-    char[][] board = new char[3][3];
+    public char[][] board = new char[3][3];
 
     public TicTacToeBoard(){
     }
