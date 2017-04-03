@@ -1,6 +1,6 @@
 package Games.Controllers.TabControllers;
 
-import Games.Models.Boards.Othello.OrthelloBoard;
+import Games.Models.Boards.Othello.OthelloBoard;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
@@ -19,13 +19,7 @@ public class OrthelloController {
     @FXML
     public GridPane boardView;
 
-    private OrthelloBoard board;
-
     public void initialize(){
-        this.board = new OrthelloBoard(boardView);
-    }
-
-    public void move(int row,int column){
-        System.out.println("non static: "+row+":"+column);
+        OthelloBoard.initialize(boardView,statusLabel);
     }
 }

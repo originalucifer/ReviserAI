@@ -19,7 +19,7 @@ public class OthelloItem extends Rectangle {
 
     private int column;
     private int row;
-    private String player = null;
+    private String player;
 
     OthelloItem(int column, int row) {
         this.column = column;
