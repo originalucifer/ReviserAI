@@ -1,0 +1,11 @@
+.boardRectangle {
+    -fx-fill: red;
+    -fx-stroke: black;
+}
+
+.boardRectangle:hover{
+    -fx-stroke: lightgrey;
+    -fx-fill: orangered;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 10, 0.5, 3, 3);
+}

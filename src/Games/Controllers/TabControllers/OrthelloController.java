@@ -1,5 +1,6 @@
 package Games.Controllers.TabControllers;
 
+import Games.Models.Boards.OrthelloBoard;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
@@ -16,5 +17,11 @@ public class OrthelloController {
     public Label statusLabel;
 
     @FXML
-    public GridPane bordView;
+    public GridPane boardView;
+
+    private OrthelloBoard board;
+
+    public void initialize(){
+        this.board = new OrthelloBoard(boardView);
+    }
 }
