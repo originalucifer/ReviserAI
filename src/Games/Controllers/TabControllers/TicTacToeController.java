@@ -19,6 +19,15 @@ import java.util.ArrayList;
 public class TicTacToeController{
 
     @FXML private Label statusLabel;
+    @FXML private Button b0;
+    @FXML private Button b1;
+    @FXML private Button b2;
+    @FXML private Button b3;
+    @FXML private Button b4;
+    @FXML private Button b5;
+    @FXML private Button b6;
+    @FXML private Button b7;
+    @FXML private Button b8;
 
     private TicTacToeBoard board = new TicTacToeBoard();
     private ArrayList<Button> pressedButtons = new ArrayList<Button>();
@@ -133,6 +142,31 @@ public class TicTacToeController{
                 statusLabel.setText("O's Turn");
             }
         }
+
+    }
+
+    public Button getButton(int col, int row){
+        if (col == 0){
+            switch (row){
+                case 0: return b0;
+                case 1: return b3;
+                case 2: return b6;
+            }
+        }else if (col == 1){
+            switch (row){
+                case 0: return b1;
+                case 1: return b4;
+                case 2: return b7;
+            }
+        }else if (col == 2){
+            switch (row){
+                case 0: return b2;
+                case 1: return b5;
+                case 2: return b8;
+            }
+
+        }
+        return null;
 
     }
 
