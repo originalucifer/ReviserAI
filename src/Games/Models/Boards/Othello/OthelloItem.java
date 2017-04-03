@@ -74,9 +74,7 @@ public class OthelloItem extends Rectangle {
                 OthelloItem rectangle = ((OthelloItem) (t.getSource()));
                 rectangle.setStyle(disableInnerShadow);
 
-                if(OthelloBoard.validMove(this,player)){
-
-                };
+                System.out.println(OthelloBoard.validMove(this));
 
                 if(!OthelloBoard.hasStarted()){
                     OthelloBoard.setStatus("Game hasn't started yet. Pick a color.");
@@ -177,6 +175,4 @@ public class OthelloItem extends Rectangle {
         neighbours.add(getBottomNeighbour());
         return neighbours;
     }
-
-
 }

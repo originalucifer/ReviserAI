@@ -100,7 +100,23 @@ public class OthelloBoard {
         }
     }
 
-    public static boolean validMove(OthelloItem othelloItem, OthelloPlayer player) {
+    public static boolean validMove(OthelloItem othelloItem) {
+        boolean hasOtherNeighbour = false;
+        for (OthelloItem neighbour : othelloItem.getNeighbours()) {
+            try {
+                if(neighbour.getPlayer() != othelloItem.getPlayer()){
+                    hasOtherNeighbour = true;
+                    break;
+                }
+            } catch (NullPointerException e){
+                // corner or side neighbours can be null
+            }
+
+        }
+
+        if(!hasOtherNeighbour)
+            return false;
+
         return true;
     }
 
