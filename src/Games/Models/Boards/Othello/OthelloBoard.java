@@ -1,6 +1,7 @@
 package Games.Models.Boards.Othello;
 
 import Games.Models.OthelloPlayer;
+import javafx.collections.ObservableList;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
@@ -97,5 +98,27 @@ public class OthelloBoard {
         } else {
             setActivePlayer(black);
         }
+    }
+
+    public static boolean validMove(OthelloItem othelloItem, OthelloPlayer player) {
+        return true;
+    }
+
+    public static OthelloItem getOthelloItemByLocation (final int row, final int column) {
+        OthelloItem result = null;
+        ObservableList<Node> childrens = boardView.getChildren();
+
+        for (Node node : childrens) {
+            if(GridPane.getRowIndex(node) == row && GridPane.getColumnIndex(node) == column) {
+                result = (OthelloItem) node;
+                break;
+            }
+        }
+
+        return result;
+    }
+
+    public static int getBoardSize() {
+        return boardSize;
     }
 }
