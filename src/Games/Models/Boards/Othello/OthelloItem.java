@@ -6,6 +6,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
+import java.util.ArrayList;
 import java.util.Objects;
 
 /**
@@ -59,7 +60,7 @@ public class OthelloItem extends Rectangle {
 
     /**
      * Set a nice inner shadow to create the feeling of actually
-     * pressing a othelloItem down.
+     * pressing a square down.
      */
     private EventHandler<MouseEvent> othelloItemPressed =
             t -> ((OthelloItem)(t.getSource())).setStyle(enableInnerShadow);
@@ -73,12 +74,17 @@ public class OthelloItem extends Rectangle {
                 OthelloItem rectangle = ((OthelloItem) (t.getSource()));
                 rectangle.setStyle(disableInnerShadow);
 
+                if(OthelloBoard.validMove(this,player)){
+
+                };
+
                 if(!OthelloBoard.hasStarted()){
                     OthelloBoard.setStatus("Game hasn't started yet. Pick a color.");
                 } else if(hasPlayer()){
+                    // Set the player again to correct the color
                     setPlayer(player);
                     OthelloBoard.setStatus("Illegal move. Try again.");
-                } else {
+                } else{
                     setPlayer(OthelloBoard.getActivePlayer());
 
                     OthelloBoard.activePlayer.makeMove(this);
@@ -94,4 +100,83 @@ public class OthelloItem extends Rectangle {
             setStyle("-fx-fill: black;");
         }
     }
+
+    private OthelloItem getLeftNeighbour(){
+        if(column > 0) {
+            return OthelloBoard.getOthelloItemByLocation(row, column+1);
+        } else{
+            return null;
+        }
+    }
+
+    private OthelloItem getRightNeighbour() {
+        if(column < (OthelloBoard.getBoardSize() -1)) {
+            return OthelloBoard.getOthelloItemByLocation(row, column+1);
+        } else{
+            return null;
+        }
+    }
+
+    private OthelloItem getTopLeftNeighbour(){
+        if(row > 0 && column > 0) {
+            return OthelloBoard.getOthelloItemByLocation(row-1, column-1);
+        } else{
+            return null;
+        }
+    }
+
+    private OthelloItem getTopRightNeighbour(){
+        if(row > 0 && column < (OthelloBoard.getBoardSize() -1)) {
+            return OthelloBoard.getOthelloItemByLocation(row-1, column+1);
+        } else{
+            return null;
+        }
+    }
+
+    private OthelloItem getTopNeighbour(){
+        if(row > 0) {
+            return OthelloBoard.getOthelloItemByLocation(row-1, column);
+        } else{
+            return null;
+        }
+    }
+
+    private OthelloItem getBottomNeighbour(){
+        if(row < (OthelloBoard.getBoardSize()-1)) {
+            return OthelloBoard.getOthelloItemByLocation(row+1, column);
+        } else{
+            return null;
+        }
+    }
+
+    private OthelloItem getBottomRightNeighbour(){
+        if(row < (OthelloBoard.getBoardSize()-1) && column < (OthelloBoard.getBoardSize() -1)) {
+            return OthelloBoard.getOthelloItemByLocation(row+1, column+1);
+        } else{
+            return null;
+        }
+    }
+
+    private OthelloItem getBottomLeftNeighbour(){
+        if(row < (OthelloBoard.getBoardSize()-1) && column > 0) {
+            return OthelloBoard.getOthelloItemByLocation(row+1, column-1);
+        } else{
+            return null;
+        }
+    }
+
+    public ArrayList<OthelloItem> getNeighbours(){
+        ArrayList<OthelloItem> neighbours = new ArrayList<OthelloItem>();
+        neighbours.add(getLeftNeighbour());
+        neighbours.add(getRightNeighbour());
+        neighbours.add(getTopLeftNeighbour());
+        neighbours.add(getTopRightNeighbour());
+        neighbours.add(getTopNeighbour());
+        neighbours.add(getBottomLeftNeighbour());
+        neighbours.add(getBottomRightNeighbour());
+        neighbours.add(getBottomNeighbour());
+        return neighbours;
+    }
+
+
 }
