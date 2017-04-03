@@ -30,6 +30,7 @@ public class ConnectionHandler {
 			e.printStackTrace();
 		}
 		connected = true;
+		serverCommands.custom("help challenge");
 	}
 
 	public void login(String name){
@@ -49,7 +50,7 @@ public class ConnectionHandler {
 	}
 
 	public void acceptChallenge(String challengeID){
-		serverCommands.custom("challenge accept " + challengeID);
+		serverCommands.custom("challenge accept" + challengeID);
 	}
 
 	/**

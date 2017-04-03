@@ -61,7 +61,6 @@ public class ConnectionController {
                 connectionHandler.connect();
                 System.out.println("Connection made");
                 statusLbl.setText("Connected");
-                connectionHandler.getGameList();
             }catch (Exception e){
                 System.out.println(e);
             }
@@ -106,6 +105,10 @@ public class ConnectionController {
         }
     }
 
+    /**
+     * Challenges another player for a specified game
+     * TODO does not work yet, should look at command
+     */
     private void challenge(){
         if (connectionHandler.isConnected() && loggedIn){
             String challenge = challengeTf.getText();
@@ -113,21 +116,25 @@ public class ConnectionController {
                 connectionHandler.challenge(challenge);
                 statusLbl.setText("Challenged");
             }else{
-                System.out.println("Warning: Enter a valid name and game");
+                System.out.println("Warning: Enter a valid name and game for the challenge");
             }
         } else {
             System.out.println("Warning: You must first connect and log in");
         }
     }
 
+    /**
+     * Accept challenge belonging to specified challenge ID
+     * TODO does not work yet, should look at command
+     */
     private void acceptChallenge(){
         if (connectionHandler.isConnected() && loggedIn){
-            String accept = challengeTf.getText();
-            if(!accept.equals("")){
-                connectionHandler.acceptChallenge(accept);
+            String challengeID = acceptChallengeTf.getText();
+            if(!challengeID.equals("")){
+                connectionHandler.acceptChallenge(challengeID);
                 statusLbl.setText("Challenged");
             }else{
-                System.out.println("Warning: Enter a valid name and game");
+                System.out.println("Warning: Enter a valid challenge id");
             }
         } else {
             System.out.println("Warning: You must first connect and log in");
