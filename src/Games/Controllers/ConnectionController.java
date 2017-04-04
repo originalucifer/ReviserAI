@@ -157,7 +157,7 @@ public class ConnectionController {
         if (connectionHandler.isConnected() && loggedIn){
             String challenge = challengeTf.getText();
             String[] split = challenge.split("\\s+");
-            if(!split[0].equals("") && !split[1].equals("")){
+            if(split.length == 2 && !split[0].equals("") && !split[1].equals("")){
                 split[1] = correctCase(split[1]);
                 connectionHandler.challenge(split);
                 serverOutput.appendText("\n\n\""+split[0]+"\" challenged, for a game of: \"" +split[1]+ "\"");
