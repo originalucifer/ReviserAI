@@ -51,7 +51,7 @@ public class Main extends Application {
     private Stage createConnectionStage() throws IOException {
         Stage stage = new Stage();
         Parent root = FXMLLoader.load(getClass().getResource("Views/ConnectionView.fxml"));
-        Scene scene = new Scene(root, 400, 600);
+        Scene scene = new Scene(root);
         stage.setTitle("Games Connection");
         stage.setScene(scene);
         return stage;

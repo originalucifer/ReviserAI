@@ -4,13 +4,13 @@ import ServerConnection.ConnectionHandler;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
-
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 
-import java.util.ArrayList;
 
 /**
+ * Controller for the ConnectionView
+ *
  * Created by robin on 3-4-17.
  */
 public class ConnectionController {
@@ -21,7 +21,7 @@ public class ConnectionController {
     @FXML private TextField challengeTf;
     @FXML private TextField acceptChallengeTf;
 
-    private ConnectionHandler connectionHandler = new ConnectionHandler();
+    private ConnectionHandler connectionHandler = new ConnectionHandler(this);
     private boolean loggedIn = false;
 
     public ConnectionController(){}
@@ -40,6 +40,8 @@ public class ConnectionController {
                 this.getConnection();break;
             case "Login" :
                 this.login();break;
+            case "Logout" :
+                this.logout();break;
             case "Subscribe":
                 this.subscribe();break;
             case "Challenge":
@@ -48,12 +50,10 @@ public class ConnectionController {
                 this.acceptChallenge();break;
             case "Close connection":
                 this.closeConnection();break;
-        }
-        try{
-            Thread.sleep(1000);
-            updateServerOutput();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+            case "Get gamelist":
+                this.getGameList();break;
+            case "Get playerlist":
+                this.getPlayerList();break;
         }
     }
 
@@ -72,6 +72,28 @@ public class ConnectionController {
             }
         } else {
             serverOutput.appendText("\nWarning: You are already connected");
+        }
+    }
+
+    /**
+     * requests gamelist from gameserver
+     */
+    private void getGameList(){
+        if (connectionHandler.isConnected()){
+            connectionHandler.getGameList();
+        } else {
+            serverOutput.appendText("\nWarning: You are not connected");
+        }
+    }
+
+    /**
+     * requests gamelist from gameserver
+     */
+    private void getPlayerList(){
+        if (connectionHandler.isConnected()){
+            connectionHandler.getPlayerList();
+        } else {
+            serverOutput.appendText("\nWarning: You are not connected");
         }
     }
 
@@ -96,13 +118,27 @@ public class ConnectionController {
     }
 
     /**
+     * logs out the user
+     */
+    private void logout(){
+        if (loggedIn){
+           connectionHandler.logout();
+           loggedIn = false;
+           serverOutput.appendText("\nLogged out");
+        } else {
+            serverOutput.appendText("\nWarning: You are not logged in yet");
+        }
+    }
+
+    /**
      * Subscribes user to specified Game on the Server
      */
     private void subscribe(){
         if (connectionHandler.isConnected() && loggedIn){
             String game = subscribeTf.getText();
             if(!game.equals("")){
-                connectionHandler.subscribe(correctCase(game));
+                game = correctCase(game);
+                connectionHandler.subscribe(game);
                 serverOutput.appendText("\nSubscribed for game: \"" +game+"\"");
             }else{
                 serverOutput.appendText("\nWarning: Enter a valid game");
@@ -114,7 +150,6 @@ public class ConnectionController {
 
     /**
      * Challenges another player for a specified game
-     * TODO does not work yet, should look at command
      */
     private void challenge(){
         if (connectionHandler.isConnected() && loggedIn){
@@ -134,7 +169,6 @@ public class ConnectionController {
 
     /**
      * Accept challenge belonging to specified challenge ID
-     * TODO does not work yet, should look at command
      */
     private void acceptChallenge(){
         if (connectionHandler.isConnected() && loggedIn){
@@ -152,23 +186,27 @@ public class ConnectionController {
 
 
     /**
-     * Closes connection with server
+     * Closes connection with server and logs out if logged in
      */
     private void closeConnection(){
         if (connectionHandler.isConnected()) {
+            if(loggedIn){
+                connectionHandler.logout();
+                loggedIn = false;
+            }
             connectionHandler.quitConnection();
-            loggedIn = false;
             serverOutput.appendText("\nConnection closed");
         } else {
             serverOutput.appendText("\nWarning: You are not connected");
         }
     }
 
-    private void updateServerOutput(){
-        ArrayList<String> serverResponse = connectionHandler.updateOutput();
-        for (String s : serverResponse){
-            serverOutput.appendText("\n"+s);
-        }
+    /**
+     * updates the serverOutput textarea.
+     * @param serverMessage response from server
+     */
+    public void updateServerOutput(String serverMessage){
+        serverOutput.appendText("\n"+serverMessage);
     }
 
 

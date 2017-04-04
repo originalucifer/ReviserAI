@@ -12,6 +12,8 @@
     <padding><Insets top="10" right="10" bottom="10" left="10"/></padding>
 
     <Button text="Connect" onAction="#buttonEventHandler" styleClass="connectBt"/>
+    <Button text="Get gamelist" onAction="#buttonEventHandler" styleClass="connectBt"/>
+    <Button text="Get playerlist" onAction="#buttonEventHandler" styleClass="connectBt"/>
 
     <VBox styleClass="box" spacing="5">
         <padding><Insets top="3" right="3" bottom="3" left="3"/></padding>
@@ -30,17 +32,18 @@
     <VBox styleClass="box" spacing="5">
         <padding><Insets top="3" right="3" bottom="3" left="3"/></padding>
         <Button text="Challenge" onAction="#buttonEventHandler"/>
-        <Label text="PlayerName GameName: "/>
+        <Label text="&#60;PlayerName&#62; &#60;GameName&#62;: "/>
         <TextField fx:id="challengeTf"/>
     </VBox>
 
     <VBox styleClass="box" spacing="5">
         <padding><Insets top="3" right="3" bottom="3" left="3"/></padding>
         <Button text="Accept Challenge" onAction="#buttonEventHandler"/>
-        <Label text="Challenge ID: "/>
+        <Label text="&#60;Challenge Number&#62;: "/>
         <TextField fx:id="acceptChallengeTf"/>
     </VBox>
 
+    <Button text="Logout" onAction="#buttonEventHandler" styleClass="closeConnectBt"/>
     <Button text="Close connection" onAction="#buttonEventHandler" styleClass="closeConnectBt"/>
 
     <VBox styleClass="box" spacing="5">

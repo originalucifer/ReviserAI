@@ -44,7 +44,7 @@ public class CommandCalls implements Observer{
 			case "GAME":game(getArguments(arguments));
 				break;
 
-			default: connectionHandler.updateOutputList("Unknown: SVR"+arguments[0]);
+			default: connectionHandler.updateOutput("Unknown: SVR"+arguments[0]);
 //                System.out.println("Unknown: SVR" + arguments[0]);
 		}
 	}
@@ -72,7 +72,7 @@ public class CommandCalls implements Observer{
 
 	private void print(String s) {
 //		System.out.println("?: " + s);
-		connectionHandler.updateOutputList(s);
+		connectionHandler.updateOutput(s);
 	}
 
 	private void error(String arguments[]) {
@@ -82,7 +82,7 @@ public class CommandCalls implements Observer{
 		    output.append(arg).append(" ");
 //			System.out.print(arg + " ");
 		}
-		connectionHandler.updateOutputList(output.toString());
+		connectionHandler.updateOutput(output.toString());
 //		System.out.print("\n");
 	}
 
