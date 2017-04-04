@@ -66,9 +66,11 @@ public class ConnectionController {
         if (!connectionHandler.isConnected()){
             try {
                 connectionHandler.connect();
+                Thread.sleep(1000);
                 serverOutput.appendText("\nConnection made");
             }catch (Exception e){
                 System.out.println(e);
+                serverOutput.appendText("\nConnection could not be made");
             }
         } else {
             serverOutput.appendText("\nWarning: You are already connected");

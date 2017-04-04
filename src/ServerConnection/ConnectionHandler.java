@@ -1,11 +1,6 @@
 package ServerConnection;
 
 import Games.Controllers.ConnectionController;
-import javafx.application.Platform;
-import javafx.fxml.FXML;
-import javafx.scene.control.TextArea;
-
-import java.util.ArrayList;
 
 /**
  * Created by rik on 3/30/17.
@@ -16,7 +11,6 @@ public class ConnectionHandler {
     private ReceiveListener listen;
 	private ServerCommands serverCommands;
 	private boolean connected = false;
-	private ArrayList<String> serverOutputList = new ArrayList<>();
 	private ConnectionController connectionController;
 
 	public ConnectionHandler(ConnectionController c) {
@@ -102,6 +96,12 @@ public class ConnectionHandler {
 		return connected;
 	}
 
+    /**
+     * update the output textarea in the connectionController
+     *
+     * Can possibly be done cleaner.
+     * @param serverResponse
+     */
 	public void updateOutput(String serverResponse){
         connectionController.updateServerOutput(serverResponse);
 	}
