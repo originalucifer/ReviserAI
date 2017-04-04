@@ -30,7 +30,7 @@ public class Main extends Application {
         Scene scene = new Scene(root, 720, 480);
         primaryStage.setScene(scene);
         primaryStage.setOnCloseRequest(WindowEvent -> Platform.exit());
-        primaryStage.show();
+//        primaryStage.show();
 
         // Create stage for the connection handling.
         Stage connectionStage = createConnectionStage();
@@ -51,7 +51,8 @@ public class Main extends Application {
     private Stage createConnectionStage() throws IOException {
         Stage stage = new Stage();
         Parent root = FXMLLoader.load(getClass().getResource("Views/ConnectionView.fxml"));
-        Scene scene = new Scene(root, 250, 480);
+        Scene scene = new Scene(root, 400, 600);
+        stage.setTitle("Games Connection");
         stage.setScene(scene);
         return stage;
     }

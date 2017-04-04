@@ -7,7 +7,7 @@
 <?import javafx.scene.control.Label?>
 
 
-
+<?import javafx.scene.control.TextArea?>
 <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" spacing="5" stylesheets="@../Style/Connection.css" styleClass="connectionBox" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Games.Controllers.ConnectionController">
     <padding><Insets top="10" right="10" bottom="10" left="10"/></padding>
 
@@ -42,5 +42,10 @@
     </VBox>
 
     <Button text="Close connection" onAction="#buttonEventHandler" styleClass="closeConnectBt"/>
-    <Label text="Not connected" fx:id="statusLbl" alignment="BOTTOM_CENTER" styleClass="status"/>
+
+    <VBox styleClass="box" spacing="5">
+        <Label text="Server output: "/>
+        <TextArea styleClass="serverOutput" fx:id="serverOutput" editable="false" prefHeight="150"/>
+    </VBox>
+
 </VBox>

@@ -1,6 +1,6 @@
 package ServerConnection;
 
-import java.io.IOException;
+import java.util.ArrayList;
 
 /**
  * Created by rik on 3/30/17.
@@ -11,9 +11,9 @@ public class ConnectionHandler {
     private ReceiveListener listen;
 	private ServerCommands serverCommands;
 	private boolean connected = false;
+	private ArrayList<String> serverOutput = new ArrayList<>();
 
-	public ConnectionHandler() {
-	}
+	public ConnectionHandler() {}
 
 	public void connect(){
 
@@ -22,15 +22,14 @@ public class ConnectionHandler {
 		new Thread(connection).start();
 		new Thread(listen).start();
 		serverCommands =new ServerCommands(connection);
-		new CommandCalls(listen);
+		new CommandCalls(listen,this);
 
-		try {
+		/*try {
 			Thread.sleep(50);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
-		}
+		}*/
 		connected = true;
-		serverCommands.custom("help challenge");
 	}
 
 	public void login(String name){
@@ -45,8 +44,8 @@ public class ConnectionHandler {
 		serverCommands.getGameList();
 	}
 
-	public void challenge(String challenge){
-		serverCommands.custom("challenge " + challenge);
+	public void challenge(String[] challenge){
+		serverCommands.custom("challenge \"" +challenge[0]+ "\" \""+challenge[1]+"\"");
 	}
 
 	public void acceptChallenge(String challengeID){
@@ -65,5 +64,16 @@ public class ConnectionHandler {
 
 	public boolean isConnected(){
 		return connected;
+	}
+
+	public void updateOutputList(String serverResponse){
+		serverOutput.add(serverResponse);
+	}
+
+	public ArrayList<String> updateOutput(){
+		ArrayList<String> returnList = new ArrayList<>();
+		returnList.addAll(serverOutput);
+		serverOutput.clear();
+		return returnList;
 	}
 }

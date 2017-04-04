@@ -17,3 +17,21 @@
     -fx-font-size: 20;
     -fx-font-weight: bold;
 }
+
+.serverOutput {
+    -fx-text-fill: white;
+    -fx-background-color: black;
+}
+
+.serverOutput .scroll-pane {
+    -fx-background-color: transparent;
+}
+
+.serverOutput .scroll-pane .viewport{
+    -fx-background-color: transparent;
+}
+
+
+.serverOutput .scroll-pane .content{
+    -fx-background-color: transparent;
+}
