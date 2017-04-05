@@ -1,6 +1,7 @@
 package Games.Models.Boards.Othello;
 
 import Games.Models.OthelloPlayer;
+import com.sun.istack.internal.NotNull;
 import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.shape.Rectangle;
@@ -99,7 +100,7 @@ public class OthelloItem extends Rectangle {
 
     OthelloItem getLeftNeighbour(){
         if(column > 0) {
-            return OthelloBoard.getOthelloItemByLocation(row, column+1);
+            return OthelloBoard.getOthelloItemByLocation(row, column-1);
         } else{
             return null;
         }
@@ -107,7 +108,7 @@ public class OthelloItem extends Rectangle {
 
     OthelloItem getRightNeighbour() {
         if(column < (OthelloBoard.getBoardSize() -1)) {
-            return OthelloBoard.getOthelloItemByLocation(row, column-1);
+            return OthelloBoard.getOthelloItemByLocation(row, column+1);
         } else{
             return null;
         }
@@ -190,7 +191,8 @@ public class OthelloItem extends Rectangle {
         return row;
     }
 
+    @NotNull
     public String getPositionString(){
-        return getRow()+":"+getColumn();
+        return getRow() + ":" + getColumn();
     }
 }
