@@ -36,6 +36,10 @@ public class ReceiveListener implements Observable, Runnable {
 		}
 	}
 
+	public void terminate(){
+		alive = false;
+	}
+
 	@Override
 	public void run() {
 		while (alive){

@@ -6,8 +6,13 @@ import java.net.UnknownHostException;
 import java.util.LinkedList;
 
 public class Connection implements Runnable{
-	ReceiveListener listen;
-	LinkedList<String> toSend = new LinkedList<String>();
+
+	private String hostAdress = "127.0.0.1";
+	private int hostPort = 7789;
+
+	private ReceiveListener listen;
+	private LinkedList<String> toSend = new LinkedList<String>();
+	private volatile boolean running = true;
 
 
 	public Connection(ReceiveListener listener){
@@ -17,7 +22,7 @@ public class Connection implements Runnable{
 	public void connect(){
 		//https://docs.oracle.com/javase/tutorial/displayCode.html?code=https://docs.oracle.com/javase/tutorial/networking/sockets/examples/EchoClient.java
 		try (
-				Socket echoSocket = new Socket("127.0.0.1", 7789);
+				Socket echoSocket = new Socket(hostAdress, hostPort);
 				PrintWriter out =
 						new PrintWriter(echoSocket.getOutputStream(), true);
 
@@ -30,13 +35,12 @@ public class Connection implements Runnable{
 								new InputStreamReader(System.in))
 		) {
 			String input;
-			while (true) {
+			while (running) {
 				if (!toSend.isEmpty()) {
 					out.println(toSend.pop());
 				}
 				if (in.ready()){
 					input = in.readLine();
-//					System.out.println("server: " + input);
 					listen.addLine(input);
 				}
 			}
@@ -51,11 +55,29 @@ public class Connection implements Runnable{
 
 	@Override
 	public void run() {
-		connect();
+		while (running) {connect();}
+	}
+
+	public void terminate(){
+		running = false;
 	}
 
 	public void addToSend(String message){
 		toSend.add(message);
+	}
+
+	public void setHost(String adress){
+		this.hostAdress = adress;
+	}
+
+	public void setHost(int port){
+		this.hostPort = port;
+
+	}
+
+	public void setHost(String adress,int port){
+		this.hostAdress = adress;
+		this.hostPort = port;
 	}
 
 }
