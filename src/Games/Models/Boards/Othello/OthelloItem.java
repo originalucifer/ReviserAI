@@ -3,7 +3,6 @@ package Games.Models.Boards.Othello;
 import Games.Models.OthelloPlayer;
 import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
 import java.util.ArrayList;
@@ -165,14 +164,22 @@ public class OthelloItem extends Rectangle {
 
     public ArrayList<OthelloItem> getNeighbours(){
         ArrayList<OthelloItem> neighbours = new ArrayList<OthelloItem>();
-        neighbours.add(getLeftNeighbour());
-        neighbours.add(getRightNeighbour());
-        neighbours.add(getTopLeftNeighbour());
-        neighbours.add(getTopRightNeighbour());
-        neighbours.add(getTopNeighbour());
-        neighbours.add(getBottomLeftNeighbour());
-        neighbours.add(getBottomRightNeighbour());
-        neighbours.add(getBottomNeighbour());
+        if(getLeftNeighbour() != null)
+            neighbours.add(getLeftNeighbour());
+        if(getRightNeighbour() != null)
+            neighbours.add(getRightNeighbour());
+        if(getTopLeftNeighbour() != null)
+            neighbours.add(getTopLeftNeighbour());
+        if(getTopRightNeighbour() != null)
+            neighbours.add(getTopRightNeighbour());
+        if(getTopNeighbour() != null)
+            neighbours.add(getTopNeighbour());
+        if(getBottomLeftNeighbour() != null)
+            neighbours.add(getBottomLeftNeighbour());
+        if(getBottomRightNeighbour() != null)
+            neighbours.add(getBottomRightNeighbour());
+        if(getBottomNeighbour() != null)
+            neighbours.add(getBottomNeighbour());
         return neighbours;
     }
 }
