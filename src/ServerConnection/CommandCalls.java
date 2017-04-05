@@ -1,17 +1,18 @@
 package ServerConnection;
 
+import Games.Models.Boards.Game;
+
 import java.util.Arrays;
 
 /**
  * Created by rik on 3/29/17.
  */
 public class CommandCalls implements Observer{
-	public InGameActions game;
+	private Game game;
 	private ConnectionHandler connectionHandler;
 
 	public CommandCalls(Observable info, ConnectionHandler connectionHandler) {
 		info.follow(this);
-		game = new emptyGame();
 		this.connectionHandler = connectionHandler;
 	}
 
@@ -32,8 +33,12 @@ public class CommandCalls implements Observer{
 			case "OK": acknowledgement();
 			break;
 			case "SVR": SVR(getArguments(split));
+			break;
+            case "Strategic": print(com);
+            break;
+            case "(C)": print(com);
 
-			default: print(com);
+		    //default: print(com);
 		}
 	}
 
@@ -43,54 +48,73 @@ public class CommandCalls implements Observer{
 				break;
 			case "GAME":game(getArguments(arguments));
 				break;
-
-			default: connectionHandler.updateOutput("Unknown: SVR"+arguments[0]);
-//                System.out.println("Unknown: SVR" + arguments[0]);
 		}
 	}
 
 	private void game (String[] arguments){
 		switch (arguments[0]) {
-			case "MATCH":break;
-
-			case "CHALLENGE":break;
-			case "MOVE": game.move(arguments[1]);break;
-			case "YOURTURN": game.yourTurn();break;
-			case "WIN": game.win();break;
-			case "LOSS":game.loss();break;
-			case "DRAW":game.draw();break;
+            //Create new game based on the accepted challenge gametype
+            case "MATCH":
+                connectionHandler.updateOutput(Arrays.toString(arguments));
+//                startNewGame(arguments[4]);break;
+            case "CHALLENGE":
+                connectionHandler.updateOutput(Arrays.toString(arguments));break;
+			case "MOVE":
+				System.out.println("Move");
+//                game.move(arguments[1]);
+ 				break;
+			case "YOURTURN":
+			    connectionHandler.updateOutput("Your Turn");
+			    game.yourTurn();
+				break;
+			case "WIN":
+				connectionHandler.updateOutput("You have won");
+			    game.win();break;
+			case "LOSS":
+				connectionHandler.updateOutput("You have lost");
+			    game.loss();break;
+			case "DRAW":
+				connectionHandler.updateOutput("It's a draw");
+			    game.draw();break;
 		}
 	}
 
-	public void acknowledgement(){
+	private void acknowledgement(){
 
 	}
 
-	private String[] getArguments(String input[]){
+    private String[] getArguments(String input[]){
 		return Arrays.copyOfRange(input, 1 , input.length);
 	}
 
 	private void print(String s) {
-//		System.out.println("?: " + s);
 		connectionHandler.updateOutput(s);
 	}
 
 	private void error(String arguments[]) {
 	    StringBuilder output = new StringBuilder("Warning: ");
-//		System.out.print("Warning: ");
 		for (String arg : arguments) {
 		    output.append(arg).append(" ");
-//			System.out.print(arg + " ");
 		}
 		connectionHandler.updateOutput(output.toString());
-//		System.out.print("\n");
 	}
 
-	public void setGame(InGameActions game) {
-		this.game = game;
-	}
+    /**
+     * creates a new Game based on the parameter it gets
+     * @param gameName name of the game recieved
+     */
+    /*
+	private void startNewGame(String gameName){
+	    String argument = gameName.replaceAll("[^\\w\\s]", "");
+        switch (argument){
+            case "Reversi": this.game = reversi;break;
+            case "Tictactoe": this.game = ticTacToe;break;
+        }
+    }
+    */
 
-	public void removeGame() {
-		game = new emptyGame();
-	}
+    public void setGame(Game game){
+        this.game = game;
+    }
+
 }

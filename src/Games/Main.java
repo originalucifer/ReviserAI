@@ -27,7 +27,7 @@ public class Main extends Application {
         Scene scene = new Scene(root, 800, 700);
         primaryStage.setScene(scene);
         primaryStage.setOnCloseRequest(WindowEvent -> Platform.exit());
-        primaryStage.show();
+//        primaryStage.show();
 
         // Create stage for the connection handling.
         Stage connectionStage = createConnectionStage();

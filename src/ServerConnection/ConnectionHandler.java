@@ -1,6 +1,8 @@
 package ServerConnection;
 
 import Games.Controllers.ConnectionController;
+import Games.Models.Boards.Game;
+import Games.Models.Boards.TicTacToeGame;
 
 /**
  * Created by rik on 3/30/17.
@@ -10,6 +12,7 @@ public class ConnectionHandler {
 	private Connection connection;
     private ReceiveListener listen;
 	private ServerCommands serverCommands;
+	private CommandCalls commandCalls;
 	private boolean connected = false;
 	private ConnectionController connectionController;
 
@@ -27,7 +30,7 @@ public class ConnectionHandler {
 		new Thread(connection).start();
 		new Thread(listen).start();
 		serverCommands =new ServerCommands(connection);
-		new CommandCalls(listen,this);
+		commandCalls = new CommandCalls(listen,this);
 
 		connected = true;
 	}
@@ -90,6 +93,10 @@ public class ConnectionHandler {
 		listen.terminate();
 		connection.terminate();
 		connected = false;
+	}
+
+	public void setGame(Game game){
+		commandCalls.setGame(game);
 	}
 
 	public boolean isConnected(){

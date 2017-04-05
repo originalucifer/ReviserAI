@@ -1,6 +1,6 @@
 package Games.Controllers.TabControllers;
 
-import Games.Models.Boards.TicTacToeBoard;
+import Games.Models.Boards.TicTacToeGame;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
@@ -22,7 +22,7 @@ public class TicTacToeController{
 
     @FXML private Label statusLabel;
 
-    private TicTacToeBoard board = new TicTacToeBoard();
+    private TicTacToeGame board;
     private ArrayList<Button> pressedButtons = new ArrayList<Button>();
     private boolean playerChosen = false;
     private boolean firstSetDone = false;
@@ -87,7 +87,7 @@ public class TicTacToeController{
             }
         } else {
             if (buttonID.equals("reset")){
-                board = new TicTacToeBoard();
+                //TODO reset board
                 for (Button b : pressedButtons) {
                     b.setText("");
                 }
@@ -149,5 +149,9 @@ public class TicTacToeController{
         Scene scene = new Scene(label,200,100);
         stage.setScene(scene);
         stage.show();
+    }
+
+    public void setBoard(TicTacToeGame board){
+        this.board = board;
     }
 }

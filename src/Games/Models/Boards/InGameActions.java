@@ -1,4 +1,4 @@
-package ServerConnection;
+package Games.Models.Boards;
 
 /**
  * Created by rik on 3/31/17.

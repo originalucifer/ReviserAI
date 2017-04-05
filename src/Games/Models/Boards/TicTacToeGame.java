@@ -1,15 +1,16 @@
 package Games.Models.Boards;
 
 /**
- * Class for the TicTacToeBoard.
+ * Class for the TicTacToeGame.
  *
  * Created by robin on 31-3-17.
  */
-public class TicTacToeBoard {
+public class TicTacToeGame extends Game {
 
-    char[][] board = new char[3][3];
+    private char[][] board = new char[3][3];
 
-    public TicTacToeBoard(){
+    public TicTacToeGame(String playerType) {
+        super(playerType);
     }
 
     /**
@@ -19,10 +20,9 @@ public class TicTacToeBoard {
      * @param row    the clicked row
      * @param player X or O?
      */
-    public void updateBoard(int column, int row, char player){
+    public void updateBoard(int column, int row, char player) {
         board[column][row] = player;
     }
-
 
 
     /**
@@ -31,7 +31,7 @@ public class TicTacToeBoard {
      * @return true if 3 in a row is found, else return false
      */
 
-    public boolean find3InARow(){
+    public boolean find3InARow() {
         // check diagonal rows
         if ((board[0][0] == board[1][1] && board[0][0] == board[2][2] && (board[0][0] == 'X' || board[0][0] == 'O'))
                 ||
@@ -52,12 +52,15 @@ public class TicTacToeBoard {
 
     /**
      * Checks if the field is full (If its a tie)
+     *
      * @return boolean field full.
      */
-    public boolean isFull(){
-        for (char[] chars : board){
-            for (char c : chars){
-                if(c == ' '){return false;}
+    public boolean isFull() {
+        for (char[] chars : board) {
+            for (char c : chars) {
+                if (c == ' ') {
+                    return false;
+                }
             }
         }
         return true;
@@ -68,15 +71,12 @@ public class TicTacToeBoard {
      * for debugging
      * TODO remove this method
      */
-    public void showBoard(){
-        for (char[] chars : board){
-            for (char c : chars){
+    public void showBoard() {
+        for (char[] chars : board) {
+            for (char c : chars) {
                 System.out.print(c);
             }
             System.out.print("\n");
         }
     }
-
-
-
 }

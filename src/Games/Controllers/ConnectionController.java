@@ -1,5 +1,6 @@
 package Games.Controllers;
 
+import Games.Models.Boards.TicTacToeGame;
 import ServerConnection.ConnectionHandler;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -22,9 +23,11 @@ public class ConnectionController {
     @FXML private TextField acceptChallengeTf;
 
     private ConnectionHandler connectionHandler = new ConnectionHandler(this);
+    private boolean AI = false;
     private boolean loggedIn = false;
 
-    public ConnectionController(){}
+    public ConnectionController(){
+    }
 
 
     /**
@@ -110,6 +113,11 @@ public class ConnectionController {
                     connectionHandler.login(name);
                     loggedIn = true;
                     serverOutput.appendText("\nLogged in with name: \"" +name+"\"");
+                    if(AI){
+                        connectionHandler.setGame(new TicTacToeGame("AIPlayer"));
+                    }else{
+                        connectionHandler.setGame(new TicTacToeGame("GUIPlayer"));
+                    }
                 }else{
                     serverOutput.appendText("\nWarning: Enter a valid name");
                 }
