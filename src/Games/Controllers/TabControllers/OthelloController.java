@@ -8,12 +8,12 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 
 /**
- * Class OrthelloController
+ * Class OthelloController
  *
  * @author koen
  * @version 0.1 (4/3/17)
  */
-public class OrthelloController {
+public class OthelloController {
 
     @FXML
     public Label statusLabel;
@@ -25,6 +25,11 @@ public class OrthelloController {
         OthelloBoard.initialize(boardView,statusLabel);
     }
 
+    /**
+     * Called when a color button is pressed.
+     *
+     * @param actionEvent of the button
+     */
     public void pickColor(ActionEvent actionEvent) {
         if(OthelloBoard.hasStarted()){
             OthelloBoard.setStatus("Game is still running. "+OthelloBoard.getActivePlayer().getName()+" is next.");

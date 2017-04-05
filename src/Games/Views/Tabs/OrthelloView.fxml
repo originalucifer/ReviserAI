@@ -4,7 +4,7 @@
 <?import javafx.scene.layout.*?>
 
 <?import javafx.scene.shape.Rectangle?>
-<Tab text="Orthello" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Games.Controllers.TabControllers.OrthelloController">
+<Tab text="Orthello" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Games.Controllers.TabControllers.OthelloController">
     <VBox prefHeight="480.0" prefWidth="720.0" stylesheets="@../../Style/Orthello.css">
 
         <GridPane fx:id="boardView" alignment="CENTER" prefHeight="370.0" prefWidth="370.0" >

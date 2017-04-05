@@ -22,22 +22,37 @@ public class OthelloPlayer {
         this.moves = new ArrayList<>();
     }
 
+    /**
+     * Get the color of the OthelloPlayer.
+     *
+     * @return String black or white.
+     */
     public String getColor() {
         return color;
     }
 
+    /**
+     * Set the color of the OthelloPlayer.
+     * @param color String black or white.
+     */
     public void setColor(String color) {
         this.color = color;
     }
 
+    /**
+     * Get the name of the OthelloPlayer.
+     *
+     * @return String with the name of the player.
+     */
     public String getName() {
         return name;
     }
 
-    public void makeMove(OthelloItem othelloItem){
-        moves.add(othelloItem);
-    }
-
+    /**
+     * Set the name of the OthelloPlayer.
+     *
+     * @param name String of the player name.
+     */
     public void setName(String name) {
         this.name = name;
     }
