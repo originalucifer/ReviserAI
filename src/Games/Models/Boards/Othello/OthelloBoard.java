@@ -111,6 +111,41 @@ public class OthelloBoard {
         }
     }
 
+    public static OthelloItem checkDirectionNeighbour(OthelloItem othelloItem, String direction){
+
+        OthelloItem neighbour = null;
+
+        switch (direction){
+            case "Top":
+                neighbour = othelloItem.getTopNeighbour();
+                break;
+            case "Bottom":
+                neighbour = othelloItem.getBottomNeighbour();
+                break;
+            case "Right":
+                neighbour = othelloItem.getRightNeighbour();
+                break;
+            case "Left":
+                neighbour = othelloItem.getLeftNeighbour();
+                break;
+            case "TopRight":
+                neighbour = othelloItem.getTopRightNeighbour();
+                break;
+            case "TopLeft":
+                neighbour = othelloItem.getTopLeftNeighbour();
+                break;
+            case "BottomRight":
+                neighbour = othelloItem.getBottomRightNeighbour();
+                break;
+            case "BottomLeft":
+                neighbour = othelloItem.getBottomLeftNeighbour();
+                break;
+        }
+
+        return neighbour;
+    }
+
+
     public static boolean validMove(OthelloItem othelloItem) {
 
         HashMap<String, OthelloItem> neighbours = othelloItem.getNeighbours();
@@ -119,15 +154,13 @@ public class OthelloBoard {
             String neighbourPosition = neighbourMap.getKey();
             OthelloItem neighbour = neighbourMap.getValue();
 
-            if(neighbour.getPlayer() == null){
+            if(!neighbour.hasPlayer()){
                 // Empty place to put an item.
                 System.out.println("Empty at "+neighbourPosition);
             } else{
                 //Already a neighbour
                 System.out.println("Neighbour at "+neighbourPosition+" "+neighbour.getPlayer().getColor());
-                if(neighbour.getPlayer().equals(getActivePlayer())){
-                    System.out.println("My own item");
-                }
+                return false;
             }
         }
 
