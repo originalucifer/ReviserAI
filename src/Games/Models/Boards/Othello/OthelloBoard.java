@@ -66,7 +66,16 @@ public class OthelloBoard {
     public static void draw(){
         for (int row = 0; row < boardSize; row++) {
             for (int column = 0; column < boardSize; column++) {
-                boardView.add(new OthelloItem(column,row),column,row);
+                OthelloItem othelloItem = new OthelloItem(column,row);
+
+                // Create the 4 starting items in the middle of the board.
+                if(column == 3 && row == 3 || column == 4 && row == 4){
+                    othelloItem.setPlayer(white);
+                } else if(column == 4 && row == 3 || column == 3 && row == 4){
+                    othelloItem.setPlayer(black);
+                }
+
+                boardView.add(othelloItem,column,row);
             }
         }
     }

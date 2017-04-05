@@ -75,9 +75,9 @@ public class OthelloItem extends Rectangle {
 
                 if(!OthelloBoard.hasStarted()){
                     OthelloBoard.setStatus("Game hasn't started yet. Pick a color.");
+                    setPlayer(player);  // Set the player again to correct the color
                 } else if(hasPlayer()){
-                    // Set the player again to correct the color
-                    setPlayer(player);
+                    setPlayer(player);  // Set the player again to correct the color
                     OthelloBoard.setStatus("Illegal move. Try again.");
                 } else{
                     setPlayer(OthelloBoard.getActivePlayer());
