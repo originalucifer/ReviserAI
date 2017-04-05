@@ -6,6 +6,8 @@ import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 
@@ -102,11 +104,21 @@ public class OthelloBoard {
 
     public static boolean validMove(OthelloItem othelloItem) {
 
-        for (OthelloItem neighbour : othelloItem.getNeighbours()) {
+        HashMap<String, OthelloItem> neighbours = othelloItem.getNeighbours();
+
+        for(Map.Entry<String, OthelloItem> neighbourMap : neighbours.entrySet()) {
+            String neighbourPosition = neighbourMap.getKey();
+            OthelloItem neighbour = neighbourMap.getValue();
+
             if(neighbour.getPlayer() == null){
-                System.out.println("Empty at "+neighbour.getPositionString());
+                // Empty place to put an item.
+                System.out.println("Empty at "+neighbourPosition);
             } else{
-                System.out.println("Neighbour at "+neighbour.getPositionString()+" "+neighbour.getPlayer().getColor());
+                //Already a neighbour
+                System.out.println("Neighbour at "+neighbourPosition+" "+neighbour.getPlayer().getColor());
+                if(neighbour.getPlayer().equals(getActivePlayer())){
+                    System.out.println("My own item");
+                }
             }
         }
 

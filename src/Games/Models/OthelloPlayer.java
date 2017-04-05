@@ -3,7 +3,6 @@ package Games.Models;
 import Games.Models.Boards.Othello.OthelloItem;
 
 import java.util.ArrayList;
-import java.util.Objects;
 
 /**
  * Class OthelloPlayer
@@ -45,7 +44,10 @@ public class OthelloPlayer {
 
     @Override
     public boolean equals(Object player) {
-        return player instanceof OthelloPlayer; //TODO check color and name
-
+        if (player instanceof OthelloPlayer) {
+            return ((OthelloPlayer) player).getColor() == this.getColor()
+                    && ((OthelloPlayer) player).getName() == this.getName();
+        }
+        return false;
     }
 }

@@ -5,7 +5,7 @@ import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.shape.Rectangle;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Objects;
 
 /**
@@ -160,24 +160,24 @@ public class OthelloItem extends Rectangle {
         }
     }
 
-    public ArrayList<OthelloItem> getNeighbours(){
-        ArrayList<OthelloItem> neighbours = new ArrayList<OthelloItem>();
+    public HashMap<String, OthelloItem> getNeighbours(){
+        HashMap<String, OthelloItem> neighbours = new HashMap<>();
         if(getLeftNeighbour() != null)
-            neighbours.add(getLeftNeighbour());
+            neighbours.put("Left",getLeftNeighbour());
         if(getRightNeighbour() != null)
-            neighbours.add(getRightNeighbour());
+            neighbours.put("Right",getRightNeighbour());
         if(getTopLeftNeighbour() != null)
-            neighbours.add(getTopLeftNeighbour());
+            neighbours.put("TopLeft",getTopLeftNeighbour());
         if(getTopRightNeighbour() != null)
-            neighbours.add(getTopRightNeighbour());
+            neighbours.put("TopRight",getTopRightNeighbour());
         if(getTopNeighbour() != null)
-            neighbours.add(getTopNeighbour());
+            neighbours.put("Top",getTopNeighbour());
         if(getBottomLeftNeighbour() != null)
-            neighbours.add(getBottomLeftNeighbour());
+            neighbours.put("BottomLeft",getBottomLeftNeighbour());
         if(getBottomRightNeighbour() != null)
-            neighbours.add(getBottomRightNeighbour());
+            neighbours.put("BottomRight",getBottomRightNeighbour());
         if(getBottomNeighbour() != null)
-            neighbours.add(getBottomNeighbour());
+            neighbours.put("Bottom",getBottomNeighbour());
         return neighbours;
     }
 
