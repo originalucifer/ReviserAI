@@ -73,8 +73,6 @@ public class OthelloItem extends Rectangle {
                 OthelloItem rectangle = ((OthelloItem) (t.getSource()));
                 rectangle.setStyle(disableInnerShadow);
 
-                System.out.println(OthelloBoard.validMove(this));
-
                 if(!OthelloBoard.hasStarted()){
                     OthelloBoard.setStatus("Game hasn't started yet. Pick a color.");
                 } else if(hasPlayer()){
@@ -83,7 +81,7 @@ public class OthelloItem extends Rectangle {
                     OthelloBoard.setStatus("Illegal move. Try again.");
                 } else{
                     setPlayer(OthelloBoard.getActivePlayer());
-
+                    OthelloBoard.validMove(this);
                     OthelloBoard.activePlayer.makeMove(this);
                     OthelloBoard.nextTurn();
                 }
@@ -108,7 +106,7 @@ public class OthelloItem extends Rectangle {
 
     private OthelloItem getRightNeighbour() {
         if(column < (OthelloBoard.getBoardSize() -1)) {
-            return OthelloBoard.getOthelloItemByLocation(row, column+1);
+            return OthelloBoard.getOthelloItemByLocation(row, column-1);
         } else{
             return null;
         }
@@ -181,5 +179,17 @@ public class OthelloItem extends Rectangle {
         if(getBottomNeighbour() != null)
             neighbours.add(getBottomNeighbour());
         return neighbours;
+    }
+
+    public int getColumn() {
+        return column;
+    }
+
+    public int getRow() {
+        return row;
+    }
+
+    public String getPositionString(){
+        return getRow()+":"+getColumn();
     }
 }

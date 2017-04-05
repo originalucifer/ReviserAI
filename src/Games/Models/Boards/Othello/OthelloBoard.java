@@ -101,21 +101,16 @@ public class OthelloBoard {
     }
 
     public static boolean validMove(OthelloItem othelloItem) {
-        boolean hasOtherNeighbour = false;
-        for (OthelloItem neighbour : othelloItem.getNeighbours()) {
-            try {
-                if(neighbour.getPlayer() != othelloItem.getPlayer()){
-                    hasOtherNeighbour = true;
-                    break;
-                }
-            } catch (NullPointerException e){
-                // corner or side neighbours can be null
-            }
 
+        for (OthelloItem neighbour : othelloItem.getNeighbours()) {
+            if(neighbour.getPlayer() == null){
+                System.out.println("Empty at "+neighbour.getPositionString());
+            } else{
+                System.out.println("Neighbour at "+neighbour.getPositionString()+" "+neighbour.getPlayer().getColor());
+            }
         }
 
-        if(!hasOtherNeighbour)
-            return false;
+        System.out.println("==");
 
         return true;
     }
@@ -125,7 +120,7 @@ public class OthelloBoard {
         ObservableList<Node> childrens = boardView.getChildren();
 
         for (Node node : childrens) {
-            if(GridPane.getRowIndex(node) == row && GridPane.getColumnIndex(node) == column) {
+            if(boardView.getRowIndex(node) == row && boardView.getColumnIndex(node) == column) {
                 result = (OthelloItem) node;
                 break;
             }
