@@ -76,6 +76,8 @@ public class OthelloItem extends Rectangle {
 
                 if(!OthelloBoard.hasStarted()){
                     OthelloBoard.setStatus("Game hasn't started yet. Pick a color.");
+
+                    //If the user clicks a item before the game has started
                     if(hasPlayer())
                         setPlayer(player);  // Set the player again to correct the color
                 } else if(hasPlayer()){
@@ -83,7 +85,7 @@ public class OthelloItem extends Rectangle {
                     OthelloBoard.setStatus("Illegal move. Try again.");
                 } else{
                     setPlayer(OthelloBoard.getActivePlayer());
-                    OthelloBoard.validMove(this);
+
                     OthelloBoard.activePlayer.makeMove(this);
                     OthelloBoard.nextTurn();
                 }
@@ -93,8 +95,10 @@ public class OthelloItem extends Rectangle {
         this.player = player;
         if(Objects.equals(player.getColor(), "white")){
             setStyle("-fx-fill: white;");
+            OthelloBoard.addWhiteItem(this);
         } else {
             setStyle("-fx-fill: black;");
+            OthelloBoard.addBlackItem(this);
         }
     }
 

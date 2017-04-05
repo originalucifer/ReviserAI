@@ -6,6 +6,7 @@ import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -26,6 +27,9 @@ public class OthelloBoard {
     static GridPane boardView;
     static OthelloPlayer activePlayer;
     static Label statusLabel;
+    static ArrayList<OthelloItem> blackItems = new ArrayList<>();
+    static ArrayList<OthelloItem> whiteItems = new ArrayList<>();
+    static ArrayList<OthelloItem> validMoves = new ArrayList<>();
 
     static OthelloPlayer black;
     static OthelloPlayer white;
@@ -49,7 +53,24 @@ public class OthelloBoard {
 
     public static void setActivePlayer(OthelloPlayer player){
         OthelloBoard.activePlayer = player;
+
+        removeValidMoves();
+
+        //Show where we can move
+        if(Objects.equals(player.getColor(), "black"))
+            updateValidMoves(blackItems);
+        else
+            updateValidMoves(whiteItems);
+
         setStatus(player.getName()+" is next.");
+    }
+
+    private static void removeValidMoves() {
+        for (OthelloItem validMove : validMoves) {
+            if(!validMove.hasPlayer())
+                validMove.setStyle("-fx-fill: red");
+        }
+        validMoves.clear();
     }
 
     public static void setActivePlayer(String color){
@@ -71,8 +92,10 @@ public class OthelloBoard {
                 // Create the 4 starting items in the middle of the board.
                 if(column == 3 && row == 3 || column == 4 && row == 4){
                     othelloItem.setPlayer(white);
+                    addWhiteItem(othelloItem);
                 } else if(column == 4 && row == 3 || column == 3 && row == 4){
                     othelloItem.setPlayer(black);
+                    addBlackItem(othelloItem);
                 }
 
                 boardView.add(othelloItem,column,row);
@@ -99,19 +122,22 @@ public class OthelloBoard {
     public static void reset() {
         started = false;
         activePlayer = null;
+        validMoves.clear();
+        whiteItems.clear();
+        blackItems.clear();
         boardView.getChildren().clear();
         initialize(boardView,statusLabel);
     }
 
     public static void nextTurn() {
-        if(activePlayer == black){
+        if(activePlayer == black)
             setActivePlayer(white);
-        } else {
+        else
             setActivePlayer(black);
-        }
+
     }
 
-    public static OthelloItem checkDirectionNeighbour(OthelloItem othelloItem, String direction){
+    public static OthelloItem getDirectionNeighbour(OthelloItem othelloItem, String direction){
 
         OthelloItem neighbour = null;
 
@@ -145,8 +171,38 @@ public class OthelloBoard {
         return neighbour;
     }
 
+    /**
+     * Will return a OthelloItem where a user can make a move or null
+     *
+     * @param othelloItem which item to check for a move
+     * @param position which direction to check for this item
+     * @return OthelloItem where the player can make a legit move.
+     */
+    public static OthelloItem checkMoveInPosition(OthelloItem othelloItem, String position){
+        OthelloItem nextNeighbour = getDirectionNeighbour(othelloItem,position);
+        if(nextNeighbour != null){
+            if(!nextNeighbour.hasPlayer()){
+                return nextNeighbour; // empty space after nextNeighbour means a valid move
+            } else if(!nextNeighbour.getPlayer().equals(activePlayer)){
+                return checkMoveInPosition(nextNeighbour,position);
+            }
+        }
+        return null;
+    }
 
-    public static boolean validMove(OthelloItem othelloItem) {
+    /**
+     * Update valid moves for a certain color.
+     *
+     * @param othelloItems list with items that are placed by a color (black or white)
+     */
+    public static void updateValidMoves(ArrayList<OthelloItem> othelloItems){
+        for (OthelloItem othelloItem : othelloItems) {
+            drawValidMoveFromItem(othelloItem);
+        }
+
+    }
+
+    public static void drawValidMoveFromItem(OthelloItem othelloItem) {
 
         HashMap<String, OthelloItem> neighbours = othelloItem.getNeighbours();
 
@@ -158,15 +214,25 @@ public class OthelloBoard {
                 // Empty place to put an item.
                 System.out.println("Empty at "+neighbourPosition);
             } else{
-                //Already a neighbour
+                //found a neighbour
                 System.out.println("Neighbour at "+neighbourPosition+" "+neighbour.getPlayer().getColor());
-                return false;
+
+                if(!neighbour.getPlayer().equals(activePlayer)) {
+                    OthelloItem validMove = checkMoveInPosition(neighbour,neighbourPosition);
+                    if(validMove == null){
+                        System.out.println("no place on the "+neighbourPosition);
+                        break;
+                    }else {
+                        System.out.println("Valid move at "+validMove.getPositionString());
+                        validMove.setStyle("-fx-fill: blue;");
+                        validMoves.add(validMove);
+                    }
+                }
             }
         }
 
         System.out.println("==");
 
-        return true;
     }
 
     public static OthelloItem getOthelloItemByLocation (final int row, final int column) {
@@ -181,6 +247,14 @@ public class OthelloBoard {
         }
 
         return result;
+    }
+
+    public static void addWhiteItem(OthelloItem othelloItem){
+        whiteItems.add(othelloItem);
+    }
+
+    public static void addBlackItem(OthelloItem othelloItem){
+        blackItems.add(othelloItem);
     }
 
     public static int getBoardSize() {
