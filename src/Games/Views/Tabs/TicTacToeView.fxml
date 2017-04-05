@@ -36,17 +36,28 @@
 
                 <!-- From here the statusbox of the game is displayed-->
                 <bottom>
-                    <VBox styleClass="statusBox" alignment="BOTTOM_CENTER">
+                    <BorderPane styleClass="statusBox">
                         <padding><Insets top="10" right="10" bottom="10" left="10"/></padding>
-                        <HBox prefHeight="20" styleClass="actionBox" spacing="3">
-                            <padding><Insets top="3" right="3" bottom="3" left="3"/></padding>
-                            <Label text="choose player: " alignment="BASELINE_LEFT" styleClass="actionLabel"/>
-                            <Button text="X" id="X" onAction="#actionButtonClickHandler" styleClass="actionButton" alignment="BASELINE_LEFT"/>
-                            <Button text="O" id="O" onAction="#actionButtonClickHandler" styleClass="actionButton" alignment="BASELINE_LEFT"/>
-                            <Button text="Reset Game" id="reset" onAction="#actionButtonClickHandler" styleClass="actionButton" alignment="BASELINE_RIGHT"/>
-                        </HBox>
-                        <Label text="Choose a player" fx:id="statusLabel" styleClass="statusLabel"/>
-                    </VBox>
+                        <left>
+                            <HBox prefHeight="20" styleClass="actionBox" spacing="3">
+                                <padding><Insets top="3" right="3" bottom="3" left="3"/></padding>
+                                <Label text="choose player: " alignment="BASELINE_LEFT" styleClass="actionLabel"/>
+                                <Button text="X" id="X" onAction="#actionButtonClickHandler" styleClass="actionButton" alignment="BASELINE_LEFT"/>
+                                <Button text="O" id="O" onAction="#actionButtonClickHandler" styleClass="actionButton" alignment="BASELINE_LEFT"/>
+                                <Button text="AI" id="AI" onAction="#playerButtonClickHandler" styleClass="actionButton" alignment="BASELINE_LEFT"/>
+                                <Button text="Manual" id="MANUAL" onAction="#playerButtonClickHandler" styleClass="actionButton" alignment="BASELINE_LEFT"/>
+                            </HBox>
+                        </left>
+                        <right>
+                            <Label text="Playertype: ..." fx:id="playerTypeLabel" styleClass="playerTypeLabel"/>
+                        </right>
+                            <!--<Button text="Reset Game" id="reset" onAction="#actionButtonClickHandler" styleClass="actionButton" alignment="BASELINE_RIGHT"/>-->
+
+                        <center>
+                            <Label text="Choose a player" fx:id="statusLabel" styleClass="statusLabel" alignment="BASELINE_RIGHT"/>
+                        </center>
+
+                    </BorderPane>
                 </bottom>
             </BorderPane>
         </center>

@@ -20,6 +20,7 @@ import java.util.ArrayList;
  */
 public class TicTacToeController extends ConnectionController{
 
+    @FXML private Label playerTypeLabel;
     @FXML private Label statusLabel;
 
     private int boardSize = 3;
@@ -28,8 +29,8 @@ public class TicTacToeController extends ConnectionController{
     private boolean playerChosen = false;
     private boolean firstSetDone = false;
     private boolean playerX;
-    private boolean playerTypeChosen = true;
-    private boolean AI = false;
+    private boolean playerTypeChosen = false;
+    private boolean AI;
 
 
     public TicTacToeController() {
@@ -111,13 +112,37 @@ public class TicTacToeController extends ConnectionController{
                 for (Button b : pressedButtons) {
                     b.setText("");
                 }
-                pressedButtons.clear();playerChosen = false;firstSetDone = false;
+                pressedButtons.clear();playerChosen = false;firstSetDone = false;playerTypeChosen=false;
                 statusLabel.setText("Choose a player");
             }else {
                 statusLabel.setText("Reset game first");
             }
         }
     }
+
+    /**
+     * sets the playertype of the game, if not ready connected to the server
+     * @param actionEvent playerTypeButton
+     */
+    public void playerButtonClickHandler(ActionEvent actionEvent) {
+        Button button = (Button) actionEvent.getTarget();
+        String buttonID = button.getId();
+        if (!connectionHandler.isConnected()){
+            if(buttonID.equals("AI")){
+                AI = true;
+                playerTypeChosen = true;
+                playerTypeLabel.setText("Playertype: AI");
+            } else {
+                AI = false;
+                playerTypeChosen = true;
+                playerTypeLabel.setText("Playertype: Manual");
+            }
+        } else {
+            serverOutput.appendText("\nWarning: You are already connected");
+        }
+
+    }
+
 
     /**
      * Updates the ticTacToeBoard after each input.
@@ -169,9 +194,5 @@ public class TicTacToeController extends ConnectionController{
         Scene scene = new Scene(label,200,100);
         stage.setScene(scene);
         stage.show();
-    }
-
-    public void setTicTacToeGame(TicTacToeGame ticTacToeGame){
-        this.ticTacToeGame = ticTacToeGame;
     }
 }

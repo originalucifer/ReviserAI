@@ -9,7 +9,6 @@ public class TicTacToeGame extends Game {
 
     public TicTacToeGame(int boardSize) {
         super(boardSize);
-
     }
 
     @Override
