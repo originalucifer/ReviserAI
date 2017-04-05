@@ -1,5 +1,6 @@
 package Games.Controllers.TabControllers;
 
+import Games.Controllers.AI.TicTacToeAI;
 import Games.Models.Boards.TicTacToeBoard;
 import com.sun.org.apache.xpath.internal.SourceTree;
 import javafx.event.ActionEvent;
@@ -34,9 +35,11 @@ public class TicTacToeController{
     private boolean playerChosen = false;
     private boolean firstSetDone = false;
     private boolean playerX;
+    private TicTacToeAI ai;
 
 
     public TicTacToeController() {
+        ai = new TicTacToeAI(board, this, 'O');
     }
 
 
@@ -72,6 +75,7 @@ public class TicTacToeController{
         } else{
             statusLabel.setText("Illegal move. Choose an empty field.");
         }
+
 
     }
 
@@ -164,7 +168,6 @@ public class TicTacToeController{
                 case 1: return b5;
                 case 2: return b8;
             }
-
         }
         return null;
 

@@ -1,5 +1,6 @@
 package Games.Controllers.AI;
 
+import Games.Controllers.TabControllers.TicTacToeController;
 import Games.Models.Boards.TicTacToeBoard;
 
 import java.util.ArrayList;
@@ -11,14 +12,16 @@ public class TicTacToeAI {
 	private TicTacToeBoard playBoard;
 	private char isPlaying;
 	private char isNotPlaying;
+	private TicTacToeController controller;
 
-	public TicTacToeAI(TicTacToeBoard board, char isPlaying) {
+	public TicTacToeAI(TicTacToeBoard board, TicTacToeController controller, char isPlaying) {
 		playBoard = board;
 		this.isPlaying = isPlaying;
+		this.controller = controller;
 		isNotPlaying = isPlaying == 'X' ? 'O' : 'X';
 	}
 
-	private void doNextSet(){
+	public void doNextSet(){
 		End end = new End();
 		int[][] sets = getAvailableSets(isPlaying, playBoard.board.clone(), end);
 		if (end.getEnd()) return;
@@ -40,7 +43,7 @@ public class TicTacToeAI {
 			i++;
 		}
 
-
+        controller.set(controller.getButton(sets[point][0], sets[point][1]));
 
 	}
 
