@@ -2,18 +2,20 @@ package Games.Controllers.TabControllers;
 
 import Games.Controllers.AI.TicTacToeAI;
 import Games.Models.Boards.TicTacToeBoard;
-import com.sun.org.apache.xpath.internal.SourceTree;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.geometry.Pos;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.text.Font;
+import javafx.stage.Stage;
 
 import java.util.ArrayList;
 
 
 /**
  * Class TicTacToeController
- * Maybe we can implement SuperClass gameController?
  *
  * @author Robin van Eijk
  */
@@ -35,11 +37,9 @@ public class TicTacToeController{
     private boolean playerChosen = false;
     private boolean firstSetDone = false;
     private boolean playerX;
-    private TicTacToeAI ai;
 
 
     public TicTacToeController() {
-        ai = new TicTacToeAI(board, this, 'O');
     }
 
 
@@ -77,6 +77,23 @@ public class TicTacToeController{
         }
 
 
+            String buttonLabel = clickedButton.getText();
+            if("".equals(buttonLabel)){
+                if (playerX) {
+                    clickedButton.setText("X");
+                    playerX = false;
+                } else {
+                    clickedButton.setText("O");
+                    playerX = true;
+                }
+                pressedButtons.add(clickedButton);
+                int clickedField = Integer.parseInt(clickedButton.getId().replaceAll("[^0-9]", ""));
+                updateBoard(clickedField);
+                checkStatus();
+            } else{
+                statusLabel.setText("Illegal move. Choose an empty field.");
+            }
+        }
     }
 
     /**
@@ -87,6 +104,8 @@ public class TicTacToeController{
     public void actionButtonClickHandler(ActionEvent actionEvent) {
         Button button = (Button) actionEvent.getTarget();
         String buttonID = button.getId();
+        // If player is selected subscribe to tic-tac-toe
+        //serverCommands.subscribe("Tic-tac-toe");
         if (!playerChosen || !firstSetDone) {
             if (buttonID.equals("X")) {
                 playerX = true;
@@ -125,6 +144,8 @@ public class TicTacToeController{
         } else {
             board.updateBoard(column,row,'X');
         }
+        //TODO Send to server here
+        //serverCommands.move(column+row+"");
     }
 
     /**
@@ -132,11 +153,7 @@ public class TicTacToeController{
      */
     private void checkStatus(){
         if(board.find3InARow()){
-            if (playerX)
-                statusLabel.setText("O has won!!");
-            else {
-                statusLabel.setText("X has won!!");
-            }
+            gameWon();
         } else if (pressedButtons.size() == 9 && board.isFull()) {
             statusLabel.setText("It's a tie");
         } else{
@@ -146,7 +163,6 @@ public class TicTacToeController{
                 statusLabel.setText("O's Turn");
             }
         }
-
     }
 
     public Button getButton(int col, int row){
@@ -173,4 +189,22 @@ public class TicTacToeController{
 
     }
 
+    /**
+     * Create new stage to display the winner
+     */
+    private void gameWon(){
+        statusLabel.setText("Game ended");
+        Stage stage = new Stage();
+        Label label = new Label();
+        if (playerX) {
+            label.setText("O has won!!!");
+        } else {
+            label.setText("X has won!!!");
+        }
+        label.setAlignment(Pos.CENTER);
+        label.setFont(new Font(30));
+        Scene scene = new Scene(label,200,100);
+        stage.setScene(scene);
+        stage.show();
+    }
 }
