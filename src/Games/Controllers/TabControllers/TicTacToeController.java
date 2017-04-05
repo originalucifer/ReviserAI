@@ -62,24 +62,26 @@ public class TicTacToeController extends ConnectionController{
      * @param actionEvent onButtonPressed
      */
     public void boardButtonClickHandler(ActionEvent actionEvent) {
-        if(!ticTacToeGame.find3InARow() && playerChosen) {
-            firstSetDone = true;
-            Button clickedButton = (Button) actionEvent.getTarget();
-            String buttonLabel = clickedButton.getText();
-            if("".equals(buttonLabel)){
-                if (playerX) {
-                    clickedButton.setText("X");
-                    playerX = false;
-                } else {
-                    clickedButton.setText("O");
-                    playerX = true;
+        if(!AI){
+            if(!ticTacToeGame.find3InARow() && playerChosen) {
+                firstSetDone = true;
+                Button clickedButton = (Button) actionEvent.getTarget();
+                String buttonLabel = clickedButton.getText();
+                if("".equals(buttonLabel)){
+                    if (playerX) {
+                        clickedButton.setText("X");
+                        playerX = false;
+                    } else {
+                        clickedButton.setText("O");
+                        playerX = true;
+                    }
+                    pressedButtons.add(clickedButton);
+                    int clickedField = Integer.parseInt(clickedButton.getId().replaceAll("[^0-9]", ""));
+                    updateBoard(clickedField);
+                    checkStatus();
+                } else{
+                    statusLabel.setText("Illegal move. Choose an empty field.");
                 }
-                pressedButtons.add(clickedButton);
-                int clickedField = Integer.parseInt(clickedButton.getId().replaceAll("[^0-9]", ""));
-                updateBoard(clickedField);
-                checkStatus();
-            } else{
-                statusLabel.setText("Illegal move. Choose an empty field.");
             }
         }
     }
@@ -95,16 +97,20 @@ public class TicTacToeController extends ConnectionController{
         // If player is selected subscribe to tic-tac-toe
         //serverCommands.subscribe("Tic-tac-toe");
         if (!playerChosen || !firstSetDone) {
-            if (buttonID.equals("X")) {
-                playerX = true;
-                playerChosen = true;
-                statusLabel.setText("X's turn");
-            } else if (buttonID.equals("O")) {
-                playerX = false;
-                playerChosen = true;
-                statusLabel.setText("O's turn");
-            } else {
-                statusLabel.setText("Game hasn't started yet. Choose a player");
+            switch (buttonID) {
+                case "X":
+                    playerX = true;
+                    playerChosen = true;
+                    statusLabel.setText("X's turn");
+                    break;
+                case "O":
+                    playerX = false;
+                    playerChosen = true;
+                    statusLabel.setText("O's turn");
+                    break;
+                default:
+                    statusLabel.setText("Game hasn't started yet. Choose a player");
+                    break;
             }
         } else {
             if (buttonID.equals("reset")){

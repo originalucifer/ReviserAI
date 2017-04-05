@@ -52,6 +52,10 @@ public abstract class Game implements InGameActions {
 
     public void matchStart(){}
 
+    /**
+     * Sets the type of the player AI or GUI
+     * @param playerType
+     */
     public void setPlayerType(String playerType){
         this.player = playerType;
     }
@@ -63,7 +67,6 @@ public abstract class Game implements InGameActions {
 
     @Override
     public void move(String move) {
-        System.out.print("Move made: " + move);
         updateBoard(move);
     }
 
