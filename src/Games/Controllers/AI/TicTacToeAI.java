@@ -1,6 +1,7 @@
 package Games.Controllers.AI;
 
 import Games.Controllers.TabControllers.TicTacToeController;
+import Games.Models.Boards.Player;
 import Games.Models.Boards.TicTacToeBoard;
 
 import java.util.ArrayList;
@@ -8,7 +9,7 @@ import java.util.ArrayList;
 /**
  * Created by rik on 3-4-17.
  */
-public class TicTacToeAI {
+public class TicTacToeAI implements Player{
 	private TicTacToeBoard playBoard;
 	private char isPlaying;
 	private char isNotPlaying;
@@ -150,4 +151,29 @@ return 0;
 		return min;
 	}
 
+	@Override
+	public int getYourMove(Integer opponentsMove) {
+		End end = new End();
+		int[][] sets = getAvailableSets(isPlaying, playBoard.board.clone(), end);
+
+
+		ArrayList<Integer> values = new ArrayList<>();
+		for (int[] set : sets){
+			char[][] b = playBoard.board.clone();
+			b[set[0]][set[1]] = isPlaying;
+			values.add(minValue(b));
+		}
+		int i = 0;
+		int point = 0;
+		int max = values.get(0);
+		for (int number : values){
+			if (number > max){
+				max = number;
+				point = i;
+			}
+			i++;
+		}
+
+		return sets[point][0] * 8 + sets[point][1];
+	}
 }
