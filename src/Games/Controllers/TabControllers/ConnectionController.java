@@ -1,4 +1,4 @@
-package Games.Controllers;
+package Games.Controllers.TabControllers;
 
 import Games.Models.Boards.TicTacToeGame;
 import ServerConnection.ConnectionHandler;
@@ -16,15 +16,14 @@ import javafx.scene.control.TextField;
  */
 public class ConnectionController {
 
-    @FXML private TextArea serverOutput;
+    @FXML TextArea serverOutput;
     @FXML private TextField subscribeTf;
     @FXML private TextField loginTf;
     @FXML private TextField challengeTf;
     @FXML private TextField acceptChallengeTf;
 
-    private ConnectionHandler connectionHandler = new ConnectionHandler(this);
-    private boolean AI = false;
-    private boolean loggedIn = false;
+    ConnectionHandler connectionHandler = new ConnectionHandler(this);
+    boolean loggedIn = false;
 
     public ConnectionController(){
     }
@@ -65,8 +64,7 @@ public class ConnectionController {
      *
      * If it fails it shutdown entire application
      */
-    private void getConnection(){
-        if (!connectionHandler.isConnected()){
+    void getConnection(){
             try {
                 connectionHandler.connect();
                 Thread.sleep(1000);
@@ -75,9 +73,6 @@ public class ConnectionController {
                 System.out.println(e);
                 serverOutput.appendText("\nConnection could not be made");
             }
-        } else {
-            serverOutput.appendText("\nWarning: You are already connected");
-        }
     }
 
     /**
@@ -113,11 +108,6 @@ public class ConnectionController {
                     connectionHandler.login(name);
                     loggedIn = true;
                     serverOutput.appendText("\nLogged in with name: \"" +name+"\"");
-                    if(AI){
-                        connectionHandler.setGame(new TicTacToeGame("AIPlayer"));
-                    }else{
-                        connectionHandler.setGame(new TicTacToeGame("GUIPlayer"));
-                    }
                 }else{
                     serverOutput.appendText("\nWarning: Enter a valid name");
                 }
@@ -168,7 +158,7 @@ public class ConnectionController {
             if(split.length == 2 && !split[0].equals("") && !split[1].equals("")){
                 split[1] = correctCase(split[1]);
                 connectionHandler.challenge(split);
-                serverOutput.appendText("\n\n\""+split[0]+"\" challenged, for a game of: \"" +split[1]+ "\"");
+                serverOutput.appendText("\nChallenged: \""+split[0]+"\" for a game of: \"" +split[1]+ "\"");
             }else{
                 serverOutput.appendText("\nWarning: Enter a valid name and game for the challenge");
             }
@@ -185,7 +175,7 @@ public class ConnectionController {
             String challengeID = acceptChallengeTf.getText();
             if(!challengeID.equals("")){
                 connectionHandler.acceptChallenge(challengeID);
-                serverOutput.appendText("\n\nChallenge \"" +challengeID+ "\" accepted");
+                serverOutput.appendText("\nChallenge \"" +challengeID+ "\" accepted");
             }else{
                 serverOutput.appendText("\nWarning: Enter a valid challenge id");
             }

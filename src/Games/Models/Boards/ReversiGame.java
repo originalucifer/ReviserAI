@@ -5,7 +5,12 @@ package Games.Models.Boards;
  */
 public class ReversiGame extends Game {
 
-    public ReversiGame(String playerType) {
-        super(playerType);
+    public ReversiGame(int boardSize) {
+        super(boardSize);
+    }
+
+    @Override
+    void updateBoard(String move) {
+
     }
 }

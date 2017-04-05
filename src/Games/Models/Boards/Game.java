@@ -5,10 +5,14 @@ package Games.Models.Boards;
  */
 public abstract class Game implements InGameActions {
 
+    private int boardSize;
+    char[][] board;
     private String player;
 
-	public Game(String playerType){
-        this.player = playerType;
+	public Game(int boardSize){
+	    this.boardSize = boardSize;
+        board = new char[boardSize][boardSize];
+
     }
 
     @Override
@@ -46,9 +50,21 @@ public abstract class Game implements InGameActions {
 //        makeMove(move);
     }
 
+    public void matchStart(){}
+
+    public void setPlayerType(String playerType){
+        this.player = playerType;
+    }
+
+    /**
+     * should be overridden in subclasses
+     */
+    abstract void updateBoard(String move);
+
     @Override
     public void move(String move) {
         System.out.print("Move made: " + move);
+        updateBoard(move);
     }
 
 }

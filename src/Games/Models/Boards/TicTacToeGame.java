@@ -7,10 +7,14 @@ package Games.Models.Boards;
  */
 public class TicTacToeGame extends Game {
 
-    private char[][] board = new char[3][3];
+    public TicTacToeGame(int boardSize) {
+        super(boardSize);
 
-    public TicTacToeGame(String playerType) {
-        super(playerType);
+    }
+
+    @Override
+    void updateBoard(String move) {
+
     }
 
     /**

@@ -18,30 +18,50 @@ import java.util.ArrayList;
  *
  * @author Robin van Eijk
  */
-public class TicTacToeController{
+public class TicTacToeController extends ConnectionController{
 
     @FXML private Label statusLabel;
 
-    private TicTacToeGame board;
+    private int boardSize = 3;
+    private TicTacToeGame ticTacToeGame = new TicTacToeGame(boardSize);
     private ArrayList<Button> pressedButtons = new ArrayList<Button>();
     private boolean playerChosen = false;
     private boolean firstSetDone = false;
     private boolean playerX;
+    private boolean playerTypeChosen = true;
+    private boolean AI = false;
 
 
     public TicTacToeController() {
     }
 
+    public void getConnection() {
+        if (playerTypeChosen){
+            if (!connectionHandler.isConnected()){
+                if (AI){
+                    ticTacToeGame.setPlayerType("AIPlayer");
+                } else {
+                    ticTacToeGame.setPlayerType("GUIPlayer");
+                }
+                super.getConnection();
+                connectionHandler.setGame(ticTacToeGame);
+            } else {
+                serverOutput.appendText("\nWarning: You are already connected");
+            }
+        } else {
+            serverOutput.appendText("\nYou must first choose AI or GUI");
+        }
+    }
+
 
     /**
      * Handles the actionEvents of the buttons in the ticTacToe view
-     * TODO This function should probably handle the commands to send to the server
      *
      * Idea for this button handler comes from https://github.com/yfain/java24hourtrainer2ndedition/blob/master/TicTacToe/src/tictactoe
      * @param actionEvent onButtonPressed
      */
     public void boardButtonClickHandler(ActionEvent actionEvent) {
-        if(!board.find3InARow() && playerChosen) {
+        if(!ticTacToeGame.find3InARow() && playerChosen) {
             firstSetDone = true;
             Button clickedButton = (Button) actionEvent.getTarget();
             String buttonLabel = clickedButton.getText();
@@ -87,7 +107,7 @@ public class TicTacToeController{
             }
         } else {
             if (buttonID.equals("reset")){
-                //TODO reset board
+                //TODO reset ticTacToeGame
                 for (Button b : pressedButtons) {
                     b.setText("");
                 }
@@ -107,11 +127,11 @@ public class TicTacToeController{
         int column = clickedField / 3;
         int row = clickedField % 3;
         if (playerX){
-            board.updateBoard(column,row,'O');
+            ticTacToeGame.updateBoard(column,row,'O');
         } else {
-            board.updateBoard(column,row,'X');
+            ticTacToeGame.updateBoard(column,row,'X');
         }
-        //TODO Send to server here
+        //TODO Send to server here gui choice
         //serverCommands.move(column+row+"");
     }
 
@@ -119,9 +139,9 @@ public class TicTacToeController{
      * Checks the status of the game i.e. who's turn it is or if the game has ended.
      */
     private void checkStatus(){
-        if(board.find3InARow()){
+        if(ticTacToeGame.find3InARow()){
             gameWon();
-        } else if (pressedButtons.size() == 9 && board.isFull()) {
+        } else if (pressedButtons.size() == 9 && ticTacToeGame.isFull()) {
             statusLabel.setText("It's a tie");
         } else{
             if (playerX)
@@ -151,7 +171,7 @@ public class TicTacToeController{
         stage.show();
     }
 
-    public void setBoard(TicTacToeGame board){
-        this.board = board;
+    public void setTicTacToeGame(TicTacToeGame ticTacToeGame){
+        this.ticTacToeGame = ticTacToeGame;
     }
 }

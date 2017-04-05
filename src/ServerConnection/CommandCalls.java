@@ -18,15 +18,19 @@ public class CommandCalls implements Observer{
 
 
 	@Override
-	public void update(String line) {
+    public void update(String line) {
 		if (line != null && !line.isEmpty()) {
 			findCommand(line);
 		}
 	}
 
+    /**
+     * Finds out which command the server has sent
+     * @param com serverMessage
+     */
 	private void findCommand(String com){
 		String split[] = com.split(" ");
-
+		System.out.println(Arrays.toString(split));
 		switch (split[0]) {
 			case "ERR": error(getArguments(split));
 			break;
@@ -37,36 +41,43 @@ public class CommandCalls implements Observer{
             case "Strategic": print(com);
             break;
             case "(C)": print(com);
-
-		    //default: print(com);
 		}
 	}
 
+    /**
+     * Handles the SVR commands from the server
+     * @param arguments
+     */
 	private void SVR(String[] arguments) {
 		switch (arguments[0]) {
 			case "HELP":
 				break;
 			case "GAME":game(getArguments(arguments));
 				break;
+			// Display gameList here
+			case "GAMELIST": connectionHandler.updateOutput(Arrays.toString(arguments));
+				break;
+			// Display playerList here
+			case "PLAYERLIST": connectionHandler.updateOutput(Arrays.toString(arguments));
+				break;
 		}
 	}
 
+    /**
+     * handles the GAME commands from the server
+     * @param arguments serverMessage
+     */
 	private void game (String[] arguments){
 		switch (arguments[0]) {
-            //Create new game based on the accepted challenge gametype
             case "MATCH":
-                connectionHandler.updateOutput(Arrays.toString(arguments));
-//                startNewGame(arguments[4]);break;
+                match(getArguments(arguments));break;
             case "CHALLENGE":
-                connectionHandler.updateOutput(Arrays.toString(arguments));break;
+                challenge(getArguments(arguments));break;
 			case "MOVE":
-				System.out.println("Move");
-//                game.move(arguments[1]);
- 				break;
+                game.move(arguments[1]);break;
 			case "YOURTURN":
 			    connectionHandler.updateOutput("Your Turn");
-			    game.yourTurn();
-				break;
+			    game.yourTurn();break;
 			case "WIN":
 				connectionHandler.updateOutput("You have won");
 			    game.win();break;
@@ -79,42 +90,72 @@ public class CommandCalls implements Observer{
 		}
 	}
 
+
+    /**
+     * Handles the MATCH command from the server
+     * @param arguments serverMessage
+     */
+	private void match(String[] arguments){
+	    connectionHandler.updateOutput("Match of "+ arguments[3]+ " against: "+arguments[5].replace("}","")+" started.");
+//	    game.matchStart();
+    }
+
+    /**
+     * print serveroutput for the CHALLENGE command to the output field.
+     * @param arguments servermessage
+     */
+	private void challenge(String[] arguments){
+	    switch (arguments[0]){
+            case "{CHALLENGER:" :
+                connectionHandler.updateOutput("You got challenged!!");
+                connectionHandler.updateOutput("[ID: "+arguments[3].replace(",","")+
+                        " Challenger: "+arguments[1].replace(",","")+
+                        " Game: "+arguments[5].replace("}","")+"]");break;
+            case "CANCELLED" :
+                connectionHandler.updateOutput("Challenge: " + arguments[2].replace("}","")+
+                        " cancelled");break;
+        }
+    }
+
+    /**
+     * Prints the ERROR messages from the server to the output field.
+     * @param arguments
+     */
+    private void error(String arguments[]) {
+        StringBuilder output = new StringBuilder("Warning: ");
+        for (String arg : arguments) {
+            output.append(arg).append(" ");
+        }
+        connectionHandler.updateOutput(output.toString());
+    }
+
+
 	private void acknowledgement(){
 
 	}
 
+    /**
+     * sets the game to play
+     * @param game gameToPlay
+     */
+	public void setGame(Game game){
+	    this.game = game;
+    }
+
+    /**
+     * returns the array of arguments following the current argument.
+     * @param input total array
+     * @return leftover argument array
+     */
     private String[] getArguments(String input[]){
 		return Arrays.copyOfRange(input, 1 , input.length);
 	}
 
+    /**
+     * print the string to the outputArea
+     * @param s
+     */
 	private void print(String s) {
 		connectionHandler.updateOutput(s);
 	}
-
-	private void error(String arguments[]) {
-	    StringBuilder output = new StringBuilder("Warning: ");
-		for (String arg : arguments) {
-		    output.append(arg).append(" ");
-		}
-		connectionHandler.updateOutput(output.toString());
-	}
-
-    /**
-     * creates a new Game based on the parameter it gets
-     * @param gameName name of the game recieved
-     */
-    /*
-	private void startNewGame(String gameName){
-	    String argument = gameName.replaceAll("[^\\w\\s]", "");
-        switch (argument){
-            case "Reversi": this.game = reversi;break;
-            case "Tictactoe": this.game = ticTacToe;break;
-        }
-    }
-    */
-
-    public void setGame(Game game){
-        this.game = game;
-    }
-
 }

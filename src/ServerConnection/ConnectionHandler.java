@@ -1,8 +1,7 @@
 package ServerConnection;
 
-import Games.Controllers.ConnectionController;
+import Games.Controllers.TabControllers.ConnectionController;
 import Games.Models.Boards.Game;
-import Games.Models.Boards.TicTacToeGame;
 
 /**
  * Created by rik on 3/30/17.

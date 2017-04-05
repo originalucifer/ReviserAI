@@ -20,21 +20,15 @@ public class Main extends Application {
      * @throws Exception
      */
     @Override
-    public void start(Stage primaryStage) throws Exception{
+    public void start(Stage primaryStage) throws Exception {
         // Create main stage for the application
         Parent root = FXMLLoader.load(getClass().getResource("Views/MainLayout.fxml"));
         primaryStage.setTitle("Reviser (AI) Games");
-        Scene scene = new Scene(root, 800, 700);
+        Scene scene = new Scene(root, 1200, 800);
         primaryStage.setScene(scene);
         primaryStage.setOnCloseRequest(WindowEvent -> Platform.exit());
-//        primaryStage.show();
-
-        // Create stage for the connection handling.
-        Stage connectionStage = createConnectionStage();
-        connectionStage.setOnCloseRequest(WindowEvent -> Platform.exit());
-        connectionStage.show();
+        primaryStage.show();
     }
-
 
     /**
      * Get connection with the GameServer and launch the javaFX application
@@ -43,14 +37,5 @@ public class Main extends Application {
      */
     public static void main(String[] args) {
         launch(args);
-    }
-
-    private Stage createConnectionStage() throws IOException {
-        Stage stage = new Stage();
-        Parent root = FXMLLoader.load(getClass().getResource("Views/ConnectionView.fxml"));
-        Scene scene = new Scene(root, 400, 700);
-        stage.setTitle("Reviser Connection Panel");
-        stage.setScene(scene);
-        return stage;
     }
 }

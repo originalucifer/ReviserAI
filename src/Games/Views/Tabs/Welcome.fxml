@@ -9,19 +9,19 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.control.Tab?>
 
-<Tab text="Welcome" id="welcome" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Games.Controllers.TabControllers.WelcomeController">
-    <VBox minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="720.0" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1">
-        <Label alignment="BOTTOM_CENTER" prefHeight="40.0" prefWidth="720.0" text="This application is being developed by:" />
-        <Label alignment="CENTER" prefHeight="50.0" prefWidth="720.0" text="Rik de Vries, Robin van Eijk and Koen Hendriks." />
-        <HBox alignment="CENTER" prefWidth="720">
-            <ImageView fitHeight="150" onMouseClicked="#openGithub" pickOnBounds="true" preserveRatio="true">
+<Tab text="Welcome" id="welcome" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1"  fx:controller="Games.Controllers.TabControllers.WelcomeController">
+    <VBox minHeight="0.0" minWidth="0.0" prefHeight="800.0" prefWidth="1200.0" stylesheets="@../../Style/Main.css" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1">
+        <Label alignment="BOTTOM_CENTER" prefHeight="100.0" prefWidth="1200.0" text="This application is being developed by:" styleClass="text"/>
+        <Label alignment="CENTER" prefHeight="120.0" prefWidth="1200.0" text="Rik de Vries, Robin van Eijk and Koen Hendriks." styleClass="text"/>
+        <HBox alignment="CENTER" prefWidth="1200">
+            <ImageView fitHeight="210" onMouseClicked="#openGithub" pickOnBounds="true" preserveRatio="true">
                 <Image url="@../../Resources/github-logo.png" />
          <cursor>
             <Cursor fx:constant="HAND" />
          </cursor>
             </ImageView>
         </HBox>
-        <Label alignment="BOTTOM_CENTER" prefHeight="44.0" prefWidth="720.0" text="You can find the code for this project on GitHub" />
-        <Hyperlink fx:id="githubLink" alignment="CENTER" onMouseClicked="#openGithub" prefHeight="15" prefWidth="720" text="https://github.com/TeamReviser/ReviserAI" />
+        <Label alignment="BOTTOM_CENTER" prefHeight="100.0" prefWidth="1200.0" text="You can find the code for this project on GitHub" styleClass="text"/>
+        <Hyperlink fx:id="githubLink" alignment="CENTER" onMouseClicked="#openGithub" prefHeight="30" prefWidth="1200" text="https://github.com/TeamReviser/ReviserAI" styleClass="text"/>
     </VBox>
 </Tab>
