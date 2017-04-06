@@ -12,6 +12,8 @@ public class GameController implements Runnable{
     private Player player1;
     private TicTacToeBoard board;
     private boolean finished = false;
+    private Integer lastMove = null;
+    private boolean playerTurn = false; //false = 0 & true = 1
 
     public GameController(String playerOne, String playerTwo, TicTacToeBoard board){
         TicTacToePlayerFactory factory = new TicTacToePlayerFactory();
@@ -28,8 +30,20 @@ public class GameController implements Runnable{
     public void run() {
         while (!finished){
 
+           nextMove();
+           if (lastMove != null) {
+               board.updateBoard(lastMove, playerTurn);
+           }
+
         }
     }
 
+    private void nextMove(){
+        if (!playerTurn){
+            lastMove = player0.getYourMove(lastMove);
+        }else {
+            lastMove = player1.getYourMove(lastMove);
+        }
+    }
 
 }

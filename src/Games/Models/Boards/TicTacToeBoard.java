@@ -5,7 +5,7 @@ package Games.Models.Boards;
  *
  * Created by robin on 31-3-17.
  */
-public class TicTacToeBoard {
+public class TicTacToeBoard implements Board{
 
     public char[][] board = new char[3][3];
 
@@ -23,7 +23,21 @@ public class TicTacToeBoard {
         board[column][row] = player;
     }
 
+    /**
+     * Adds the clicked field to the board
+     *
+     * @param move the clicked board index
+     * @param player first or second to play player
+     */
+    public void updateBoard(int move, boolean player){
+        int col = move % 3;
+        int row = move / 3;
+        updateBoard(col, row, getPlayerSignature(player));
+    }
 
+    private char getPlayerSignature(boolean player){
+        return player ? 'O' : 'X';
+    }
 
     /**
      * Finds 3 in a row
