@@ -9,6 +9,9 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.geometry.Insets?>
 
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.collections.FXCollections?>
+<?import java.lang.String?>
 <Tab text="Tic-Tac-Toe" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Games.Controllers.TabControllers.TicTacToeController">
     <BorderPane stylesheets="@../../Style/TicTacToe.css">
         <center>
@@ -31,8 +34,31 @@
                 <HBox prefHeight="20" styleClass="actionBox" spacing="3">
                     <padding><Insets top="3" right="3" bottom="3" left="3"/></padding>
                     <Label text="choose player: " alignment="BASELINE_LEFT" styleClass="actionLabel"/>
-                    <Button text="X" id="X" onAction="#actionButtonClickHandler" styleClass="actionButton" alignment="BASELINE_LEFT"/>
-                    <Button text="O" id="O" onAction="#actionButtonClickHandler" styleClass="actionButton" alignment="BASELINE_LEFT"/>
+                    <Label text="X: " alignment="BASELINE_LEFT" styleClass="actionLabel"/>
+                    <ComboBox fx:id="playerX">
+                        <items>
+                            <FXCollections fx:factory="observableArrayList">
+                                <String fx:value="Player" />
+                                <String fx:value="AI" />
+                            </FXCollections>
+                        </items>
+                        <value>
+                            <String fx:value="Player" />
+                        </value>
+                    </ComboBox>
+                    <Label text="O: " alignment="BASELINE_LEFT" styleClass="actionLabel"/>
+                    <ComboBox fx:id="playerO">
+                        <items>
+                            <FXCollections fx:factory="observableArrayList">
+                                <String fx:value="Player" />
+                                <String fx:value="AI" />
+                            </FXCollections>
+                        </items>
+                        <value>
+                            <String fx:value="Player" />
+                        </value>
+                    </ComboBox>
+                    <Button text="Start Game" id="StartGame" onAction="#actionButtonClickHandler" styleClass="actionButton" alignment="BASELINE_LEFT"/>
                     <Button text="Reset Game" id="reset" onAction="#actionButtonClickHandler" styleClass="actionButton" alignment="BASELINE_RIGHT"/>
                 </HBox>
                 <Label text="Choose a player" fx:id="statusLabel" styleClass="statusLabel"/>

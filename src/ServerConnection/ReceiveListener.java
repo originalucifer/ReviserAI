@@ -46,6 +46,11 @@ public class ReceiveListener implements Observable, Runnable {
 			if (!incoming.isEmpty()) {
 				sendUpdates();
 			}
+			try {
+				Thread.sleep(10);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
 		}
 	}
 }
