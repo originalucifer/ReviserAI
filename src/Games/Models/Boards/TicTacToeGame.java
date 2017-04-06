@@ -1,5 +1,7 @@
 package Games.Models.Boards;
 
+import Games.Controllers.TabControllers.TicTacToeController;
+
 /**
  * Class for the TicTacToeGame.
  *
@@ -7,15 +9,27 @@ package Games.Models.Boards;
  */
 public class TicTacToeGame extends Game {
 
-    public TicTacToeGame(int boardSize) {
+    private TicTacToeController ticTacToeController;
+
+    public TicTacToeGame(int boardSize, TicTacToeController ticTacToeController) {
         super(boardSize);
+        this.ticTacToeController = ticTacToeController;
     }
 
     @Override
     void updateBoard(String move) {
-
+        move = move.replaceAll("\\W", "");
+        int moveMade = Integer.valueOf(move);
+        int column = moveMade / 3;
+        int row = moveMade % 3;
+        updateBoard(column,row,'O');
+        showBoard();
     }
 
+    @Override
+    void getGuiMove(){
+        ticTacToeController.getGuiMove();
+    }
     /**
      * Adds the clicked field to the board
      *
@@ -69,17 +83,4 @@ public class TicTacToeGame extends Game {
         return true;
     }
 
-
-    /**
-     * for debugging
-     * TODO remove this method
-     */
-    public void showBoard() {
-        for (char[] chars : board) {
-            for (char c : chars) {
-                System.out.print(c);
-            }
-            System.out.print("\n");
-        }
-    }
 }

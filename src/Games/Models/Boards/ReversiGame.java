@@ -10,7 +10,10 @@ public class ReversiGame extends Game {
     }
 
     @Override
-    void updateBoard(String move) {
+    void getGuiMove() {
+    }
 
+    @Override
+    void updateBoard(String move) {
     }
 }

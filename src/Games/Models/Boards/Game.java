@@ -1,5 +1,7 @@
 package Games.Models.Boards;
 
+import java.util.Arrays;
+
 /**
  * Created by rik on 3/31/17.
  */
@@ -8,11 +10,11 @@ public abstract class Game implements InGameActions {
     private int boardSize;
     char[][] board;
     private String player;
+    private int[] playerMove;
 
 	public Game(int boardSize){
 	    this.boardSize = boardSize;
         board = new char[boardSize][boardSize];
-
     }
 
     @Override
@@ -38,19 +40,20 @@ public abstract class Game implements InGameActions {
                 break;
             }
             case "GUIPlayer": {
-//                move = getGUIMove();
                 System.out.println("GuiPlayer should make a move");
+                getGuiMove();
                 break;
             }
-            default: {
-//                move[0] = 0;
-//                move[1] = 0;
-            }
         }
-//        makeMove(move);
     }
 
     public void matchStart(){}
+
+    /**
+     * gets move from user. should be overridden in subclass
+     * @return array with move
+     */
+    abstract void getGuiMove();
 
     /**
      * Sets the type of the player AI or GUI
@@ -70,4 +73,16 @@ public abstract class Game implements InGameActions {
         updateBoard(move);
     }
 
+    /**
+     * for debugging
+     * TODO remove this method
+     */
+    public void showBoard() {
+        for (char[] chars : board) {
+            for (char c : chars) {
+                System.out.print(c);
+            }
+            System.out.print("\n");
+        }
+    }
 }

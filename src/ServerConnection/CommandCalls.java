@@ -10,6 +10,7 @@ import java.util.Arrays;
 public class CommandCalls implements Observer{
 	private Game game;
 	private ConnectionHandler connectionHandler;
+	private String playerName;
 
 	public CommandCalls(Observable info, ConnectionHandler connectionHandler) {
 		info.follow(this);
@@ -74,7 +75,7 @@ public class CommandCalls implements Observer{
             case "CHALLENGE":
                 challenge(getArguments(arguments));break;
 			case "MOVE":
-                game.move(arguments[1]);break;
+                game.move(arguments[4]);break;
 			case "YOURTURN":
 			    connectionHandler.updateOutput("Your Turn");
 			    game.yourTurn();break;
@@ -141,6 +142,14 @@ public class CommandCalls implements Observer{
 	public void setGame(Game game){
 	    this.game = game;
     }
+
+	/**
+	 * sets the name of the player
+	 * @param name playerName
+	 */
+	public void setPlayerName(String name){
+		this.playerName = name;
+	}
 
     /**
      * returns the array of arguments following the current argument.

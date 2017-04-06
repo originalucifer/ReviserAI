@@ -40,6 +40,7 @@ public class ConnectionHandler {
      */
 	public void login(String name){
 		serverCommands.login(name);
+		setPlayerName(name);
 	}
 
     /**
@@ -77,6 +78,11 @@ public class ConnectionHandler {
 		serverCommands.custom("challenge \"" +challenge[0]+ "\" \""+challenge[1]+"\"");
 	}
 
+
+	public void makeMove(String move){
+		serverCommands.move(move);
+	}
+
     /**
      * accepts challenge belonging to challenge id
      * @param challengeID
@@ -96,6 +102,10 @@ public class ConnectionHandler {
 
 	public void setGame(Game game){
 		commandCalls.setGame(game);
+	}
+
+	public void setPlayerName(String name){
+		commandCalls.setPlayerName(name);
 	}
 
 	public boolean isConnected(){
