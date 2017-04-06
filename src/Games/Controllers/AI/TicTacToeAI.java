@@ -8,7 +8,7 @@ import java.util.ArrayList;
 /**
  * Created by rik on 3-4-17.
  */
-public class TicTacToeAI {
+public class TicTacToeAI implements AI{
 	private TicTacToeBoard playBoard;
 	private char isPlaying;
 	private char isNotPlaying;
@@ -19,6 +19,9 @@ public class TicTacToeAI {
 		this.isPlaying = isPlaying;
 		this.controller = controller;
 		isNotPlaying = isPlaying == 'X' ? 'O' : 'X';
+	}
+	public TicTacToeAI() {
+
 	}
 
 	public void doNextSet(){

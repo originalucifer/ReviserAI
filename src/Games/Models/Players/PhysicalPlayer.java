@@ -17,6 +17,7 @@ public class PhysicalPlayer implements Player, ObserveBoardInput {
 
     @Override
     public int getYourMove(Integer opponentsMove) {
+        turn = true;
         while (move == null) {}
         int ret = move;
         move = null;

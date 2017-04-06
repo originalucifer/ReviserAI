@@ -2,7 +2,7 @@ package Games.Controllers;
 
 import Games.Models.Players.Player;
 import Games.Models.Boards.TicTacToeBoard;
-import Games.Models.Boards.TicTacToePlayerFactory;
+import Games.Models.Factories.TicTacToePlayerFactory;
 
 /**
  * Created by rik on 4/5/17.
