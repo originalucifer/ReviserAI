@@ -66,11 +66,11 @@ public abstract class Game implements InGameActions {
     /**
      * should be overridden in subclasses
      */
-    abstract void updateBoard(String move);
+    abstract void updateBoard(String move,boolean thisPlayer);
 
     @Override
-    public void move(String move) {
-        updateBoard(move);
+    public void move(String move,boolean thisPlayer) {
+        updateBoard(move,thisPlayer);
     }
 
     /**

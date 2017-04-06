@@ -24,6 +24,15 @@ public class TicTacToeController extends ConnectionController{
 
     @FXML private Label playerTypeLabel;
     @FXML private Label statusLabel;
+    @FXML private Button b0;
+    @FXML private Button b1;
+    @FXML private Button b2;
+    @FXML private Button b3;
+    @FXML private Button b4;
+    @FXML private Button b5;
+    @FXML private Button b6;
+    @FXML private Button b7;
+    @FXML private Button b8;
 
     private int boardSize = 3;
     private TicTacToeGame ticTacToeGame = new TicTacToeGame(boardSize,this);
@@ -188,6 +197,15 @@ public class TicTacToeController extends ConnectionController{
         returnGuiMove(String.valueOf(clickedField));
     }
 
+    public void updateBoardView(int col,int row, boolean thisPlayer){
+        Button button = getButton(row,col);
+        if (thisPlayer){
+            Platform.runLater(()->button.setText("X"));
+        } else {
+            Platform.runLater(()->button.setText("O"));
+        }
+    }
+
     /**
      * Checks the status of the game i.e. who's turn it is or if the game has ended.
      */
@@ -222,5 +240,28 @@ public class TicTacToeController extends ConnectionController{
         Scene scene = new Scene(label,200,100);
         stage.setScene(scene);
         stage.show();
+    }
+
+    public Button getButton(int col, int row){
+        if (col == 0){
+            switch (row){
+                case 0: return b0;
+                case 1: return b3;
+                case 2: return b6;
+            }
+        }else if (col == 1){
+            switch (row){
+                case 0: return b1;
+                case 1: return b4;
+                case 2: return b7;
+            }
+        }else if (col == 2){
+            switch (row){
+                case 0: return b2;
+                case 1: return b5;
+                case 2: return b8;
+            }
+        }
+        return null;
     }
 }

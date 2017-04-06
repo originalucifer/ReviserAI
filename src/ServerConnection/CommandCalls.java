@@ -75,7 +75,7 @@ public class CommandCalls implements Observer{
             case "CHALLENGE":
                 challenge(getArguments(arguments));break;
 			case "MOVE":
-                game.move(arguments[4]);break;
+			    move(getArguments(arguments));break;
 			case "YOURTURN":
 			    connectionHandler.updateOutput("Your Turn");
 			    game.yourTurn();break;
@@ -115,6 +115,15 @@ public class CommandCalls implements Observer{
             case "CANCELLED" :
                 connectionHandler.updateOutput("Challenge: " + arguments[2].replace("}","")+
                         " cancelled");break;
+        }
+    }
+
+    private void move(String[] arguments){
+	    String name = arguments[1].replaceAll("\\W", "");
+	    if (name.equals(playerName)){
+	        game.move(arguments[3],true);
+        }else{
+	        game.move(arguments[3],false);
         }
     }
 

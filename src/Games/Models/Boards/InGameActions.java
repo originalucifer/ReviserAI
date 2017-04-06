@@ -8,5 +8,5 @@ public interface InGameActions {
 	public void loss();
 	public void draw();
 	public void yourTurn();
-	public void move(String move);
+	public void move(String move,boolean thisplayer);
 }

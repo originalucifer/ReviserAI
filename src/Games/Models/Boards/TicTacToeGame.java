@@ -17,13 +17,17 @@ public class TicTacToeGame extends Game {
     }
 
     @Override
-    void updateBoard(String move) {
+    void updateBoard(String move, boolean thisplayer) {
         move = move.replaceAll("\\W", "");
         int moveMade = Integer.valueOf(move);
         int column = moveMade / 3;
         int row = moveMade % 3;
-        updateBoard(column,row,'O');
-        showBoard();
+        if (thisplayer){
+            updateBoard(column,row,'X');
+        } else
+            updateBoard(column,row,'O');
+        ticTacToeController.updateBoardView(column,row,thisplayer);
+//        showBoard();
     }
 
     @Override
@@ -82,5 +86,4 @@ public class TicTacToeGame extends Game {
         }
         return true;
     }
-
 }
