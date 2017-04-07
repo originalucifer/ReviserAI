@@ -14,6 +14,7 @@ public class GameController implements Runnable{
     private boolean finished = false;
     private Integer lastMove = null;
     private boolean playerTurn = false; //false = 0 & true = 1
+    private Boolean winner = null;
 
     public GameController(String playerOne, String playerTwo, TicTacToeBoard board){
         TicTacToePlayerFactory factory = new TicTacToePlayerFactory();
@@ -34,7 +35,28 @@ public class GameController implements Runnable{
            if (lastMove != null) {
                board.updateBoard(lastMove, playerTurn);
            }
+            checkWinSituation();
+        }
+    }
 
+    private void checkWinSituation() {
+        if (winner == null){
+            winner = board.getWinner();
+        }
+        if (winner != null){
+            endGame();
+        }
+    }
+
+    public void setWinner(boolean winner) {
+        this.winner = winner;
+    }
+
+    public void forfeit(Player you){
+        if (you == player0){
+            winner = false;
+        }else if (you == player1){
+            winner = true;
         }
     }
 

@@ -27,6 +27,7 @@ public class PhysicalPlayer implements Player, ObserveBoardInput {
     @Override
     public void update(int field) {
         if (turn && move == null){
+            //TODO check if move is valid
             move = field;
         }
 

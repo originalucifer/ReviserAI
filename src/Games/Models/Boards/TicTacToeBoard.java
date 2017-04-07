@@ -35,6 +35,26 @@ public class TicTacToeBoard implements Board{
         updateBoard(col, row, getPlayerSignature(player));
     }
 
+    //Code is copied from fin3InARow //TODO get rid of the duplicate
+    @Override
+    public Boolean getWinner() {
+        // check diagonal rows
+        if ((board[0][0] == board[1][1] && board[0][0] == board[2][2] && (board[0][0] == 'X' || board[0][0] == 'O'))
+                ||
+                (board[0][2] == board[1][1] && board[0][2] == board[2][0] && (board[0][2] == 'X' || board[0][2] == 'O'))) {
+            return board[1][1] == 'O';
+        }
+        //check horizontal rows and vertical rows
+        for (int i = 0; i < 3; ++i) {
+            if ((board[i][0] == board[i][1] && board[i][0] == board[i][2] && (board[i][0] == 'X' || board[i][0] == 'O'))
+                    ||
+                    (board[0][i] == board[1][i] && board[0][i] == board[2][i] && (board[0][i] == 'X' || board[0][i] == 'O'))) {
+                return board[i][i] == 'O';
+            }
+        }
+        return null;
+    }
+
     private char getPlayerSignature(boolean player){
         return player ? 'O' : 'X';
     }

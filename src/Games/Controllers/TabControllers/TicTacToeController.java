@@ -1,6 +1,7 @@
 package Games.Controllers.TabControllers;
 
 import Games.Controllers.GameController;
+import Games.Controllers.ObserveBoardInput;
 import Games.Models.Boards.TicTacToeBoard;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -20,7 +21,7 @@ import java.util.ArrayList;
  *
  * @author Robin van Eijk
  */
-public class TicTacToeController{
+public class TicTacToeController implements GameControls{
 
     @FXML private Label statusLabel;
     @FXML private Button b0;
@@ -41,7 +42,7 @@ public class TicTacToeController{
     private boolean firstSetDone = false;
 //    private boolean playerX;
     private GameController gameController;
-
+    private ArrayList<ObserveBoardInput> following;
 
     public TicTacToeController() {
     }
@@ -75,6 +76,7 @@ public class TicTacToeController{
             pressedButtons.add(clickedButton);
             int clickedField = Integer.parseInt(clickedButton.getId().replaceAll("[^0-9]", ""));
             updateBoard(clickedField);
+            sendInput(clickedField);
             checkStatus();
         } else{
             statusLabel.setText("Illegal move. Choose an empty field.");
@@ -214,5 +216,19 @@ public class TicTacToeController{
 
     public void updateButton(int col, int row, String value){
         getButton(col, row).setText(value);
+    }
+
+    public void follow(ObserveBoardInput you){
+        if (following == null) {
+            following = new ArrayList<>();
+        }
+        following.add(you);
+    }
+
+    private void sendInput(int index){
+        if (following == null) return;
+        for (ObserveBoardInput listener : following) {
+            listener.update(index);
+        }
     }
 }

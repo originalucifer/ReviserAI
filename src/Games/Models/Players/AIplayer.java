@@ -6,8 +6,9 @@ import Games.Controllers.AI.AI;
  * Created by rik on 4/6/17.
  */
 public class AIplayer implements Player{
-    public AIplayer(AI AI) {
-
+    private AI ai;
+    public AIplayer(AI ai) {
+        this.ai = ai;
     }
 
     @Override
