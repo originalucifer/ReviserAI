@@ -27,7 +27,6 @@ public class TicTacToeGame extends Game {
         } else
             updateBoard(column,row,'O');
         ticTacToeController.updateBoardView(column,row,thisplayer);
-//        showBoard();
     }
 
     @Override
@@ -62,33 +61,11 @@ public class TicTacToeGame extends Game {
 
 
     /**
-     * Finds 3 in a row
-     * TODO can probably be removed
-     * @return true if 3 in a row is found, else return false
+     * Starts a new game, clears the boards
      */
-
-    public boolean find3InARow() {
-        // check diagonal rows
-        if ((board[0][0] == board[1][1] && board[0][0] == board[2][2] && (board[0][0] == 'X' || board[0][0] == 'O'))
-                ||
-                (board[0][2] == board[1][1] && board[0][2] == board[2][0] && (board[0][2] == 'X' || board[0][2] == 'O'))) {
-            return true;
-        }
-        //check horizontal rows and vertical rows
-        for (int i = 0; i < 3; ++i) {
-            if ((board[i][0] == board[i][1] && board[i][0] == board[i][2] && (board[i][0] == 'X' || board[i][0] == 'O'))
-                    ||
-                    (board[0][i] == board[1][i] && board[0][i] == board[2][i] && (board[0][i] == 'X' || board[0][i] == 'O'))) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-
     @Override
     public void matchStart(){
         super.matchStart();
-        ticTacToeController.clearView();
+        ticTacToeController.restartView();
     }
 }

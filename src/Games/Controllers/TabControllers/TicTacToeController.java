@@ -43,6 +43,7 @@ public class TicTacToeController extends ConnectionController{
     private boolean playerTypeChosen = false;
     private boolean AI = false;
     private boolean yourTurn = false;
+    private boolean gameEnded;
 
 
     /**
@@ -98,7 +99,7 @@ public class TicTacToeController extends ConnectionController{
      * @param actionEvent onButtonPressed
      */
     public void boardButtonClickHandler(ActionEvent actionEvent) {
-        if (!ticTacToeGame.find3InARow() && playerChosen && yourTurn) {
+        if (!gameEnded && yourTurn) {
             firstSetDone = true;
             Button clickedButton = (Button) actionEvent.getTarget();
             String buttonLabel = clickedButton.getText();
@@ -209,7 +210,8 @@ public class TicTacToeController extends ConnectionController{
     /**
      * clear the tic-tac-toe board for a new game.
      */
-    public void clearView(){
+    public void restartView(){
+        gameEnded = false;
         for (Button b : pressedButtons) {
             Platform.runLater(()->b.setText(""));
         }
@@ -219,6 +221,7 @@ public class TicTacToeController extends ConnectionController{
      * Create new stage to display the winner
      */
     public void gameEnded(String status){
+        gameEnded = true;
         Platform.runLater(()-> {
             statusLabel.setText("Game Ended");
             Stage stage = new Stage();
