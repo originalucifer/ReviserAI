@@ -18,7 +18,13 @@ public abstract class Game implements InGameActions {
     }
 
     @Override
+    public void matchStart(){
+	    clearBoard();
+    }
+
+    @Override
     public void win() {
+	    gameWon();
     }
 
     @Override
@@ -33,7 +39,7 @@ public abstract class Game implements InGameActions {
     @Override
     public void yourTurn() {
 //        int[] move = new int[2];
-        switch (player){
+        switch (player) {
             case "AIPlayer": {
 //                move = getAIMove();
                 System.out.println("AI should make a move");
@@ -47,7 +53,10 @@ public abstract class Game implements InGameActions {
         }
     }
 
-    public void matchStart(){}
+    @Override
+    public void move(String move,boolean thisPlayer) {
+        updateBoard(move,thisPlayer);
+    }
 
     /**
      * gets move from user. should be overridden in subclass
@@ -57,7 +66,7 @@ public abstract class Game implements InGameActions {
 
     /**
      * Sets the type of the player AI or GUI
-     * @param playerType
+     * @param playerType ai or gui
      */
     public void setPlayerType(String playerType){
         this.player = playerType;
@@ -68,10 +77,21 @@ public abstract class Game implements InGameActions {
      */
     abstract void updateBoard(String move,boolean thisPlayer);
 
-    @Override
-    public void move(String move,boolean thisPlayer) {
-        updateBoard(move,thisPlayer);
+    /**
+     * for debugging
+     * TODO remove this method
+     */
+    public void clearBoard() {
+        for (int i = 0; i < boardSize; i++){
+            for (int j = 0; j < boardSize; j++){
+                board[i][j] = ' ';
+            }
+        }
     }
+    /**
+     * Should be overridden in subclasses
+     */
+    abstract void gameWon();
 
     /**
      * for debugging

@@ -31,6 +31,11 @@ public class TicTacToeGame extends Game {
     }
 
     @Override
+    void gameWon() {
+        ticTacToeController.gameWon();
+    }
+
+    @Override
     void getGuiMove(){
         ticTacToeController.getGuiMove();
     }
@@ -48,7 +53,7 @@ public class TicTacToeGame extends Game {
 
     /**
      * Finds 3 in a row
-     *
+     * TODO can probably be removed
      * @return true if 3 in a row is found, else return false
      */
 
@@ -70,6 +75,12 @@ public class TicTacToeGame extends Game {
         return false;
     }
 
+
+    @Override
+    public void matchStart(){
+        super.matchStart();
+        ticTacToeController.clearView();
+    }
 
     /**
      * Checks if the field is full (If its a tie)

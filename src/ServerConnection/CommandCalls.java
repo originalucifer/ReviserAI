@@ -98,7 +98,7 @@ public class CommandCalls implements Observer{
      */
 	private void match(String[] arguments){
 	    connectionHandler.updateOutput("Match of "+ arguments[3]+ " against: "+arguments[5].replace("}","")+" started.");
-//	    game.matchStart();
+	    game.matchStart();
     }
 
     /**

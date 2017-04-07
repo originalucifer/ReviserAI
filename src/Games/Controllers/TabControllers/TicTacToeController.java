@@ -36,34 +36,38 @@ public class TicTacToeController extends ConnectionController{
 
     private int boardSize = 3;
     private TicTacToeGame ticTacToeGame = new TicTacToeGame(boardSize,this);
-    private ArrayList<Button> pressedButtons = new ArrayList<Button>();
-    private boolean playerChosen = true;
+
+    private ArrayList<Button> pressedButtons = new ArrayList<>();
+    private boolean playerChosen = false;
     private boolean firstSetDone = false;
-    private boolean playerX = true;
-    private boolean playerTypeChosen = true;
+    private boolean playerX;
+    private boolean playerTypeChosen = false;
     private boolean AI = false;
     private boolean yourTurn = false;
-    private String move;
 
 
     public TicTacToeController() {
     }
 
     /**
-     * checks if AI or Manual has been selected and makes connection in the superclass.
+     * checks if AI or Manual and X or O has been selected and makes connection in the superclass.
      */
     public void getConnection() {
         if (playerTypeChosen){
-            if (!connectionHandler.isConnected()){
-                if (AI){
-                    ticTacToeGame.setPlayerType("AIPlayer");
+            if(playerChosen){
+                if (!connectionHandler.isConnected()){
+                    if (AI){
+                        ticTacToeGame.setPlayerType("AIPlayer");
+                    } else {
+                        ticTacToeGame.setPlayerType("GUIPlayer");
+                    }
+                    super.getConnection();
+                    connectionHandler.setGame(ticTacToeGame);
                 } else {
-                    ticTacToeGame.setPlayerType("GUIPlayer");
+                    serverOutput.appendText("\nWarning: You are already connected");
                 }
-                super.getConnection();
-                connectionHandler.setGame(ticTacToeGame);
-            } else {
-                serverOutput.appendText("\nWarning: You are already connected");
+            }else{
+             serverOutput.appendText("\nYou must first choose X or O");
             }
         } else {
             serverOutput.appendText("\nYou must first choose AI or GUI");
@@ -193,12 +197,12 @@ public class TicTacToeController extends ConnectionController{
         } else {
             ticTacToeGame.updateBoard(column,row,'X');
         }
-        move = ""+column+row;
         returnGuiMove(String.valueOf(clickedField));
     }
 
     public void updateBoardView(int col,int row, boolean thisPlayer){
         Button button = getButton(row,col);
+        pressedButtons.add(button);
         if (thisPlayer){
             Platform.runLater(()->button.setText("X"));
         } else {
@@ -206,9 +210,17 @@ public class TicTacToeController extends ConnectionController{
         }
     }
 
+    public void clearView(){
+        for (Button b : pressedButtons) {
+            Platform.runLater(()->b.setText(""));
+        }
+    }
+
     /**
      * Checks the status of the game i.e. who's turn it is or if the game has ended.
+     * //TODO can probably be removed
      */
+    /*
     private void checkStatus(){
         if(ticTacToeGame.find3InARow()){
             gameWon();
@@ -222,24 +234,28 @@ public class TicTacToeController extends ConnectionController{
             }
         }
     }
+    */
+
 
     /**
      * Create new stage to display the winner
      */
-    private void gameWon(){
-        statusLabel.setText("Game ended");
-        Stage stage = new Stage();
-        Label label = new Label();
-        if (playerX) {
-            label.setText("O has won!!!");
-        } else {
-            label.setText("X has won!!!");
-        }
-        label.setAlignment(Pos.CENTER);
-        label.setFont(new Font(30));
-        Scene scene = new Scene(label,200,100);
-        stage.setScene(scene);
-        stage.show();
+    public void gameWon(){
+        Platform.runLater(()-> {
+            statusLabel.setText("Game ended");
+            Stage stage = new Stage();
+            Label label = new Label();
+            if (playerX) {
+                label.setText("O has won!!!");
+            } else {
+                label.setText("X has won!!!");
+            }
+            label.setAlignment(Pos.CENTER);
+            label.setFont(new Font(30));
+            Scene scene = new Scene(label,200,100);
+            stage.setScene(scene);
+            stage.show();
+        });
     }
 
     public Button getButton(int col, int row){
