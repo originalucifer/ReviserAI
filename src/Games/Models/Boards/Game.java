@@ -1,7 +1,5 @@
 package Games.Models.Boards;
 
-import java.util.Arrays;
-
 /**
  * Created by rik on 3/31/17.
  */
@@ -10,7 +8,6 @@ public abstract class Game implements InGameActions {
     private int boardSize;
     char[][] board;
     private String player;
-    private int[] playerMove;
 
 	public Game(int boardSize){
 	    this.boardSize = boardSize;
@@ -24,7 +21,6 @@ public abstract class Game implements InGameActions {
 
     @Override
     public void win() {
-	    gameWon();
     }
 
     @Override
@@ -32,9 +28,7 @@ public abstract class Game implements InGameActions {
     }
 
     @Override
-    public void draw() {
-        System.out.println("Its a draw");
-    }
+    public void draw(){}
 
     @Override
     public void yourTurn() {
@@ -88,10 +82,6 @@ public abstract class Game implements InGameActions {
             }
         }
     }
-    /**
-     * Should be overridden in subclasses
-     */
-    abstract void gameWon();
 
     /**
      * for debugging

@@ -1,6 +1,5 @@
 package Games.Controllers.TabControllers;
 
-import Games.Models.Boards.TicTacToeGame;
 import ServerConnection.ConnectionHandler;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -23,7 +22,7 @@ public class ConnectionController {
     @FXML private TextField acceptChallengeTf;
 
     ConnectionHandler connectionHandler = new ConnectionHandler(this);
-    boolean loggedIn = false;
+    private boolean loggedIn = false;
 
     public ConnectionController(){
     }

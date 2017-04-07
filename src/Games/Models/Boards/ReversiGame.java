@@ -17,9 +17,4 @@ public class ReversiGame extends Game {
     void updateBoard(String move, boolean thisPlayer) {
 
     }
-
-    @Override
-    void gameWon() {
-
-    }
 }

@@ -31,8 +31,18 @@ public class TicTacToeGame extends Game {
     }
 
     @Override
-    void gameWon() {
-        ticTacToeController.gameWon();
+    public void win() {
+        ticTacToeController.gameEnded("won");
+    }
+
+    @Override
+    public void loss(){
+        ticTacToeController.gameEnded("lost");
+    }
+
+    @Override
+    public void draw(){
+        ticTacToeController.gameEnded("draw");
     }
 
     @Override
@@ -80,21 +90,5 @@ public class TicTacToeGame extends Game {
     public void matchStart(){
         super.matchStart();
         ticTacToeController.clearView();
-    }
-
-    /**
-     * Checks if the field is full (If its a tie)
-     *
-     * @return boolean field full.
-     */
-    public boolean isFull() {
-        for (char[] chars : board) {
-            for (char c : chars) {
-                if (c == ' ') {
-                    return false;
-                }
-            }
-        }
-        return true;
     }
 }

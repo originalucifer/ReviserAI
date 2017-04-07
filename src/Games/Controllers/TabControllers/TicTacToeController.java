@@ -1,7 +1,6 @@
 package Games.Controllers.TabControllers;
 
 import Games.Models.Boards.TicTacToeGame;
-import ServerConnection.ConnectionHandler;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -46,6 +45,9 @@ public class TicTacToeController extends ConnectionController{
     private boolean yourTurn = false;
 
 
+    /**
+     * constructor
+     */
     public TicTacToeController() {
     }
 
@@ -53,8 +55,7 @@ public class TicTacToeController extends ConnectionController{
      * checks if AI or Manual and X or O has been selected and makes connection in the superclass.
      */
     public void getConnection() {
-        if (playerTypeChosen){
-            if(playerChosen){
+        if (playerTypeChosen && playerChosen){
                 if (!connectionHandler.isConnected()){
                     if (AI){
                         ticTacToeGame.setPlayerType("AIPlayer");
@@ -66,19 +67,23 @@ public class TicTacToeController extends ConnectionController{
                 } else {
                     serverOutput.appendText("\nWarning: You are already connected");
                 }
-            }else{
-             serverOutput.appendText("\nYou must first choose X or O");
-            }
         } else {
-            serverOutput.appendText("\nYou must first choose AI or GUI");
+            serverOutput.appendText("\nYou must first choose AI or GUI and X or O");
         }
     }
 
+    /**
+     * gets called from the game class. Make the gui player able to choose a tile
+     */
     public synchronized void getGuiMove(){
         yourTurn = true;
         Platform.runLater(()-> statusLabel.setText("It is your turn"));
     }
 
+    /**
+     * returns a move to the server
+     * @param move chosen move
+     */
     private synchronized void returnGuiMove(String move){
         statusLabel.setText("Opponents turn");
         connectionHandler.makeMove(move);
@@ -98,18 +103,14 @@ public class TicTacToeController extends ConnectionController{
             Button clickedButton = (Button) actionEvent.getTarget();
             String buttonLabel = clickedButton.getText();
             if ("".equals(buttonLabel)) {
-
                 if (playerX) {
                     clickedButton.setText("X");
-//                    playerX = false;
                 } else {
                     clickedButton.setText("O");
-//                    playerX = true;
                 }
                 pressedButtons.add(clickedButton);
                 int clickedField = Integer.parseInt(clickedButton.getId().replaceAll("[^0-9]", ""));
                 updateBoard(clickedField);
-//                checkStatus();
             } else {
                 statusLabel.setText("Illegal move. Choose an empty field.");
             }
@@ -133,27 +134,16 @@ public class TicTacToeController extends ConnectionController{
                     case "X":
                         playerX = true;
                         playerChosen = true;
-                        statusLabel.setText("X's turn");
+                        statusLabel.setText("Player: X");
                         break;
                     case "O":
                         playerX = false;
                         playerChosen = true;
-                        statusLabel.setText("O's turn");
+                        statusLabel.setText("Player: O");
                         break;
                     default:
                         statusLabel.setText("Game hasn't started yet. Choose a player");
                         break;
-                }
-            } else {
-                if (buttonID.equals("reset")){
-                    //TODO reset ticTacToeGame
-                    for (Button b : pressedButtons) {
-                        b.setText("");
-                    }
-                    pressedButtons.clear();playerChosen = false;firstSetDone = false;playerTypeChosen=false;
-                    statusLabel.setText("Choose a player");
-                }else {
-                    statusLabel.setText("Reset game first");
                 }
             }
         }
@@ -200,6 +190,12 @@ public class TicTacToeController extends ConnectionController{
         returnGuiMove(String.valueOf(clickedField));
     }
 
+    /**
+     * update the view of the tic-tac-toe board with the latest picks
+     * @param col column
+     * @param row row
+     * @param thisPlayer this player or other (X or O?)
+     */
     public void updateBoardView(int col,int row, boolean thisPlayer){
         Button button = getButton(row,col);
         pressedButtons.add(button);
@@ -210,6 +206,9 @@ public class TicTacToeController extends ConnectionController{
         }
     }
 
+    /**
+     * clear the tic-tac-toe board for a new game.
+     */
     public void clearView(){
         for (Button b : pressedButtons) {
             Platform.runLater(()->b.setText(""));
@@ -217,38 +216,17 @@ public class TicTacToeController extends ConnectionController{
     }
 
     /**
-     * Checks the status of the game i.e. who's turn it is or if the game has ended.
-     * //TODO can probably be removed
-     */
-    /*
-    private void checkStatus(){
-        if(ticTacToeGame.find3InARow()){
-            gameWon();
-        } else if (pressedButtons.size() == 9 && ticTacToeGame.isFull()) {
-            statusLabel.setText("It's a tie");
-        } else{
-            if (playerX)
-                statusLabel.setText("X's turn");
-            else {
-                statusLabel.setText("O's Turn");
-            }
-        }
-    }
-    */
-
-
-    /**
      * Create new stage to display the winner
      */
-    public void gameWon(){
+    public void gameEnded(String status){
         Platform.runLater(()-> {
-            statusLabel.setText("Game ended");
+            statusLabel.setText("Game Ended");
             Stage stage = new Stage();
             Label label = new Label();
-            if (playerX) {
-                label.setText("O has won!!!");
-            } else {
-                label.setText("X has won!!!");
+            switch (status){
+                case "won": label.setText("You have won!!");break;
+                case "lost": label.setText("You have lost.");break;
+                case "draw": label.setText("It's a draw");break;
             }
             label.setAlignment(Pos.CENTER);
             label.setFont(new Font(30));
@@ -258,6 +236,12 @@ public class TicTacToeController extends ConnectionController{
         });
     }
 
+    /**
+     * return the chosen button from the board
+     * @param col column
+     * @param row row
+     * @return correct button
+     */
     public Button getButton(int col, int row){
         if (col == 0){
             switch (row){
