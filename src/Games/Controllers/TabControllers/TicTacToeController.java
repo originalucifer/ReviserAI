@@ -74,6 +74,18 @@ public class TicTacToeController extends ConnectionController{
     }
 
     /**
+     * Subscribes user to current Game on the Server
+     */
+    public void subscribe(){
+        if (connectionHandler.isConnected() && loggedIn){
+                connectionHandler.subscribe("Tic-tac-toe");
+                serverOutput.appendText("\nSubscribed for game: \"Tic-tac-toe\"");
+        } else {
+            serverOutput.appendText("\nWarning: You must first connect and log in");
+        }
+    }
+
+    /**
      * Challenges another player for a specified game
      */
     public void challenge(){

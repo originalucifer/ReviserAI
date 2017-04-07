@@ -58,6 +58,7 @@ public class ConnectionController {
         }
     }
 
+
     /**
      * Connects to the server.
      *
@@ -75,7 +76,7 @@ public class ConnectionController {
     }
 
     /**
-     * requests gamelist from gameserver
+     * requests gameList from gameServer
      */
     private void getGameList(){
         if (connectionHandler.isConnected()){
@@ -86,7 +87,7 @@ public class ConnectionController {
     }
 
     /**
-     * requests gamelist from gameserver
+     * requests playerList from gameServer
      */
     private void getPlayerList(){
         if (connectionHandler.isConnected()){
@@ -131,8 +132,10 @@ public class ConnectionController {
 
     /**
      * Subscribes user to specified Game on the Server
+     * should be overridden in the subclass
      */
-    private void subscribe(){
+    public void subscribe(){
+        /*
         if (connectionHandler.isConnected() && loggedIn){
             String game = subscribeTf.getText();
             if(!game.equals("")){
@@ -145,6 +148,7 @@ public class ConnectionController {
         } else {
             serverOutput.appendText("\nWarning: You must first connect and log in");
         }
+        */
     }
 
     /**

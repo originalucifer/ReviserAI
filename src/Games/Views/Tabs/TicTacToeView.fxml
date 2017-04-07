@@ -82,8 +82,8 @@
                 <VBox styleClass="box" spacing="5">
                     <padding><Insets top="3" right="3" bottom="3" left="3"/></padding>
                     <Button text="Subscribe" onAction="#buttonEventHandler"/>
-                    <Label text="Game name: "/>
-                    <TextField fx:id="subscribeTf"/>
+                    <!--<Label text="Game name: "/>-->
+                    <!--<TextField fx:id="subscribeTf"/>-->
                 </VBox>
 
                 <VBox styleClass="box" spacing="5">
