@@ -18,6 +18,7 @@ public class AIplayer implements Player{
 
     @Override
     public int getYourMove(Integer opponentsMove) {
-        return 0;
+
+        return ai.getBestMove();
     }
 }

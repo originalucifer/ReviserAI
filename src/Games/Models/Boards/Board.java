@@ -6,4 +6,5 @@ package Games.Models.Boards;
 public interface Board {
     public void updateBoard(int lastMove, boolean playerTurn);
     public Boolean getWinner();
+    public void receiveMove(int move, boolean player);
 }

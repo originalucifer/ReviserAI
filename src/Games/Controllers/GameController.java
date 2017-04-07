@@ -1,5 +1,8 @@
 package Games.Controllers;
 
+import Games.Controllers.TabControllers.GameControls;
+import Games.Controllers.TabControllers.GameStatusView;
+import Games.Models.Factories.PlayerFactory;
 import Games.Models.Players.Player;
 import Games.Models.Boards.TicTacToeBoard;
 import Games.Models.Factories.TicTacToePlayerFactory;
@@ -8,6 +11,7 @@ import Games.Models.Factories.TicTacToePlayerFactory;
  * Created by rik on 4/5/17.
  */
 public class GameController implements Runnable{
+    private PlayerFactory factory;
     private Player player0;
     private Player player1;
     private TicTacToeBoard board;
@@ -15,12 +19,14 @@ public class GameController implements Runnable{
     private Integer lastMove = null;
     private boolean playerTurn = false; //false = 0 & true = 1
     private Boolean winner = null;
+    private GameStatusView gui;
 
-    public GameController(String playerOne, String playerTwo, TicTacToeBoard board){
-        TicTacToePlayerFactory factory = new TicTacToePlayerFactory();
+    public GameController(String playerOne, String playerTwo, TicTacToeBoard board, PlayerFactory factory, GameStatusView gui){
+        this.factory = factory;
         player0 = factory.getPlayer(playerOne);
         player1 = factory.getPlayer(playerTwo);
         this.board = board;
+        this.gui = gui;
     }
 
     private void endGame(){
@@ -29,13 +35,20 @@ public class GameController implements Runnable{
 
     @Override
     public void run() {
+        System.out.println("herllo");
         while (!finished){
 
            nextMove();
            if (lastMove != null) {
-               board.updateBoard(lastMove, playerTurn);
+               board.receiveMove(lastMove, playerTurn);
            }
+           playerTurn = !playerTurn;
             checkWinSituation();
+        }
+        try {
+            Thread.sleep(100);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
     }
 

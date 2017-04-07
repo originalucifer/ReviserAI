@@ -1,8 +1,11 @@
 package Games.Controllers.TabControllers;
 
+import Games.Controllers.AI.TicTacToeAI;
 import Games.Controllers.GameController;
 import Games.Controllers.ObserveBoardInput;
 import Games.Models.Boards.TicTacToeBoard;
+import Games.Models.Factories.PlayerFactory;
+import Games.Models.Factories.TicTacToePlayerFactory;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
@@ -21,7 +24,7 @@ import java.util.ArrayList;
  *
  * @author Robin van Eijk
  */
-public class TicTacToeController implements GameControls{
+public class TicTacToeController implements GameControls, GameStatusView{
 
     @FXML private Label statusLabel;
     @FXML private Button b0;
@@ -36,7 +39,7 @@ public class TicTacToeController implements GameControls{
     @FXML private ComboBox playerX;
     @FXML private ComboBox playerO;
 
-    private TicTacToeBoard board = new TicTacToeBoard();
+    private TicTacToeBoard board = new TicTacToeBoard(this);
     private ArrayList<Button> pressedButtons = new ArrayList<Button>();
     private boolean playerChosen = false;
     private boolean firstSetDone = false;
@@ -56,11 +59,11 @@ public class TicTacToeController implements GameControls{
      * @param actionEvent onButtonPressed
      */
     public void boardButtonClickHandler(ActionEvent actionEvent) {
-        if(!board.find3InARow() && playerChosen) {
-            firstSetDone = true;
+//        if(!board.find3InARow() && playerChosen) {
+//            firstSetDone = true;
             Button clickedButton = (Button) actionEvent.getTarget();
             set(clickedButton);
-        }
+//        }
     }
 
     public void set(Button clickedButton){
@@ -74,6 +77,7 @@ public class TicTacToeController implements GameControls{
 //                playerX = true;
 //            }
             pressedButtons.add(clickedButton);
+            System.out.println("set");
             int clickedField = Integer.parseInt(clickedButton.getId().replaceAll("[^0-9]", ""));
             updateBoard(clickedField);
             sendInput(clickedField);
@@ -126,12 +130,20 @@ public class TicTacToeController implements GameControls{
 //            }
 //        } else {
             if (buttonID.equals("reset")){
-                board = new TicTacToeBoard();
+                board = new TicTacToeBoard(this);
                 for (Button b : pressedButtons) {
                     b.setText("");
                 }
                 pressedButtons.clear();playerChosen = false;firstSetDone = false;
                 statusLabel.setText("Choose a player");
+            }if (buttonID.equals("StartGame")){
+                if (gameController == null){
+                    PlayerFactory factory = new TicTacToePlayerFactory(this, new TicTacToeAI());
+                    String playerx = playerX.getSelectionModel().getSelectedItem().toString();
+                    String playero = playerO.getSelectionModel().getSelectedItem().toString();
+                    gameController = new GameController(playerx, playero, board, factory, this);
+                    new Thread(gameController).start();
+                }
             }else {
                 statusLabel.setText("Reset game first");
             }
@@ -223,12 +235,13 @@ public class TicTacToeController implements GameControls{
             following = new ArrayList<>();
         }
         following.add(you);
+        System.out.println("follower");
     }
 
     private void sendInput(int index){
         if (following == null) return;
         for (ObserveBoardInput listener : following) {
-            listener.update(index);
+            listener.update(index);System.out.println("update"+index);
         }
     }
 }

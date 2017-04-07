@@ -1,14 +1,21 @@
 package Games.Models.Players;
 
 import Games.Controllers.ObserveBoardInput;
+import Games.Controllers.TabControllers.GameControls;
 import Games.Models.Players.Player;
 
 /**
  * Created by rik on 4/5/17.
  */
 public class PhysicalPlayer implements Player, ObserveBoardInput {
-    private boolean turn = false;
-    private Integer move;
+    private volatile boolean turn = false;
+    private volatile Integer move;
+    private GameControls gui;
+
+    public PhysicalPlayer(GameControls gui){
+        this.gui = gui;
+        gui.follow(this);
+    }
 
     @Override
     public void yourTurn() {
@@ -20,6 +27,7 @@ public class PhysicalPlayer implements Player, ObserveBoardInput {
         turn = true;
         while (move == null) {}
         int ret = move;
+        turn = false;
         move = null;
         return ret;
     }

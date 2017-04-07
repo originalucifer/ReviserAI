@@ -153,7 +153,7 @@ return 0;
 		return min;
 	}
 
-	public int getYourMove(Integer opponentsMove) {
+	public int getYourMove() {
 		End end = new End();
 		int[][] sets = getAvailableSets(isPlaying, playBoard.board.clone(), end);
 
@@ -176,5 +176,10 @@ return 0;
 		}
 
 		return sets[point][0] * 8 + sets[point][1];
+	}
+
+	@Override
+	public int getBestMove() {
+		return getYourMove();
 	}
 }

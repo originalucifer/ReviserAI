@@ -1,5 +1,9 @@
 package Games.Models.Boards;
 
+import Games.Controllers.TabControllers.GameStatusView;
+import Games.Controllers.TabControllers.TicTacToeController;
+import javafx.application.Platform;
+
 /**
  * Class for the TicTacToeBoard.
  *
@@ -8,8 +12,10 @@ package Games.Models.Boards;
 public class TicTacToeBoard implements Board{
 
     public char[][] board = new char[3][3];
+    public TicTacToeController gui;
 
-    public TicTacToeBoard(){
+    public TicTacToeBoard(TicTacToeController gui){
+        this.gui = gui;
     }
 
     /**
@@ -30,9 +36,7 @@ public class TicTacToeBoard implements Board{
      * @param player first or second to play player
      */
     public void updateBoard(int move, boolean player){
-        int col = move % 3;
-        int row = move / 3;
-        updateBoard(col, row, getPlayerSignature(player));
+        updateBoard(getCol(move), getRow(move), getPlayerSignature(player));
     }
 
     //Code is copied from fin3InARow //TODO get rid of the duplicate
@@ -114,6 +118,19 @@ public class TicTacToeBoard implements Board{
         }
     }
 
+    public void receiveMove(int move, boolean player){
+        updateBoard(move, player);
+        Platform.runLater(() -> {
+            gui.getButton(getCol(move), getRow(move)).setText(String.valueOf(getPlayerSignature(player)));//
+        });
 
+    }
 
+    public int getRow(int index){
+        return index / 3;
+    }
+
+    public int getCol(int index){
+        return index % 3;
+    }
 }
