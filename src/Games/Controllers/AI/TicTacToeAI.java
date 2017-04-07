@@ -21,7 +21,6 @@ public class TicTacToeAI implements AI{
 		isNotPlaying = isPlaying == 'X' ? 'O' : 'X';
 	}
 	public TicTacToeAI() {
-
 	}
 
 	public void doNextSet(){

@@ -43,7 +43,6 @@ public class TicTacToeController implements GameControls, GameStatusView{
     private ArrayList<Button> pressedButtons = new ArrayList<Button>();
     private boolean playerChosen = false;
     private boolean firstSetDone = false;
-//    private boolean playerX;
     private GameController gameController;
     private ArrayList<ObserveBoardInput> following;
 
@@ -59,8 +58,6 @@ public class TicTacToeController implements GameControls, GameStatusView{
      * @param actionEvent onButtonPressed
      */
     public void boardButtonClickHandler(ActionEvent actionEvent) {
-//        if(!board.find3InARow() && playerChosen) {
-//            firstSetDone = true;
             Button clickedButton = (Button) actionEvent.getTarget();
             set(clickedButton);
 //        }
@@ -69,13 +66,6 @@ public class TicTacToeController implements GameControls, GameStatusView{
     public void set(Button clickedButton){
         String buttonLabel = clickedButton.getText();
         if("".equals(buttonLabel)){
-//            if (playerX) {
-//                clickedButton.setText("X");
-//                playerX = false;
-//            } else {
-//                clickedButton.setText("O");
-//                playerX = true;
-//            }
             pressedButtons.add(clickedButton);
             System.out.println("set");
             int clickedField = Integer.parseInt(clickedButton.getId().replaceAll("[^0-9]", ""));
@@ -85,25 +75,6 @@ public class TicTacToeController implements GameControls, GameStatusView{
         } else{
             statusLabel.setText("Illegal move. Choose an empty field.");
         }
-
-
-//            String buttonLabel = clickedButton.getText();
-//            if("".equals(buttonLabel)){
-//                if (playerX) {
-//                    clickedButton.setText("X");
-//                    playerX = false;
-//                } else {
-//                    clickedButton.setText("O");
-//                    playerX = true;
-//                }
-//                pressedButtons.add(clickedButton);
-//                int clickedField = Integer.parseInt(clickedButton.getId().replaceAll("[^0-9]", ""));
-//                updateBoard(clickedField);
-//                checkStatus();
-//            } else{
-//                statusLabel.setText("Illegal move. Choose an empty field.");
-//            }
-//        }
     }
 
     /**
@@ -114,21 +85,6 @@ public class TicTacToeController implements GameControls, GameStatusView{
     public void actionButtonClickHandler(ActionEvent actionEvent) {
         Button button = (Button) actionEvent.getTarget();
         String buttonID = button.getId();
-        // If player is selected subscribe to tic-tac-toe
-        //serverCommands.subscribe("Tic-tac-toe");
-//        if (!playerChosen || !firstSetDone) {
-//            if (buttonID.equals("X")) {
-//                playerX = true;
-//                playerChosen = true;
-//                statusLabel.setText("X's turn");
-//            } else if (buttonID.equals("O")) {
-//                playerX = false;
-//                playerChosen = true;
-//                statusLabel.setText("O's turn");
-//            } else {
-//                statusLabel.setText("Game hasn't started yet. Choose a player");
-//            }
-//        } else {
             if (buttonID.equals("reset")){
                 board = new TicTacToeBoard(this);
                 for (Button b : pressedButtons) {
@@ -138,16 +94,14 @@ public class TicTacToeController implements GameControls, GameStatusView{
                 statusLabel.setText("Choose a player");
             }if (buttonID.equals("StartGame")){
                 if (gameController == null){
-                    PlayerFactory factory = new TicTacToePlayerFactory(this, new TicTacToeAI());
+                    PlayerFactory factory = new TicTacToePlayerFactory(this, new TicTacToeAI(board, this, 'X'));
                     String playerx = playerX.getSelectionModel().getSelectedItem().toString();
                     String playero = playerO.getSelectionModel().getSelectedItem().toString();
                     gameController = new GameController(playerx, playero, board, factory, this);
                     new Thread(gameController).start();
                 }
-            }else {
-                statusLabel.setText("Reset game first");
             }
-//        }
+
     }
 
     /**
@@ -157,13 +111,6 @@ public class TicTacToeController implements GameControls, GameStatusView{
     private void updateBoard(int clickedField){
         int column = clickedField / 3;
         int row = clickedField % 3;
-//        if (playerX){
-//            board.updateBoard(column,row,'O');
-//        } else {
-//            board.updateBoard(column,row,'X');
-//        }
-        //TODO Send to server here
-        //serverCommands.move(column+row+"");
     }
 
     /**
@@ -174,12 +121,6 @@ public class TicTacToeController implements GameControls, GameStatusView{
             gameWon();
         } else if (pressedButtons.size() == 9 && board.isFull()) {
             statusLabel.setText("It's a tie");
-        } else{
-//            if (playerX)
-//                statusLabel.setText("X's turn");
-//            else {
-//                statusLabel.setText("O's Turn");
-//            }
         }
     }
 
@@ -214,11 +155,6 @@ public class TicTacToeController implements GameControls, GameStatusView{
         statusLabel.setText("Game ended");
         Stage stage = new Stage();
         Label label = new Label();
-//        if (playerX) {
-//            label.setText("O has won!!!");
-//        } else {
-//            label.setText("X has won!!!");
-//        }
         label.setAlignment(Pos.CENTER);
         label.setFont(new Font(30));
         Scene scene = new Scene(label,200,100);
