@@ -72,10 +72,9 @@ public class ConnectionHandler {
 
     /**
      * Challenges the speficied player for a specified game
-     * @param challenge
      */
-	public void challenge(String[] challenge){
-		serverCommands.custom("challenge \"" +challenge[0]+ "\" \""+challenge[1]+"\"");
+	public void challenge(String name, String game){
+		serverCommands.custom("challenge \"" +name+ "\" \""+game+"\"");
 	}
 
 

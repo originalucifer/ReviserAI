@@ -16,13 +16,13 @@ import javafx.scene.control.TextField;
 public class ConnectionController {
 
     @FXML TextArea serverOutput;
-    @FXML private TextField subscribeTf;
-    @FXML private TextField loginTf;
-    @FXML private TextField challengeTf;
-    @FXML private TextField acceptChallengeTf;
+    @FXML TextField subscribeTf;
+    @FXML TextField loginTf;
+    @FXML TextField challengeTf;
+    @FXML TextField acceptChallengeTf;
 
     ConnectionHandler connectionHandler = new ConnectionHandler(this);
-    private boolean loggedIn = false;
+    boolean loggedIn = false;
 
     public ConnectionController(){
     }
@@ -150,21 +150,7 @@ public class ConnectionController {
     /**
      * Challenges another player for a specified game
      */
-    private void challenge(){
-        if (connectionHandler.isConnected() && loggedIn){
-            String challenge = challengeTf.getText();
-            String[] split = challenge.split("\\s+");
-            if(split.length == 2 && !split[0].equals("") && !split[1].equals("")){
-                split[1] = correctCase(split[1]);
-                connectionHandler.challenge(split);
-                serverOutput.appendText("\nChallenged: \""+split[0]+"\" for a game of: \"" +split[1]+ "\"");
-            }else{
-                serverOutput.appendText("\nWarning: Enter a valid name and game for the challenge");
-            }
-        } else {
-            serverOutput.appendText("\nWarning: You must first connect and log in");
-        }
-    }
+    public void challenge(){}
 
     /**
      * Accept challenge belonging to specified challenge ID

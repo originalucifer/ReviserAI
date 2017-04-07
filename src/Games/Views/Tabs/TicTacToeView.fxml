@@ -89,7 +89,7 @@
                 <VBox styleClass="box" spacing="5">
                     <padding><Insets top="3" right="3" bottom="3" left="3"/></padding>
                     <Button text="Challenge" onAction="#buttonEventHandler"/>
-                    <Label text="&#60;PlayerName&#62; &#60;GameName&#62;: "/>
+                    <Label text="&#60;PlayerName&#62;"/>
                     <TextField fx:id="challengeTf"/>
                 </VBox>
 

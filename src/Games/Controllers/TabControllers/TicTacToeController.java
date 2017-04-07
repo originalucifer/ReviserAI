@@ -74,6 +74,25 @@ public class TicTacToeController extends ConnectionController{
     }
 
     /**
+     * Challenges another player for a specified game
+     */
+    public void challenge(){
+        if (connectionHandler.isConnected() && loggedIn){
+            String challenge = challengeTf.getText();
+            challenge = challenge.replace("\\s+","");
+            System.out.println(challenge+"Challenged!!!!");
+            if(!challenge.equals("")){
+                connectionHandler.challenge(challenge,"Tic-tac-toe");
+                serverOutput.appendText("\nChallenged: \""+challenge+"\" for a game of: \"Tic-tac-toe\"");
+            }else{
+                serverOutput.appendText("\nWarning: Enter a valid name and game for the challenge");
+            }
+        } else {
+            serverOutput.appendText("\nWarning: You must first connect and log in");
+        }
+    }
+
+    /**
      * gets called from the game class. Make the gui player able to choose a tile
      */
     public synchronized void getGuiMove(){
@@ -237,7 +256,7 @@ public class TicTacToeController extends ConnectionController{
      * @param row row
      * @return correct button
      */
-    public Button getButton(int col, int row){
+    private Button getButton(int col, int row){
         if (col == 0){
             switch (row){
                 case 0: return b0;
