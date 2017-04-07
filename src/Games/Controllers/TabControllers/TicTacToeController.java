@@ -111,7 +111,7 @@ public class TicTacToeController extends ConnectionController{
                 }
                 pressedButtons.add(clickedButton);
                 int clickedField = Integer.parseInt(clickedButton.getId().replaceAll("[^0-9]", ""));
-                updateBoard(clickedField);
+                returnGuiMove(String.valueOf(clickedField));
             } else {
                 statusLabel.setText("Illegal move. Choose an empty field.");
             }
@@ -127,8 +127,6 @@ public class TicTacToeController extends ConnectionController{
     public void actionButtonClickHandler(ActionEvent actionEvent) {
         Button button = (Button) actionEvent.getTarget();
         String buttonID = button.getId();
-        // If player is selected subscribe to tic-tac-toe
-        //serverCommands.subscribe("Tic-tac-toe");
         if(!connectionHandler.isConnected()){
             if (!playerChosen || !firstSetDone) {
                 switch (buttonID) {
@@ -136,11 +134,13 @@ public class TicTacToeController extends ConnectionController{
                         playerX = true;
                         playerChosen = true;
                         statusLabel.setText("Player: X");
+                        ticTacToeGame.setPlayerX(true);
                         break;
                     case "O":
                         playerX = false;
                         playerChosen = true;
                         statusLabel.setText("Player: O");
+                        ticTacToeGame.setPlayerX(false);
                         break;
                     default:
                         statusLabel.setText("Game hasn't started yet. Choose a player");
@@ -171,24 +171,6 @@ public class TicTacToeController extends ConnectionController{
         } else {
             serverOutput.appendText("\nWarning: You are already connected");
         }
-
-    }
-
-
-    /**
-     * Updates the ticTacToeBoard after each input.
-     * @param clickedField the Selected Field.
-     */
-    private void updateBoard(int clickedField){
-        int column = clickedField / 3;
-        int row = clickedField % 3;
-//        System.out.println("Column "+column+" Row " +row);
-        if (playerX){
-            ticTacToeGame.updateBoard(column,row,'O');
-        } else {
-            ticTacToeGame.updateBoard(column,row,'X');
-        }
-        returnGuiMove(String.valueOf(clickedField));
     }
 
     /**
@@ -200,11 +182,21 @@ public class TicTacToeController extends ConnectionController{
     public void updateBoardView(int col,int row, boolean thisPlayer){
         Button button = getButton(row,col);
         pressedButtons.add(button);
-        if (thisPlayer){
-            Platform.runLater(()->button.setText("X"));
-        } else {
-            Platform.runLater(()->button.setText("O"));
+        String character;
+        if (thisPlayer) {
+            if (playerX) {
+                character = "X";
+            }else {
+                character = "O";
+            }
+        }else {
+            if (playerX){
+                character = "O";
+            }else {
+                character = "X";
+            }
         }
+        Platform.runLater(()->button.setText(character));
     }
 
     /**
@@ -233,7 +225,7 @@ public class TicTacToeController extends ConnectionController{
             }
             label.setAlignment(Pos.CENTER);
             label.setFont(new Font(30));
-            Scene scene = new Scene(label,200,100);
+            Scene scene = new Scene(label,250,100);
             stage.setScene(scene);
             stage.show();
         });

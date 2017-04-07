@@ -32,10 +32,8 @@ public abstract class Game implements InGameActions {
 
     @Override
     public void yourTurn() {
-//        int[] move = new int[2];
         switch (player) {
             case "AIPlayer": {
-//                move = getAIMove();
                 System.out.println("AI should make a move");
                 break;
             }
@@ -72,8 +70,7 @@ public abstract class Game implements InGameActions {
     abstract void updateBoard(String move,boolean thisPlayer);
 
     /**
-     * for debugging
-     * TODO remove this method
+     * Clear the board
      */
     public void clearBoard() {
         for (int i = 0; i < boardSize; i++){

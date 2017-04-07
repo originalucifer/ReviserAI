@@ -9,6 +9,8 @@ import Games.Controllers.TabControllers.TicTacToeController;
  */
 public class TicTacToeGame extends Game {
 
+    private boolean playerX;
+
     private TicTacToeController ticTacToeController;
 
     public TicTacToeGame(int boardSize, TicTacToeController ticTacToeController) {
@@ -22,11 +24,9 @@ public class TicTacToeGame extends Game {
         int moveMade = Integer.valueOf(move);
         int column = moveMade / 3;
         int row = moveMade % 3;
-        if (thisplayer){
-            updateBoard(column,row,'X');
-        } else
-            updateBoard(column,row,'O');
+        updateBoard(column,row,thisplayer);
         ticTacToeController.updateBoardView(column,row,thisplayer);
+        showBoard();
     }
 
     @Override
@@ -48,15 +48,29 @@ public class TicTacToeGame extends Game {
     void getGuiMove(){
         ticTacToeController.getGuiMove();
     }
+
     /**
      * Adds the clicked field to the board
      *
      * @param column the clicked column
      * @param row    the clicked row
-     * @param player X or O?
      */
-    public void updateBoard(int column, int row, char player) {
-        board[column][row] = player;
+    public void updateBoard(int column, int row,boolean thisPlayer) {
+        char character;
+        if (thisPlayer) {
+            if (playerX) {
+                character = 'X';
+            }else {
+                character = 'O';
+            }
+        }else {
+            if (playerX){
+                character = 'O';
+            }else {
+                character = 'X';
+            }
+        }
+        board[column][row] = character;
     }
 
 
@@ -67,5 +81,13 @@ public class TicTacToeGame extends Game {
     public void matchStart(){
         super.matchStart();
         ticTacToeController.restartView();
+    }
+
+    /**
+     * Sets X or O
+     * @param player character
+     */
+    public void setPlayerX(boolean player){
+        this.playerX = player;
     }
 }
