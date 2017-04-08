@@ -1,7 +1,6 @@
 package Games.Models.Boards.Othello;
 
 import Games.Models.OthelloPlayer;
-import com.sun.istack.internal.NotNull;
 import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.shape.Rectangle;
@@ -106,7 +105,12 @@ public class OthelloItem extends Rectangle {
                 }
             };
 
-
+    /**
+     * Call an override on an item. It changes the color of the item to
+     * the active player and updates the ListView accordingly.
+     *
+     * @param item OthelloItem to override to new color.
+     */
     private void override(OthelloItem item) {
         System.out.println("override "+item);
         item.setPlayer(OthelloBoard.getActivePlayer());
@@ -119,6 +123,9 @@ public class OthelloItem extends Rectangle {
         }
     }
 
+    /**
+     * Set the css color of an OthelloItem
+     */
     private void setColor() {
         if(Objects.equals(player.getColor(), "black")){
             setStyle("-fx-fill: black");
@@ -147,15 +154,6 @@ public class OthelloItem extends Rectangle {
             if(!OthelloBoard.blackItems.contains(this))
                 OthelloBoard.addBlackItem(this);
         }
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if(obj instanceof OthelloItem){
-            OthelloItem item = (OthelloItem) obj;
-            return item.getRow() == getRow() && item.getColumn() == getColumn() && item.getPlayer() == getPlayer();
-        }
-        return false;
     }
 
     /**
@@ -330,6 +328,15 @@ public class OthelloItem extends Rectangle {
         if(hasPlayer())
             return getPositionString()+": "+player.getColor();
         return getPositionString()+": no player";
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if(obj instanceof OthelloItem){
+            OthelloItem item = (OthelloItem) obj;
+            return item.getRow() == getRow() && item.getColumn() == getColumn() && item.getPlayer() == getPlayer();
+        }
+        return false;
     }
 
     /**

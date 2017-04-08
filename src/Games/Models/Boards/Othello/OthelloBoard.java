@@ -278,12 +278,11 @@ public class OthelloBoard {
                     ArrayList<OthelloItem> trackOverrides = new ArrayList<>();
                     trackOverrides.add(neighbour);
                     ArrayList<OthelloItem> overrides = checkMoveInPosition(neighbour,neighbourPosition, trackOverrides);
-                    System.out.println("");
                     System.out.println("overrides with valid item:");
                     System.out.println(overrides);
-                    System.out.println("");
                     if (overrides != null) {
 //                        System.out.println("Valid move at "+validMove.getPositionString());
+
                         // Last item of the array is the valid move
                         OthelloItem validMove = overrides.get(overrides.size()-1);
 

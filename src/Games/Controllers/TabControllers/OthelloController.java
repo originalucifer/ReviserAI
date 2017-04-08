@@ -107,20 +107,28 @@ public class OthelloController {
         statusLabel.setText(status);
     }
 
+    /**
+     * Resets the Othello game when the Reset button is pressed in the Gui.
+     */
     public void resetGame(){
         OthelloBoard.reset();
     }
 
+    /**
+     * Remove a move from the Black ListView.
+     *
+     * @param item OthelloItem to remove
+     */
     public void removeBlackList(OthelloItem item) {
         blackMovesData.remove(item.getPositionString());
     }
 
+    /**
+     * Remove a move from the White ListView.
+     *
+     * @param item OthelloItem to remove
+     */
     public void removeWhiteList(OthelloItem item) {
         whiteMovesData.remove(item.getPositionString());
-    }
-
-    public void showmoves(ActionEvent actionEvent) {
-        System.out.println(OthelloBoard.blackItems);
-        System.out.println(OthelloBoard.whiteItems);
     }
 }
