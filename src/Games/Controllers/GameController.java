@@ -6,6 +6,7 @@ import Games.Models.Factories.PlayerFactory;
 import Games.Models.Players.Player;
 import Games.Models.Boards.TicTacToeBoard;
 import Games.Models.Factories.TicTacToePlayerFactory;
+import javafx.application.Platform;
 
 /**
  * Created by rik on 4/5/17.
@@ -35,11 +36,11 @@ public class GameController implements Runnable{
 
     @Override
     public void run() {
-        System.out.println("herllo");
+
         while (!finished){
 
            nextMove();
-           if (lastMove != null) {
+           if (lastMove != null) {System.out.println("herllo");
                board.receiveMove(lastMove, playerTurn);
            }
            playerTurn = !playerTurn;
@@ -58,6 +59,8 @@ public class GameController implements Runnable{
         }
         if (winner != null){
             endGame();
+            Platform.runLater(() -> gui.gameWon(!playerTurn));
+
         }
     }
 

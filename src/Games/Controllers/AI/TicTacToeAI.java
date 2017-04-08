@@ -45,7 +45,7 @@ public class TicTacToeAI implements AI{
 			i++;
 		}
 
-        controller.set(controller.getButton(sets[point][0], sets[point][1]));
+//        controller.set(controller.getButton(sets[point][0], sets[point][1]));
 
 	}
 

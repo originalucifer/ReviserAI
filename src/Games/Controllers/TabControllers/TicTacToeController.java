@@ -58,20 +58,14 @@ public class TicTacToeController implements GameControls, GameStatusView{
      * @param actionEvent onButtonPressed
      */
     public void boardButtonClickHandler(ActionEvent actionEvent) {
-            Button clickedButton = (Button) actionEvent.getTarget();
-            set(clickedButton);
-//        }
-    }
-
-    public void set(Button clickedButton){
+        Button clickedButton = (Button) actionEvent.getTarget();
         String buttonLabel = clickedButton.getText();
         if("".equals(buttonLabel)){
             pressedButtons.add(clickedButton);
-            System.out.println("set");
             int clickedField = Integer.parseInt(clickedButton.getId().replaceAll("[^0-9]", ""));
             updateBoard(clickedField);
             sendInput(clickedField);
-            checkStatus();
+//            checkStatus();
         } else{
             statusLabel.setText("Illegal move. Choose an empty field.");
         }
@@ -118,7 +112,7 @@ public class TicTacToeController implements GameControls, GameStatusView{
      */
     private void checkStatus(){
         if(board.find3InARow()){
-            gameWon();
+//            gameWon();
         } else if (pressedButtons.size() == 9 && board.isFull()) {
             statusLabel.setText("It's a tie");
         }
@@ -151,15 +145,15 @@ public class TicTacToeController implements GameControls, GameStatusView{
     /**
      * Create new stage to display the winner
      */
-    private void gameWon(){
-        statusLabel.setText("Game ended");
-        Stage stage = new Stage();
-        Label label = new Label();
-        label.setAlignment(Pos.CENTER);
-        label.setFont(new Font(30));
-        Scene scene = new Scene(label,200,100);
-        stage.setScene(scene);
-        stage.show();
+    public void gameWon(boolean winner){
+        statusLabel.setText("Player " + board.getPlayerSignature(winner) + " won the game");
+//        Stage stage = new Stage();
+//        Label label = new Label("Game ended");
+//        label.setAlignment(Pos.CENTER);
+//        label.setFont(new Font(30));
+//        Scene scene = new Scene(statusLabel,200,100);
+//        stage.setScene(scene);
+//        stage.show();
     }
 
     public void updateButton(int col, int row, String value){

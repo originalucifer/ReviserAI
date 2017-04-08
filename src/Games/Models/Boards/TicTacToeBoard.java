@@ -59,7 +59,7 @@ public class TicTacToeBoard implements Board{
         return null;
     }
 
-    private char getPlayerSignature(boolean player){
+    public char getPlayerSignature(boolean player){
         return player ? 'O' : 'X';
     }
 
