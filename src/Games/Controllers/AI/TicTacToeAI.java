@@ -9,176 +9,126 @@ import java.util.ArrayList;
  * Created by rik on 3-4-17.
  */
 public class TicTacToeAI implements AI{
-	private TicTacToeBoard playBoard;
-	private char isPlaying;
-	private char isNotPlaying;
+	private TicTacToeBoard board;
+	private char[] playingField;
+	private char me = 'm';
+	private char opponent = 'e';
+	private char nothing = 'n';
 	private TicTacToeController controller;
 
-	public TicTacToeAI(TicTacToeBoard board, TicTacToeController controller, char isPlaying) {
-		playBoard = board;
-		this.isPlaying = isPlaying;
-		this.controller = controller;
-		isNotPlaying = isPlaying == 'X' ? 'O' : 'X';
-	}
-	public TicTacToeAI() {
-	}
-
-	public void doNextSet(){
-		End end = new End();
-		int[][] sets = getAvailableSets(isPlaying, playBoard.board.clone(), end);
-		if (end.getEnd()) return;
-
-		ArrayList<Integer> values = new ArrayList<>();
-		for (int[] set : sets){
-			char[][] b = playBoard.board.clone();
-			b[set[0]][set[1]] = isPlaying;
-			values.add(minValue(b));
-		}
-		int i = 0;
-		int point = 0;
-		int max = values.get(0);
-		for (int number : values){
-			if (number > max){
-				max = number;
-				point = i;
-			}
-			i++;
-		}
-
-//        controller.set(controller.getButton(sets[point][0], sets[point][1]));
-
-	}
-
-	private int[][] getAvailableSets(char turn, char[][] board, End end){
-		int[][] sets = new int[9][2];
-		int pointer = 0;
-		for (int col = 0; col < 3; col ++) {
-			for (int row = 0; row < 3; row++) {
-				if (isValid(board, col, row)) {
-					sets[pointer][0] = col;
-					sets[pointer][1] = row;
-					pointer++;
-					end.setEnd(false);
-				}
-			}
-		}
-		return sets;
-	}
-
-	private boolean isValid(char[][] board, int col, int row){
-		if (board[col][row] == 'X' || board[col][row] == 'O') {
-			return false;
-		}
-		return true;
-	}
-
-	private int getMaxValue(char[][] board, int[] set){
-return 0;
-	}
-
-	private int[] getMaxSet(char[][] board) {
-		int[][] sets = getAvailableSets(isPlaying, board, new End());
-		int [] values = new int[9];
-		int pointer = 0;
-		for (int[] set : sets){
-			values[pointer] = getMaxValue(board, set);
-			pointer++;
-		}
-		int i = 0;
-		int max = values[0];
-		int maxPoint = 0;
-		for (int value : values) {
-			if (value > max) {
-				maxPoint = i;
-				max = value;
-			}
-			i++;
-		}
-		return sets[maxPoint];
-	}
-
-	private int maxValue(char[][] board){
-		ArrayList<Integer> values = new ArrayList<>();
-
-		End end = new End();
-
-		int[][] sets = getAvailableSets(isPlaying, board, end);
-
-
-		if (playBoard.find3InARow(board)) {
-			return 100;
-		}else if (end.getEnd()){
-			return 50;
-		}
-
-		for (int[] set : sets){
-			char[][] b = board.clone();
-			b[set[0]][set[1]] = isPlaying;
-			values.add(minValue(b));
-		}
-		int max = values.get(0);
-		for (int number : values){
-			if (number > max){
-				max = number;
-			}
-		}
-		return max;
-	}
-
-	private int minValue(char[][] board){
-		ArrayList<Integer> values = new ArrayList<>();
-
-		End end = new End();
-
-		int[][] sets = getAvailableSets(isNotPlaying, board, end);
-
-		if (playBoard.find3InARow(board)) {
-			return -100;
-		}else if (end.getEnd()){
-			return 50;
-		}
-
-		for (int[] set : sets){
-			char[][] b = board.clone();
-			b[set[0]][set[1]] = isNotPlaying;
-			values.add(maxValue(b));
-		}
-		int min = values.get(0);
-		for (int number : values){
-			if (number < min){
-				min = number;
-			}
-		}
-		return min;
-	}
-
-	public int getYourMove() {
-		End end = new End();
-		int[][] sets = getAvailableSets(isPlaying, playBoard.board.clone(), end);
-
-
-		ArrayList<Integer> values = new ArrayList<>();
-		for (int[] set : sets){
-			char[][] b = playBoard.board.clone();
-			b[set[0]][set[1]] = isPlaying;
-			values.add(minValue(b));
-		}
-		int i = 0;
-		int point = 0;
-		int max = values.get(0);
-		for (int number : values){
-			if (number > max){
-				max = number;
-				point = i;
-			}
-			i++;
-		}
-
-		return sets[point][0] * 8 + sets[point][1];
+	public TicTacToeAI(TicTacToeBoard board) {
+		board = board;
+		playingField = new char[9];
+		for (int i = 0; i < 9; i++){
+		    playingField[i] = nothing;
+        }
 	}
 
 	@Override
-	public int getBestMove() {
-		return getYourMove();
+	public int getBestMove(Integer opponentsMove) {
+	    if (opponentsMove != null){
+	        playingField[opponentsMove] = opponent;
+        }
+	    ArrayList<Integer> moves = getAvailableMovesIndex(playingField);
+	    int highValue = 0;
+	    int highMove = 0;
+	    for (int move : moves){
+	        char[] copy = playingField.clone();
+	        copy[move] = me;
+	        int v = getBoardValue(copy, true);
+	        if (v > highValue){
+	            highValue = v;
+	            highMove = move;
+            }
+        }
+        playingField[highMove] = me;
+		return highMove;
 	}
+
+	private int getBoardValue(char[] field, boolean max){
+        ArrayList<Integer> moves = getAvailableMovesIndex(field);
+        switch (getBoardState(field)){
+            case 1: return 100;
+            case 2: return 0;
+            case 3: return 50;
+        }
+
+        int value;
+        if (max){
+            value = -100;
+            int does;
+            for (int move : moves){
+                char[] copy = field.clone();
+                copy[move] = max ? me : opponent;
+                int c = getBoardValue(copy, !max);
+                if (c > value){
+                    value = c;
+                }
+            }
+        }else {
+            value = 200;
+            int does;
+            for (int move : moves){
+                char[] copy = field.clone();
+                copy[move] = max ? me : opponent;
+                int c = getBoardValue(copy, !max);
+                if (c < value){
+                    value = c;
+                }
+            }
+        }
+        return value;
+    }
+
+    /*
+    *states:
+    * 0 = not ended
+    * 1 = me won
+    * 2 = opponent won
+    * 3 = draw
+    */
+    private int getBoardState(char[] field){
+        //column
+	    for (int i = 0; i < 3; i++){
+            if ((field[i] == field[i+3] && field[i] == field[i+6] && field[i] != nothing)) {
+                return field[i] == me ? 1 : 2;
+            }
+        }
+        //row
+        for (int i = 0; i < 7; i += 3){
+	        if (field[i] == field[i+1] && field[i] == field[i+2] && field[i] != nothing){
+                return field[i] == me ? 1 : 2;
+            }
+        }
+        //diagonal
+        if (((field[0] == field[4] && field[0] == field[8])
+                || (field[2] == field[4] && field[2] == field[6]))
+                && field[4] != nothing ) {
+            return field[4] == me ? 1 : 2;
+        }
+        for (int i = 0; i < 9; i++){
+            if (field[i] == nothing){
+                return 0;
+            }
+        }
+        return 3;
+    }
+
+    private ArrayList<Integer> getAvailableMovesIndex(char[] field){
+        ArrayList<Integer> moves = new ArrayList<>();
+        for (int i = 0; i < 9; i++){
+            if (isMoveValid(i, field)){
+                moves.add(i);
+            }
+        }
+        return moves;
+    }
+
+    private boolean isMoveValid(int index, char [] field){
+        if (field[index] == nothing){
+            return true;
+        }
+        return false;
+    }
+
 }

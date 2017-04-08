@@ -26,7 +26,7 @@ public class TicTacToePlayerFactory implements PlayerFactory{
     public Player getPlayer(String kind) {
         switch (kind) {
             case "Player": return new PhysicalPlayer(controls);
-            case "AI": return new AIplayer(new TicTacToeRandom(board));
+            case "AI": return new AIplayer(new TicTacToeAI(board));
         }
         return null;
     }
