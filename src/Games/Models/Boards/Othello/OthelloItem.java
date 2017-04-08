@@ -330,7 +330,19 @@ public class OthelloItem extends Rectangle {
         return getPositionString()+": no player";
     }
 
+    /**
+     * add overrides to this item if its a valid move.
+     *
+     * @param overrides ArrayList with overrides
+     */
     public void setOverrides(ArrayList<OthelloItem> overrides) {
-        this.overrides = overrides;
+        if(this.overrides != null){
+            for (OthelloItem item : overrides) {
+                if(!this.overrides.contains(item))
+                    this.overrides.add(item);
+            }
+        } else {
+            this.overrides = overrides;
+        }
     }
 }
