@@ -89,7 +89,7 @@ public class TicTacToeController implements GameControls, GameStatusView{
                 statusLabel.setText("Choose a player");
             }if (buttonID.equals("StartGame")){
                 if (gameController == null){
-                    PlayerFactory factory = new TicTacToePlayerFactory(this, new TicTacToeRandom(board));
+                    PlayerFactory factory = new TicTacToePlayerFactory(this, board);
                     String playerx = playerX.getSelectionModel().getSelectedItem().toString();
                     String playero = playerO.getSelectionModel().getSelectedItem().toString();
                     gameController = new GameController(playerx, playero, board, factory, this);
@@ -166,13 +166,12 @@ public class TicTacToeController implements GameControls, GameStatusView{
             following = new ArrayList<>();
         }
         following.add(you);
-        System.out.println("follower");
     }
 
     private void sendInput(int index){
         if (following == null) return;
         for (ObserveBoardInput listener : following) {
-            listener.update(index);System.out.println("update"+index);
+            listener.update(index);
         }
     }
 }

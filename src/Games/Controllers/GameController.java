@@ -40,7 +40,7 @@ public class GameController implements Runnable{
         while (!finished){
 
            nextMove();
-           if (lastMove != null) {System.out.println("herllo");
+           if (lastMove != null) {
                board.receiveMove(lastMove, playerTurn);
            }
            playerTurn = !playerTurn;

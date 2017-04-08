@@ -2,6 +2,8 @@ package Games.Controllers.AI;
 
 import Games.Models.Boards.TicTacToeBoard;
 
+import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.Random;
 
 /**
@@ -14,21 +16,17 @@ public class TicTacToeRandom implements AI {
     }
     @Override
     public int getBestMove() {
-        int[][] moves = getAvailableSets();
-        int count = 0;
-        for (int[] move : moves){
-            if (move[0] >= 0 && move[0] <= 2 ){
-                count++;
-            }
-        }
+        ArrayList<Integer> moves = getAvailableMovesIndex();
         Random rand = new Random();
-        int i = rand.nextInt(count-1);
+        int i = rand.nextInt(moves.size()-1);
         System.out.println(i);
-        return moves[i][0];
+//        int index = moves[i][0] + moves[i][1];
+        return moves.get(i);
     }
 
     private int[][] getAvailableSets(){
         int[][] sets = new int[9][2];
+        System.out.println(sets);
         int pointer = 0;
         for (int col = 0; col < 3; col ++) {
             for (int row = 0; row < 3; row++) {
@@ -40,6 +38,24 @@ public class TicTacToeRandom implements AI {
             }
         }
         return sets;
+    }
+
+    private ArrayList<Integer> getAvailableMovesIndex(){
+        ArrayList<Integer> moves = new ArrayList<>();
+        for (int i = 0; i < 9; i++){
+            if (isMoveValid(i)){
+                moves.add(i);
+            }
+        }
+        return moves;
+    }
+
+    private boolean isMoveValid(int index){
+        if (board.board[board.getCol(index)][board.getRow(index)] == 'X' ||
+                board.board[board.getCol(index)][board.getRow(index)] == 'O'){
+            return false;
+        }
+        return true;
     }
 
     private boolean isValid(char[][] board, int col, int row){
