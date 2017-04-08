@@ -59,7 +59,8 @@ public class OthelloItem extends Rectangle {
      * This will make sure the othelloItem is on the front
      * so the shadow will be drawn over the other items;
      */
-    private EventHandler<MouseEvent> othelloItemHover = t -> ((OthelloItem)(t.getSource())).toFront();
+    private EventHandler<MouseEvent> othelloItemHover = t ->
+        ((OthelloItem) (t.getSource())).toFront();
 
     /**
      * Set a nice inner shadow to create the feeling of actually
@@ -77,20 +78,8 @@ public class OthelloItem extends Rectangle {
                 OthelloItem rectangle = ((OthelloItem) (t.getSource()));
                 rectangle.setStyle(disableInnerShadow);
 
-                if(!OthelloBoard.hasStarted()){
-                    OthelloBoard.setStatus("Game hasn't started yet. Pick a color.");
-
-                    /*
-                    * A player can click on 1 of the 4 starting items which will
-                    * result in recoloring the item red. We don't want this.
-                    */
-                    if(hasPlayer()){
-                        setColor();
-                    }
-
-                } else if(hasPlayer()){
-                    setColor();  // Correct the color after clicking
-                    OthelloBoard.setStatus("Illegal move. Try again.");
+                if(!OthelloBoard.validMoves.contains(this)){
+                    OthelloBoard.controller.setStatus("Illegal move! Use the blue indications. "+OthelloBoard.getActivePlayer());
                 } else{
                     setPlayer(OthelloBoard.getActivePlayer());
 

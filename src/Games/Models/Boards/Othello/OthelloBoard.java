@@ -228,7 +228,11 @@ public class OthelloBoard {
                     overrides.add(nextNeighbour);
                 return overrides;
             } else if(!nextNeighbour.getPlayer().equals(activePlayer)){
-                overrides.add(nextNeighbour);
+                if(!overrides.contains(othelloItem)){
+                    overrides.add(othelloItem);
+                } else if(!overrides.contains(nextNeighbour)){
+                    overrides.add(nextNeighbour);
+                }
                 return checkMoveInPosition(nextNeighbour,position, overrides);
             }
         }
