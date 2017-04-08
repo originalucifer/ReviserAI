@@ -35,7 +35,7 @@ public class TicTacToeAI implements AI{
 	    for (int move : moves){
 	        char[] copy = playingField.clone();
 	        copy[move] = me;
-	        int v = getBoardValue(copy, true);
+	        int v = getBoardValue(copy, false);
 	        if (v > highValue){
 	            highValue = v;
 	            highMove = move;
@@ -49,7 +49,7 @@ public class TicTacToeAI implements AI{
         ArrayList<Integer> moves = getAvailableMovesIndex(field);
         switch (getBoardState(field)){
             case 1: return 100;
-            case 2: return 0;
+            case 2: return -100;
             case 3: return 50;
         }
 
