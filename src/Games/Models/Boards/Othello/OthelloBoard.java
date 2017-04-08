@@ -1,15 +1,15 @@
 package Games.Models.Boards.Othello;
 
+import Games.Controllers.TabControllers.OthelloController;
 import Games.Models.OthelloPlayer;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
 import javafx.scene.layout.GridPane;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 
 /**
@@ -24,6 +24,7 @@ public class OthelloBoard {
 
     static boolean started = false;
 
+    static OthelloController controller;
     static GridPane boardView;
     static OthelloPlayer activePlayer;
     static Label statusLabel;
@@ -34,6 +35,9 @@ public class OthelloBoard {
     static OthelloPlayer black;
     static OthelloPlayer white;
 
+    static ListView blackMoves;
+    static ListView whiteMoves;
+
 
     /**
      * Initialize the static OthelloBoard with the gridpane and the status label.
@@ -41,9 +45,9 @@ public class OthelloBoard {
      * @param boardView GridPane to draw items in.
      * @param statusLabel Label to give feedback to the player.
      */
-    public static void initialize(GridPane boardView,Label statusLabel){
-        OthelloBoard.setBoardView(boardView);
-        OthelloBoard.setStatusLabel(statusLabel);
+    public static void initialize(OthelloController controller){
+        OthelloBoard.setBoardView(controller.boardView);
+        OthelloBoard.setStatusLabel(controller.statusLabel);
 
         OthelloBoard.black = new OthelloPlayer("black","BlackPlayer");
         OthelloBoard.white = new OthelloPlayer("white","whitePlayer");
@@ -184,7 +188,7 @@ public class OthelloBoard {
         whiteItems.clear();
         blackItems.clear();
         boardView.getChildren().clear();
-        initialize(boardView,statusLabel);
+        initialize(controller);
     }
 
     /**
@@ -245,15 +249,21 @@ public class OthelloBoard {
      *
      * @param othelloItem which item to check for a move
      * @param position which direction to check for this item
-     * @return OthelloItem where the player can make a legit move or null.
+     * @param overrides ArrayList with the items we will override with this move
+     * @return ArrayList with items that will be taken where the last item is a legit move.
      */
-    public static OthelloItem checkMoveInPosition(OthelloItem othelloItem, String position){
+    public static ArrayList<OthelloItem> checkMoveInPosition(OthelloItem othelloItem, String position, ArrayList<OthelloItem> overrides){
+
+//        System.out.println("Checking "+othelloItem.getPositionString()+" to the "+position);
+
         OthelloItem nextNeighbour = getDirectionNeighbour(othelloItem,position);
         if(nextNeighbour != null){
             if(!nextNeighbour.hasPlayer()){
-                return nextNeighbour; // empty space after nextNeighbour means a valid move
+                overrides.add(nextNeighbour);
+                return overrides;
             } else if(!nextNeighbour.getPlayer().equals(activePlayer)){
-                return checkMoveInPosition(nextNeighbour,position);
+                overrides.add(othelloItem);
+                return checkMoveInPosition(nextNeighbour,position, overrides);
             }
         }
         return null;
@@ -285,24 +295,26 @@ public class OthelloBoard {
             String neighbourPosition = neighbourMap.getKey();
             OthelloItem neighbour = neighbourMap.getValue();
 
-            if(!neighbour.hasPlayer()){
-                // Empty place to put an item.
-                System.out.println("Empty at "+neighbourPosition);
-            } else{
+            if (neighbour.hasPlayer()) {
                 //found a neighbour
-                System.out.println("Neighbour at "+neighbourPosition+" "+neighbour.getPlayer().getColor());
+//                System.out.println("Neighbour at "+neighbourPosition+" "+neighbour.getPlayer().getColor());
 
                 if(!neighbour.getPlayer().equals(activePlayer)) {
-                    OthelloItem validMove = checkMoveInPosition(neighbour,neighbourPosition);
-                    if(validMove == null){
-                        System.out.println("no place on the "+neighbourPosition);
+                    ArrayList<OthelloItem> overrides = new ArrayList<>();
+                    ArrayList<OthelloItem> results = checkMoveInPosition(neighbour,neighbourPosition, overrides);
+                    if(results == null){
+//                        System.out.println("no place on the "+neighbourPosition);
                         break;
                     }else {
-                        System.out.println("Valid move at "+validMove.getPositionString());
+//                        System.out.println("Valid move at "+validMove.getPositionString());
+                        OthelloItem validMove = results.get(results.size()-1);
                         validMove.setStyle("-fx-fill: blue;");
                         validMoves.add(validMove);
                     }
                 }
+            } else {
+                // Empty place to put an item.
+//                System.out.println("Empty at "+neighbourPosition);
             }
         }
 
@@ -332,7 +344,7 @@ public class OthelloBoard {
     }
 
     /**
-     * Add a OthelloItem from the white player to the board.
+     * Add a OthelloItem from the white 1player to the board.
      *
      * @param othelloItem OthelloItem to add.
      */
@@ -346,6 +358,19 @@ public class OthelloBoard {
      * @param othelloItem OthelloItem to add.
      */
     public static void addBlackItem(OthelloItem othelloItem){
+        if(blackMoves != null){
+
+            ObservableList moves = blackMoves.getItems();
+
+            if(moves == null)
+                moves = (ObservableList) new ArrayList();
+
+            Label item = new Label(othelloItem.getPositionString());
+            moves.add(item);
+            blackMoves.setItems(moves);
+
+        }
+
         blackItems.add(othelloItem);
     }
 

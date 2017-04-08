@@ -5,6 +5,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
 import javafx.scene.layout.GridPane;
 
 /**
@@ -20,9 +21,11 @@ public class OthelloController {
 
     @FXML
     public GridPane boardView;
+    public ListView blackMoves;
+    public ListView whiteMoves;
 
     public void initialize(){
-        OthelloBoard.initialize(boardView,statusLabel);
+        OthelloBoard.initialize(this);
     }
 
     /**

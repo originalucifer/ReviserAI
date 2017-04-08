@@ -7,7 +7,13 @@
 <Tab text="Othello" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Games.Controllers.TabControllers.OthelloController">
     <VBox prefHeight="480.0" prefWidth="720.0" stylesheets="@../../Style/Othello.css" alignment="CENTER">
 
+
         <HBox prefHeight="370" prefWidth="720" style="-fx-border-color: black; -fx-border-width: 0px" alignment="CENTER">
+            <VBox>
+                <Label text="White"/>
+                <ListView fx:id="whiteMoves">
+                </ListView>
+            </VBox>
 
             <VBox styleClass="coordinates" fx:id="yCoordinates">
                 <Label/> <!-- empty label to move y coordinates 1 unit down -->
@@ -35,6 +41,15 @@
 
                 <GridPane fx:id="boardView" alignment="TOP_CENTER" prefHeight="200.0" prefWidth="250.0" >
                 </GridPane>
+            </VBox>
+            <VBox styleClass="coordinates" fx:id="yCoordinates">
+                <Label/> <!-- empty label To space listview -->
+            </VBox>
+
+            <VBox>
+                <Label text="Black"/>
+                <ListView fx:id="blackMoves">
+                </ListView>
             </VBox>
         </HBox>
 
