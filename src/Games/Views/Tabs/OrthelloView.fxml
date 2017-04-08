@@ -9,31 +9,31 @@
 
         <HBox prefHeight="370" prefWidth="720" style="-fx-border-color: black; -fx-border-width: 0px" alignment="CENTER">
 
-            <VBox style="-fx-border-color: black; -fx-border-width: 0px" fx:id="yCoordinates">
-                <Label prefWidth="31" prefHeight="31" style="-fx-padding: 0 0 0 11;"/>
-                <Label prefWidth="31" prefHeight="31" style="-fx-padding: 0 0 0 11;" text="0"/>
-                <Label prefWidth="31" prefHeight="31" style="-fx-padding: 0 0 0 11;" text="1"/>
-                <Label prefWidth="31" prefHeight="31" style="-fx-padding: 0 0 0 11;" text="2"/>
-                <Label prefWidth="31" prefHeight="31" style="-fx-padding: 0 0 0 11;" text="3"/>
-                <Label prefWidth="31" prefHeight="31" style="-fx-padding: 0 0 0 11;" text="4"/>
-                <Label prefWidth="31" prefHeight="31" style="-fx-padding: 0 0 0 11;" text="5"/>
-                <Label prefWidth="31" prefHeight="31" style="-fx-padding: 0 0 0 11;" text="6"/>
-                <Label prefWidth="31" prefHeight="31" style="-fx-padding: 0 0 0 11;" text="7"/>
+            <VBox styleClass="coordinates" fx:id="yCoordinates">
+                <Label/> <!-- empty label to move y coordinates 1 unit down -->
+                <Label text="0"/>
+                <Label text="1"/>
+                <Label text="2"/>
+                <Label text="3"/>
+                <Label text="4"/>
+                <Label text="5"/>
+                <Label text="6"/>
+                <Label text="7"/>
             </VBox>
 
-            <VBox prefWidth="250" style="-fx-border-color: black; -fx-border-width: 0px">
-                <HBox prefWidth="250" prefHeight="31" style="-fx-border-color: black; -fx-border-width: 0px" fx:id="xCoordinates">
-                    <Label prefWidth="31" prefHeight="31" style="-fx-padding: 0 0 0 11;" text="0"/>
-                    <Label prefWidth="31" prefHeight="31" style="-fx-padding: 0 0 0 11;" text="1"/>
-                    <Label prefWidth="31" prefHeight="31" style="-fx-padding: 0 0 0 11;" text="2"/>
-                    <Label prefWidth="31" prefHeight="31" style="-fx-padding: 0 0 0 11;" text="3"/>
-                    <Label prefWidth="31" prefHeight="31" style="-fx-padding: 0 0 0 11;" text="4"/>
-                    <Label prefWidth="31" prefHeight="31" style="-fx-padding: 0 0 0 11;" text="5"/>
-                    <Label prefWidth="31" prefHeight="31" style="-fx-padding: 0 0 0 11;" text="6"/>
-                    <Label prefWidth="31" prefHeight="31" style="-fx-padding: 0 0 0 11;" text="7"/>
+            <VBox prefWidth="250" >
+                <HBox prefWidth="250" prefHeight="31" styleClass="coordinates" fx:id="xCoordinates">
+                    <Label text="0"/>
+                    <Label text="1"/>
+                    <Label text="2"/>
+                    <Label text="3"/>
+                    <Label text="4"/>
+                    <Label text="5"/>
+                    <Label text="6"/>
+                    <Label text="7"/>
                 </HBox>
 
-                <GridPane fx:id="boardView" alignment="TOP_CENTER" prefHeight="200.0" prefWidth="250.0" style="-fx-border-color: black; -fx-border-width: 0px">
+                <GridPane fx:id="boardView" alignment="TOP_CENTER" prefHeight="200.0" prefWidth="250.0" >
                 </GridPane>
             </VBox>
         </HBox>
