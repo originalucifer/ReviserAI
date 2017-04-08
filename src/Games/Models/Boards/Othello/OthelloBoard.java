@@ -2,15 +2,11 @@ package Games.Models.Boards.Othello;
 
 import Games.Controllers.TabControllers.OthelloController;
 import Games.Models.OthelloPlayer;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import javafx.scene.Node;
-import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
-import javafx.scene.layout.GridPane;
 
-import java.util.*;
-
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
 
 /**
  * Class OthelloBoard
@@ -31,9 +27,6 @@ public class OthelloBoard {
     public static ArrayList<OthelloItem> whiteItems = new ArrayList<>();
     static ArrayList<OthelloItem> validMoves = new ArrayList<>();
     static ArrayList<OthelloItem> overrides = new ArrayList<>();
-
-    static ObservableList<Label> whiteListViewData ;
-    static ObservableList<Label> blackListViewData ;
 
     static OthelloPlayer black;
     static OthelloPlayer white;
