@@ -30,6 +30,7 @@ public class OthelloBoard {
     public static ArrayList<OthelloItem> blackItems = new ArrayList<>();
     public static ArrayList<OthelloItem> whiteItems = new ArrayList<>();
     static ArrayList<OthelloItem> validMoves = new ArrayList<>();
+    static ArrayList<OthelloItem> overrides = new ArrayList<>();
 
     static ObservableList<Label> whiteListViewData ;
     static ObservableList<Label> blackListViewData ;
@@ -39,7 +40,7 @@ public class OthelloBoard {
 
 
     /**
-     * Initialize the static OthelloBoard with the gridpane and the status label.
+     * Initialize the static OthelloBoard with the OthelloController.
      *
      * @param controller FXML controller for the GUI
      */
@@ -273,25 +274,28 @@ public class OthelloBoard {
             OthelloItem neighbour = neighbourMap.getValue();
 
             if (neighbour.hasPlayer()) {
-                //found a neighbour
-//                System.out.println("Neighbour at "+neighbourPosition+" "+neighbour.getPlayer().getColor());
-
                 if(!neighbour.getPlayer().equals(activePlayer)) {
-                    ArrayList<OthelloItem> overrides = new ArrayList<>();
-                    ArrayList<OthelloItem> results = checkMoveInPosition(neighbour,neighbourPosition, overrides);
-                    if(results == null){
-//                        System.out.println("no place on the "+neighbourPosition);
-                        break;
-                    }else {
+                    ArrayList<OthelloItem> trackOverrides = new ArrayList<>();
+                    trackOverrides.add(neighbour);
+                    ArrayList<OthelloItem> overrides = checkMoveInPosition(neighbour,neighbourPosition, trackOverrides);
+                    System.out.println("");
+                    System.out.println("overrides with valid item:");
+                    System.out.println(overrides);
+                    System.out.println("");
+                    if (overrides != null) {
 //                        System.out.println("Valid move at "+validMove.getPositionString());
-                        OthelloItem validMove = results.get(results.size()-1);
+                        // Last item of the array is the valid move
+                        OthelloItem validMove = overrides.get(overrides.size()-1);
+
+                        // We remove the valid move so we are left with the overrides
+                        overrides.remove(validMove);
+
+                        validMove.setOverrides(overrides);
+
                         validMove.setStyle("-fx-fill: blue;");
                         validMoves.add(validMove);
                     }
                 }
-            } else {
-                // Empty place to put an item.
-//                System.out.println("Empty at "+neighbourPosition);
             }
         }
     }

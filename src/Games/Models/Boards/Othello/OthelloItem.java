@@ -6,6 +6,7 @@ import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.shape.Rectangle;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Objects;
 
@@ -25,6 +26,7 @@ public class OthelloItem extends Rectangle {
     private int column;
     private int row;
     private OthelloPlayer player;
+    private ArrayList<OthelloItem> overrides;
 
     OthelloItem(int column, int row) {
         this.column = column;
@@ -90,9 +92,30 @@ public class OthelloItem extends Rectangle {
                     OthelloBoard.setStatus("Illegal move. Try again.");
                 } else{
                     setPlayer(OthelloBoard.getActivePlayer());
+
+                    // override the other players items if necessary
+                    if(overrides != null){
+                        for (OthelloItem item : overrides) {
+                            override(item);
+                        }
+                    }
+
                     OthelloBoard.nextTurn();
                 }
             };
+
+
+    private void override(OthelloItem item) {
+        System.out.println("override "+item);
+        item.setPlayer(OthelloBoard.getActivePlayer());
+        if(Objects.equals(OthelloBoard.getActivePlayer().getColor(), "white")){
+            OthelloBoard.blackItems.remove(item);
+            OthelloBoard.whiteItems.add(item);
+        } else {
+            OthelloBoard.blackItems.add(item);
+            OthelloBoard.whiteItems.remove(item);
+        }
+    }
 
     private void setColor() {
         if(Objects.equals(player.getColor(), "black")){
@@ -110,17 +133,17 @@ public class OthelloItem extends Rectangle {
     public void setPlayer(OthelloPlayer player) {
         this.player = player;
         if(Objects.equals(player.getColor(), "white")){
+            setStyle("-fx-fill: white;");
+
             // Prevent duplicates
-            if(!OthelloBoard.whiteItems.contains(this)) {
-                setStyle("-fx-fill: white;");
+            if(!OthelloBoard.whiteItems.contains(this))
                 OthelloBoard.addWhiteItem(this);
-            }
         } else {
+            setStyle("-fx-fill: black;");
+
             // Prevent duplicates
-            if(!OthelloBoard.blackItems.contains(this)){
-                setStyle("-fx-fill: black;");
+            if(!OthelloBoard.blackItems.contains(this))
                 OthelloBoard.addBlackItem(this);
-            }
         }
     }
 
@@ -297,11 +320,17 @@ public class OthelloItem extends Rectangle {
      * @return String with the Row and Column in a human fashion
      */
     public String getPositionString(){
-        return getRow() + ":" + getColumn();
+        return getColumn() + ":" + getRow();
     }
 
     @Override
     public String toString() {
-        return getPositionString()+": "+player.getColor();
+        if(hasPlayer())
+            return getPositionString()+": "+player.getColor();
+        return getPositionString()+": no player";
+    }
+
+    public void setOverrides(ArrayList<OthelloItem> overrides) {
+        this.overrides = overrides;
     }
 }
