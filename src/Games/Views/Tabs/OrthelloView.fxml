@@ -59,6 +59,7 @@
                 <Button text="White" id="white" onAction="#pickColor" styleClass="actionButton" alignment="BASELINE_LEFT"/>
                 <Button text="Black" id="black" onAction="#pickColor" styleClass="actionButton" alignment="BASELINE_LEFT"/>
                 <Button text="Reset Game" id="reset" onAction="#resetGame" styleClass="actionButton" alignment="BASELINE_RIGHT"/>
+                <Button text="moves" id="reset" onAction="#showmoves" styleClass="actionButton" alignment="BASELINE_RIGHT"/>
             </HBox>
             <Label text="Choose a player" fx:id="statusLabel" styleClass="statusLabel"/>
         </VBox>

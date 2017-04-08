@@ -110,4 +110,17 @@ public class OthelloController {
     public void resetGame(){
         OthelloBoard.reset();
     }
+
+    public void removeBlackList(OthelloItem item) {
+        blackMovesData.remove(item.getPositionString());
+    }
+
+    public void removeWhiteList(OthelloItem item) {
+        whiteMovesData.remove(item.getPositionString());
+    }
+
+    public void showmoves(ActionEvent actionEvent) {
+        System.out.println(OthelloBoard.blackItems);
+        System.out.println(OthelloBoard.whiteItems);
+    }
 }

@@ -10,6 +10,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Objects;
 
+import static Games.Models.Boards.Othello.OthelloBoard.controller;
+
 /**
  * Class OthelloItem
  *
@@ -110,10 +112,10 @@ public class OthelloItem extends Rectangle {
         item.setPlayer(OthelloBoard.getActivePlayer());
         if(Objects.equals(OthelloBoard.getActivePlayer().getColor(), "white")){
             OthelloBoard.blackItems.remove(item);
-            OthelloBoard.whiteItems.add(item);
+            controller.removeBlackList(item);
         } else {
-            OthelloBoard.blackItems.add(item);
             OthelloBoard.whiteItems.remove(item);
+            controller.removeWhiteList(item);
         }
     }
 
@@ -164,7 +166,7 @@ public class OthelloItem extends Rectangle {
      */
     OthelloItem getLeftNeighbour(){
         if(column > 0) {
-            return OthelloBoard.controller.getOthelloItemByLocation(row, column-1);
+            return controller.getOthelloItemByLocation(row, column-1);
         } else{
             return null;
         }
@@ -178,7 +180,7 @@ public class OthelloItem extends Rectangle {
      */
     OthelloItem getRightNeighbour() {
         if(column < (OthelloBoard.getBoardSize() -1)) {
-            return OthelloBoard.controller.getOthelloItemByLocation(row, column+1);
+            return controller.getOthelloItemByLocation(row, column+1);
         } else{
             return null;
         }
@@ -192,7 +194,7 @@ public class OthelloItem extends Rectangle {
      */
     OthelloItem getTopLeftNeighbour(){
         if(row > 0 && column > 0) {
-            return OthelloBoard.controller.getOthelloItemByLocation(row-1, column-1);
+            return controller.getOthelloItemByLocation(row-1, column-1);
         } else{
             return null;
         }
@@ -206,7 +208,7 @@ public class OthelloItem extends Rectangle {
      */
     OthelloItem getTopRightNeighbour(){
         if(row > 0 && column < (OthelloBoard.getBoardSize() -1)) {
-            return OthelloBoard.controller.getOthelloItemByLocation(row-1, column+1);
+            return controller.getOthelloItemByLocation(row-1, column+1);
         } else{
             return null;
         }
@@ -220,7 +222,7 @@ public class OthelloItem extends Rectangle {
      */
     OthelloItem getTopNeighbour(){
         if(row > 0) {
-            return OthelloBoard.controller.getOthelloItemByLocation(row-1, column);
+            return controller.getOthelloItemByLocation(row-1, column);
         } else{
             return null;
         }
@@ -234,7 +236,7 @@ public class OthelloItem extends Rectangle {
      */
     OthelloItem getBottomNeighbour(){
         if(row < (OthelloBoard.getBoardSize()-1)) {
-            return OthelloBoard.controller.getOthelloItemByLocation(row+1, column);
+            return controller.getOthelloItemByLocation(row+1, column);
         } else{
             return null;
         }
@@ -248,7 +250,7 @@ public class OthelloItem extends Rectangle {
      */
     OthelloItem getBottomRightNeighbour(){
         if(row < (OthelloBoard.getBoardSize()-1) && column < (OthelloBoard.getBoardSize() -1)) {
-            return OthelloBoard.controller.getOthelloItemByLocation(row+1, column+1);
+            return controller.getOthelloItemByLocation(row+1, column+1);
         } else{
             return null;
         }
@@ -262,7 +264,7 @@ public class OthelloItem extends Rectangle {
      */
     OthelloItem getBottomLeftNeighbour(){
         if(row < (OthelloBoard.getBoardSize()-1) && column > 0) {
-            return OthelloBoard.controller.getOthelloItemByLocation(row+1, column-1);
+            return controller.getOthelloItemByLocation(row+1, column-1);
         } else{
             return null;
         }
