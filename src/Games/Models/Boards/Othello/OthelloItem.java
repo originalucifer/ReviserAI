@@ -92,12 +92,6 @@ public class OthelloItem extends Rectangle {
                     setPlayer(OthelloBoard.getActivePlayer());
                     OthelloBoard.nextTurn();
                 }
-                System.out.println("");
-                System.out.println("Black");
-                System.out.println(OthelloBoard.blackItems);
-                System.out.println("");
-                System.out.println("White");
-                System.out.println(OthelloBoard.whiteItems);
             };
 
     private void setColor() {

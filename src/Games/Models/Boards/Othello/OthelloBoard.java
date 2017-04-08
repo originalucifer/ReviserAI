@@ -27,8 +27,8 @@ public class OthelloBoard {
     static OthelloController controller;
     static OthelloPlayer activePlayer;
 
-    static ArrayList<OthelloItem> blackItems = new ArrayList<>();
-    static ArrayList<OthelloItem> whiteItems = new ArrayList<>();
+    public static ArrayList<OthelloItem> blackItems = new ArrayList<>();
+    public static ArrayList<OthelloItem> whiteItems = new ArrayList<>();
     static ArrayList<OthelloItem> validMoves = new ArrayList<>();
 
     static ObservableList<Label> whiteListViewData ;
@@ -61,7 +61,6 @@ public class OthelloBoard {
      */
     public static void startGame(){
         started = true;
-        setActivePlayer(activePlayer);
     }
 
     /**
