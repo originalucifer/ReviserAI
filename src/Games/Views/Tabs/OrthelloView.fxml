@@ -5,10 +5,38 @@
 
 <?import javafx.scene.shape.Rectangle?>
 <Tab text="Othello" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Games.Controllers.TabControllers.OthelloController">
-    <VBox prefHeight="480.0" prefWidth="720.0" stylesheets="@../../Style/Othello.css">
+    <VBox prefHeight="480.0" prefWidth="720.0" stylesheets="@../../Style/Othello.css" alignment="CENTER">
 
-        <GridPane fx:id="boardView" alignment="CENTER" prefHeight="370.0" prefWidth="370.0" >
-        </GridPane>
+        <HBox prefHeight="370" prefWidth="720" style="-fx-border-color: black; -fx-border-width: 0px" alignment="CENTER">
+
+            <VBox style="-fx-border-color: black; -fx-border-width: 0px" fx:id="yCoordinates">
+                <Label prefWidth="31" prefHeight="31" style="-fx-padding: 0 0 0 11;"/>
+                <Label prefWidth="31" prefHeight="31" style="-fx-padding: 0 0 0 11;" text="0"/>
+                <Label prefWidth="31" prefHeight="31" style="-fx-padding: 0 0 0 11;" text="1"/>
+                <Label prefWidth="31" prefHeight="31" style="-fx-padding: 0 0 0 11;" text="2"/>
+                <Label prefWidth="31" prefHeight="31" style="-fx-padding: 0 0 0 11;" text="3"/>
+                <Label prefWidth="31" prefHeight="31" style="-fx-padding: 0 0 0 11;" text="4"/>
+                <Label prefWidth="31" prefHeight="31" style="-fx-padding: 0 0 0 11;" text="5"/>
+                <Label prefWidth="31" prefHeight="31" style="-fx-padding: 0 0 0 11;" text="6"/>
+                <Label prefWidth="31" prefHeight="31" style="-fx-padding: 0 0 0 11;" text="7"/>
+            </VBox>
+
+            <VBox prefWidth="250" style="-fx-border-color: black; -fx-border-width: 0px">
+                <HBox prefWidth="250" prefHeight="31" style="-fx-border-color: black; -fx-border-width: 0px" fx:id="xCoordinates">
+                    <Label prefWidth="31" prefHeight="31" style="-fx-padding: 0 0 0 11;" text="0"/>
+                    <Label prefWidth="31" prefHeight="31" style="-fx-padding: 0 0 0 11;" text="1"/>
+                    <Label prefWidth="31" prefHeight="31" style="-fx-padding: 0 0 0 11;" text="2"/>
+                    <Label prefWidth="31" prefHeight="31" style="-fx-padding: 0 0 0 11;" text="3"/>
+                    <Label prefWidth="31" prefHeight="31" style="-fx-padding: 0 0 0 11;" text="4"/>
+                    <Label prefWidth="31" prefHeight="31" style="-fx-padding: 0 0 0 11;" text="5"/>
+                    <Label prefWidth="31" prefHeight="31" style="-fx-padding: 0 0 0 11;" text="6"/>
+                    <Label prefWidth="31" prefHeight="31" style="-fx-padding: 0 0 0 11;" text="7"/>
+                </HBox>
+
+                <GridPane fx:id="boardView" alignment="TOP_CENTER" prefHeight="200.0" prefWidth="250.0" style="-fx-border-color: black; -fx-border-width: 0px">
+                </GridPane>
+            </VBox>
+        </HBox>
 
         <VBox prefHeight="80" styleClass="statusBox" alignment="BOTTOM_CENTER">
             <HBox prefHeight="15" styleClass="actionBox" spacing="5">
