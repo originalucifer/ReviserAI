@@ -241,26 +241,40 @@ public class OthelloBoard {
     }
 
     /**
-     * Update valid moves for a certain color.
+     * Update valid moves for a certain color. Checks if there are'nt any moves left
+     * for the players individually.
      *
      * @param othelloItems list with items that are placed by a color (black or white)
      */
     public static void updateValidMoves(ArrayList<OthelloItem> othelloItems){
+
         for (OthelloItem othelloItem : othelloItems) {
             drawValidMoveFromItem(othelloItem);
         }
 
-        if(validMoves.size() < 1){
-            System.out.println("ALERT OPENING");
+        int totalItems = blackItems.size() + whiteItems.size();
+
+        if(totalItems >= boardSize*boardSize){
+            gameOver();
+        } else if(validMoves.size() < 1){
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Information Dialog");
             alert.setHeaderText("No more moves for "+activePlayer.getName());
             alert.setContentText(activePlayer.getName()+" will have to pass!");
             alert.showAndWait();
-
             nextTurn();
         }
 
+    }
+
+    private static void gameOver() {
+        started = false;
+        if(whiteItems.size() == blackItems.size())
+            setStatus("Game Over. It's a draw!");
+        else if (whiteItems.size() > blackItems.size())
+            setStatus("Game Over. "+white.getName()+" wins!");
+        else
+            setStatus("Game Over. "+black.getName()+" wins!");
     }
 
     /**
