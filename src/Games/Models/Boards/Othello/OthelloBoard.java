@@ -25,34 +25,30 @@ public class OthelloBoard {
     static boolean started = false;
 
     static OthelloController controller;
-    static GridPane boardView;
     static OthelloPlayer activePlayer;
-    static Label statusLabel;
+
     static ArrayList<OthelloItem> blackItems = new ArrayList<>();
     static ArrayList<OthelloItem> whiteItems = new ArrayList<>();
     static ArrayList<OthelloItem> validMoves = new ArrayList<>();
 
+    static ObservableList<String> whiteListViewData ;
+    static ObservableList<String> blackListViewData ;
+
     static OthelloPlayer black;
     static OthelloPlayer white;
-
-    static ListView blackMoves;
-    static ListView whiteMoves;
 
 
     /**
      * Initialize the static OthelloBoard with the gridpane and the status label.
      *
-     * @param boardView GridPane to draw items in.
-     * @param statusLabel Label to give feedback to the player.
+     * @param controller FXML controller for the GUI
      */
     public static void initialize(OthelloController controller){
-        OthelloBoard.setBoardView(controller.boardView);
-        OthelloBoard.setStatusLabel(controller.statusLabel);
-
+        OthelloBoard.controller = controller;
         OthelloBoard.black = new OthelloPlayer("black","BlackPlayer");
         OthelloBoard.white = new OthelloPlayer("white","whitePlayer");
 
-        setStatus("Pick a color.");
+        controller.setStatus("Pick a color.");
         draw();
     }
 
@@ -84,7 +80,7 @@ public class OthelloBoard {
         else
             updateValidMoves(whiteItems);
 
-        setStatus(player.getName()+" is next.");
+        controller.setStatus(player.getName()+" is next.");
     }
 
     /**
@@ -136,7 +132,7 @@ public class OthelloBoard {
                     addBlackItem(othelloItem);
                 }
 
-                boardView.add(othelloItem,column,row);
+                controller.boardView.add(othelloItem,column,row);
             }
         }
     }
@@ -151,33 +147,6 @@ public class OthelloBoard {
     }
 
     /**
-     * Set the GridPane for the OthelloBoard from the OthelloController.
-     *
-     * @param boardView GridPane where we can draw the items in.
-     */
-    public static void setBoardView(GridPane boardView) {
-        OthelloBoard.boardView = boardView;
-    }
-
-    /**
-     * Set the status in the GUI for the player.
-     *
-     * @param status String with current status of the game.
-     */
-    public static void setStatus(String status){
-        statusLabel.setText(status);
-    }
-
-    /**
-     * Set the Label for the OthelloBoard to set a status String in .
-     *
-     * @param statusLabel where we can set the status text.
-     */
-    public static void setStatusLabel(Label statusLabel) {
-        OthelloBoard.statusLabel = statusLabel;
-    }
-
-    /**
      * Clear the board and all necessary properties then recall the initialize.
      * This will reuse the GridPane and StatusLabel
      */
@@ -187,7 +156,7 @@ public class OthelloBoard {
         validMoves.clear();
         whiteItems.clear();
         blackItems.clear();
-        boardView.getChildren().clear();
+        controller.boardView.getChildren().clear();
         initialize(controller);
     }
 
@@ -199,7 +168,6 @@ public class OthelloBoard {
             setActivePlayer(white);
         else
             setActivePlayer(black);
-
     }
 
     /**
@@ -282,6 +250,15 @@ public class OthelloBoard {
     }
 
     /**
+     * Set the status in the GUI for the player.
+     *
+     * @param status String with current status of the game.
+     */
+    public static void setStatus(String status){
+        controller.statusLabel.setText(status);
+    }
+
+    /**
      * Create blue OthelloItems that shows the player where he/she can
      * make legit moves.
      *
@@ -323,27 +300,6 @@ public class OthelloBoard {
     }
 
     /**
-     * Get a OthelloItem from the GridPane
-     *
-     * @param row which row to get the OthelloItem from.
-     * @param column which column to get the OthelloItem from.
-     * @return OthelloItem on the given row and column.
-     */
-    public static OthelloItem getOthelloItemByLocation (final int row, final int column) {
-        OthelloItem result = null;
-        ObservableList<Node> childrens = boardView.getChildren();
-
-        for (Node node : childrens) {
-            if(boardView.getRowIndex(node) == row && boardView.getColumnIndex(node) == column) {
-                result = (OthelloItem) node;
-                break;
-            }
-        }
-
-        return result;
-    }
-
-    /**
      * Add a OthelloItem from the white 1player to the board.
      *
      * @param othelloItem OthelloItem to add.
@@ -358,19 +314,6 @@ public class OthelloBoard {
      * @param othelloItem OthelloItem to add.
      */
     public static void addBlackItem(OthelloItem othelloItem){
-        if(blackMoves != null){
-
-            ObservableList moves = blackMoves.getItems();
-
-            if(moves == null)
-                moves = (ObservableList) new ArrayList();
-
-            Label item = new Label(othelloItem.getPositionString());
-            moves.add(item);
-            blackMoves.setItems(moves);
-
-        }
-
         blackItems.add(othelloItem);
     }
 
