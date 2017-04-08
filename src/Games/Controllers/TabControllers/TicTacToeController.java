@@ -1,6 +1,7 @@
 package Games.Controllers.TabControllers;
 
 import Games.Controllers.AI.TicTacToeAI;
+import Games.Controllers.AI.TicTacToeRandom;
 import Games.Controllers.GameController;
 import Games.Controllers.ObserveBoardInput;
 import Games.Models.Boards.TicTacToeBoard;
@@ -88,7 +89,7 @@ public class TicTacToeController implements GameControls, GameStatusView{
                 statusLabel.setText("Choose a player");
             }if (buttonID.equals("StartGame")){
                 if (gameController == null){
-                    PlayerFactory factory = new TicTacToePlayerFactory(this, new TicTacToeAI(board, this, 'X'));
+                    PlayerFactory factory = new TicTacToePlayerFactory(this, new TicTacToeRandom(board));
                     String playerx = playerX.getSelectionModel().getSelectedItem().toString();
                     String playero = playerO.getSelectionModel().getSelectedItem().toString();
                     gameController = new GameController(playerx, playero, board, factory, this);

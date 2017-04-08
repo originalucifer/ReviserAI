@@ -121,7 +121,7 @@ public class TicTacToeBoard implements Board{
     public void receiveMove(int move, boolean player){
         updateBoard(move, player);
         Platform.runLater(() -> {
-            gui.getButton(getCol(move), getRow(move)).setText(String.valueOf(getPlayerSignature(player)));//
+            gui.getButton(getCol(move), getRow(move)).setText(String.valueOf(getPlayerSignature(player)));
         });
 
     }
