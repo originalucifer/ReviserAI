@@ -2,11 +2,15 @@ package Games.Models.Boards.Othello;
 
 import Games.Controllers.TabControllers.OthelloController;
 import Games.Models.OthelloPlayer;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.scene.Node;
+import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
+import javafx.scene.layout.GridPane;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
+
 
 /**
  * Class OthelloBoard
@@ -221,10 +225,10 @@ public class OthelloBoard {
         OthelloItem nextNeighbour = getDirectionNeighbour(othelloItem,position);
         if(nextNeighbour != null){
             if(!nextNeighbour.hasPlayer()){
-                overrides.add(nextNeighbour);
+                    overrides.add(nextNeighbour);
                 return overrides;
             } else if(!nextNeighbour.getPlayer().equals(activePlayer)){
-                overrides.add(othelloItem);
+                overrides.add(nextNeighbour);
                 return checkMoveInPosition(nextNeighbour,position, overrides);
             }
         }
@@ -239,6 +243,9 @@ public class OthelloBoard {
     public static void updateValidMoves(ArrayList<OthelloItem> othelloItems){
         for (OthelloItem othelloItem : othelloItems) {
             drawValidMoveFromItem(othelloItem);
+            if(validMoves.size() < 1){
+                System.out.println("No more moves for "+activePlayer);
+            }
         }
 
     }
