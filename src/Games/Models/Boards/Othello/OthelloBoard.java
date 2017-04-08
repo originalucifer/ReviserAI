@@ -69,6 +69,7 @@ public class OthelloBoard {
      */
     public static void setActivePlayer(OthelloPlayer player){
         OthelloBoard.activePlayer = player;
+        controller.setStatus(player.getName()+" is next.");
 
         // Clear the valid moves block.
         removeValidMoves();
@@ -79,7 +80,6 @@ public class OthelloBoard {
         else
             updateValidMoves(whiteItems);
 
-        controller.setStatus(player.getName()+" is next.");
     }
 
     /**
@@ -257,6 +257,7 @@ public class OthelloBoard {
             alert.setHeaderText("No more moves for "+activePlayer.getName());
             alert.setContentText(activePlayer.getName()+" will have to pass!");
             alert.showAndWait();
+
             nextTurn();
         }
 
