@@ -5,6 +5,7 @@ import Games.Models.OthelloPlayer;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.Node;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.GridPane;
@@ -247,9 +248,16 @@ public class OthelloBoard {
     public static void updateValidMoves(ArrayList<OthelloItem> othelloItems){
         for (OthelloItem othelloItem : othelloItems) {
             drawValidMoveFromItem(othelloItem);
-            if(validMoves.size() < 1){
-                System.out.println("No more moves for "+activePlayer);
-            }
+        }
+
+        if(validMoves.size() < 1){
+            System.out.println("ALERT OPENING");
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Information Dialog");
+            alert.setHeaderText("No more moves for "+activePlayer.getName());
+            alert.setContentText(activePlayer.getName()+" will have to pass!");
+            alert.showAndWait();
+            nextTurn();
         }
 
     }
@@ -282,8 +290,8 @@ public class OthelloBoard {
                     ArrayList<OthelloItem> trackOverrides = new ArrayList<>();
                     trackOverrides.add(neighbour);
                     ArrayList<OthelloItem> overrides = checkMoveInPosition(neighbour,neighbourPosition, trackOverrides);
-                    System.out.println("overrides with valid item:");
-                    System.out.println(overrides);
+//                    System.out.println("overrides with valid item:");
+//                    System.out.println(overrides);
                     if (overrides != null) {
 //                        System.out.println("Valid move at "+validMove.getPositionString());
 

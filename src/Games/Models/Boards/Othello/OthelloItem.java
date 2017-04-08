@@ -80,6 +80,7 @@ public class OthelloItem extends Rectangle {
 
                 if(!OthelloBoard.validMoves.contains(this)){
                     OthelloBoard.controller.setStatus("Illegal move! Use the blue indications. "+OthelloBoard.getActivePlayer());
+                    setColor(); // don't change the color of a players item when clicked.
                 } else{
                     setPlayer(OthelloBoard.getActivePlayer());
 
@@ -101,7 +102,6 @@ public class OthelloItem extends Rectangle {
      * @param item OthelloItem to override to new color.
      */
     private void override(OthelloItem item) {
-        System.out.println("override "+item);
         item.setPlayer(OthelloBoard.getActivePlayer());
         if(Objects.equals(OthelloBoard.getActivePlayer().getColor(), "white")){
             OthelloBoard.blackItems.remove(item);
@@ -116,10 +116,12 @@ public class OthelloItem extends Rectangle {
      * Set the css color of an OthelloItem
      */
     private void setColor() {
-        if(Objects.equals(player.getColor(), "black")){
-            setStyle("-fx-fill: black");
-        } else {
-            setStyle("-fx-fill: white");
+        if(player != null){
+            if(Objects.equals(player.getColor(), "black")){
+                setStyle("-fx-fill: black");
+            } else {
+                setStyle("-fx-fill: white");
+            }
         }
     }
 
