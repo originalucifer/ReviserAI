@@ -2,6 +2,8 @@ package Games.Controllers.TabControllers;
 
 import Games.Models.Boards.Othello.OthelloBoard;
 import Games.Models.Boards.Othello.OthelloItem;
+import Games.Models.OthelloPlayer;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -10,6 +12,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.GridPane;
+
+import java.util.Objects;
 
 /**
  * Class OthelloController
@@ -26,13 +30,36 @@ public class OthelloController {
     public GridPane boardView;
 
     @FXML
-    public ListView blackMoves;
+    public ListView<String> blackMoves;
 
     @FXML
-    public ListView whiteMoves;
+    public ListView<String> whiteMoves;
+
+    ObservableList<String> whiteMovesData;
+    ObservableList<String> blackMovesData;
+
 
     public void initialize(){
+        whiteMovesData = FXCollections.observableArrayList();
+        blackMovesData = FXCollections.observableArrayList();
         OthelloBoard.initialize(this);
+    }
+
+    public void addMove(OthelloPlayer player,OthelloItem item){
+        if(Objects.equals(player.getColor(), "black")) {
+            blackMovesData.add(item.getPositionString());
+            blackMoves.setItems(blackMovesData);
+        } else {
+            whiteMovesData.add(item.getPositionString());
+            whiteMoves.setItems(whiteMovesData);
+        }
+    }
+
+    public void resetMoveList(){
+        whiteMovesData = FXCollections.observableArrayList();
+        blackMovesData = FXCollections.observableArrayList();
+        blackMoves.setItems(blackMovesData);
+        whiteMoves.setItems(whiteMovesData);
     }
 
     /**

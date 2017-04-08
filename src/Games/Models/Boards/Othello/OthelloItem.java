@@ -77,17 +77,36 @@ public class OthelloItem extends Rectangle {
                 if(!OthelloBoard.hasStarted()){
                     OthelloBoard.setStatus("Game hasn't started yet. Pick a color.");
 
-                    //If the user clicks a item before the game has started
-                    if(hasPlayer())
-                        setPlayer(player);  // Set the player again to correct the color
+                    /*
+                    * A player can click on 1 of the 4 starting items which will
+                    * result in recoloring the item red. We don't want this.
+                    */
+                    if(hasPlayer()){
+                        setColor();
+                    }
+
                 } else if(hasPlayer()){
-                    setPlayer(player);  // Set the player again to correct the color
+                    setColor();  // Correct the color after clicking
                     OthelloBoard.setStatus("Illegal move. Try again.");
                 } else{
                     setPlayer(OthelloBoard.getActivePlayer());
                     OthelloBoard.nextTurn();
                 }
+                System.out.println("");
+                System.out.println("Black");
+                System.out.println(OthelloBoard.blackItems);
+                System.out.println("");
+                System.out.println("White");
+                System.out.println(OthelloBoard.whiteItems);
             };
+
+    private void setColor() {
+        if(Objects.equals(player.getColor(), "black")){
+            setStyle("-fx-fill: black");
+        } else {
+            setStyle("-fx-fill: white");
+        }
+    }
 
     /**
      * Set the player of the item and draw the color of this player.
@@ -97,14 +116,28 @@ public class OthelloItem extends Rectangle {
     public void setPlayer(OthelloPlayer player) {
         this.player = player;
         if(Objects.equals(player.getColor(), "white")){
-            setStyle("-fx-fill: white;");
-            OthelloBoard.addWhiteItem(this);
+            // Prevent duplicates
+            if(!OthelloBoard.whiteItems.contains(this)) {
+                setStyle("-fx-fill: white;");
+                OthelloBoard.addWhiteItem(this);
+            }
         } else {
-            setStyle("-fx-fill: black;");
-            OthelloBoard.addBlackItem(this);
+            // Prevent duplicates
+            if(!OthelloBoard.blackItems.contains(this)){
+                setStyle("-fx-fill: black;");
+                OthelloBoard.addBlackItem(this);
+            }
         }
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        if(obj instanceof OthelloItem){
+            OthelloItem item = (OthelloItem) obj;
+            return item.getRow() == getRow() && item.getColumn() == getColumn() && item.getPlayer() == getPlayer();
+        }
+        return false;
+    }
 
     /**
      * Get the Left neighbour from this OthelloItem. This will be null
@@ -271,5 +304,10 @@ public class OthelloItem extends Rectangle {
      */
     public String getPositionString(){
         return getRow() + ":" + getColumn();
+    }
+
+    @Override
+    public String toString() {
+        return getPositionString()+": "+player.getColor();
     }
 }

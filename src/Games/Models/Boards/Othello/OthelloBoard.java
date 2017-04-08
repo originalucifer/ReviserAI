@@ -31,8 +31,8 @@ public class OthelloBoard {
     static ArrayList<OthelloItem> whiteItems = new ArrayList<>();
     static ArrayList<OthelloItem> validMoves = new ArrayList<>();
 
-    static ObservableList<String> whiteListViewData ;
-    static ObservableList<String> blackListViewData ;
+    static ObservableList<Label> whiteListViewData ;
+    static ObservableList<Label> blackListViewData ;
 
     static OthelloPlayer black;
     static OthelloPlayer white;
@@ -44,6 +44,7 @@ public class OthelloBoard {
      * @param controller FXML controller for the GUI
      */
     public static void initialize(OthelloController controller){
+
         OthelloBoard.controller = controller;
         OthelloBoard.black = new OthelloPlayer("black","BlackPlayer");
         OthelloBoard.white = new OthelloPlayer("white","whitePlayer");
@@ -126,10 +127,8 @@ public class OthelloBoard {
                 // Create the 4 starting items in the middle of the board.
                 if(column == 3 && row == 3 || column == 4 && row == 4){
                     othelloItem.setPlayer(white);
-                    addWhiteItem(othelloItem);
                 } else if(column == 4 && row == 3 || column == 3 && row == 4){
                     othelloItem.setPlayer(black);
-                    addBlackItem(othelloItem);
                 }
 
                 controller.boardView.add(othelloItem,column,row);
@@ -156,7 +155,9 @@ public class OthelloBoard {
         validMoves.clear();
         whiteItems.clear();
         blackItems.clear();
+        controller.resetMoveList();
         controller.boardView.getChildren().clear();
+        for (int i = 0; i < 50; ++i) System.out.println(); // clear log
         initialize(controller);
     }
 
@@ -294,9 +295,6 @@ public class OthelloBoard {
 //                System.out.println("Empty at "+neighbourPosition);
             }
         }
-
-        System.out.println("==");
-
     }
 
     /**
@@ -305,6 +303,7 @@ public class OthelloBoard {
      * @param othelloItem OthelloItem to add.
      */
     public static void addWhiteItem(OthelloItem othelloItem){
+        controller.addMove(white,othelloItem);
         whiteItems.add(othelloItem);
     }
 
@@ -314,6 +313,7 @@ public class OthelloBoard {
      * @param othelloItem OthelloItem to add.
      */
     public static void addBlackItem(OthelloItem othelloItem){
+        controller.addMove(black,othelloItem);
         blackItems.add(othelloItem);
     }
 

@@ -65,4 +65,9 @@ public class OthelloPlayer {
         }
         return false;
     }
+
+    @Override
+    public String toString() {
+        return getName()+" ("+getColor()+")";
+    }
 }
