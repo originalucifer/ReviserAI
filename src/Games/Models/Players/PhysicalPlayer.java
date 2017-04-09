@@ -25,7 +25,13 @@ public class PhysicalPlayer implements Player, ObserveBoardInput {
     @Override
     public int getYourMove(Integer opponentsMove) {
         turn = true;
-        while (move == null) {}
+        while (move == null) {
+            try {
+                Thread.sleep(10);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
         int ret = move;
         turn = false;
         move = null;
