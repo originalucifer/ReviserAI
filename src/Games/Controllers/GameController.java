@@ -30,7 +30,7 @@ public class GameController implements Runnable{
         this.gui = gui;
     }
 
-    private void endGame(){
+    public void endGame(){
         finished = true;
     }
 
@@ -85,5 +85,7 @@ public class GameController implements Runnable{
             lastMove = player1.getYourMove(lastMove);
         }
     }
+
+
 
 }

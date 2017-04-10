@@ -82,12 +82,7 @@ public class TicTacToeController implements GameControls, GameStatusView{
         String buttonID = button.getId();
             if (buttonID.equals("reset")){
                 reset();
-                board = new TicTacToeBoard(this);
-                for (Button b : pressedButtons) {
-                    b.setText("");
-                }
-                pressedButtons.clear();playerChosen = false;firstSetDone = false;
-                statusLabel.setText("Choose a player");
+
             }if (buttonID.equals("StartGame")){
                 if (gameController == null){
                     PlayerFactory factory = new TicTacToePlayerFactory(this, board);
@@ -105,7 +100,15 @@ public class TicTacToeController implements GameControls, GameStatusView{
     }
 
     private void reset(){
-
+//        board = new TicTacToeBoard(this);
+        for (Button b : pressedButtons) {
+            b.setText("");
+        }
+        pressedButtons.clear();//playerChosen = false;firstSetDone = false;
+        board.reset();
+        statusLabel.setText("Choose a player");
+        gameController.endGame();
+        gameController = null;
     }
 
     /**
