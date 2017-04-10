@@ -1,5 +1,6 @@
 package Games.Models.Factories;
 
+import Games.Controllers.GameController;
 import Games.Models.Players.Player;
 
 /**
@@ -7,4 +8,5 @@ import Games.Models.Players.Player;
  */
 public interface PlayerFactory {
     public Player getPlayer(String kind);
+    public void setGameController(GameController gameController);
 }

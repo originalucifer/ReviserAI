@@ -24,6 +24,7 @@ public class GameController implements Runnable{
 
     public GameController(String playerOne, String playerTwo, TicTacToeBoard board, PlayerFactory factory, GameStatusView gui){
         this.factory = factory;
+        factory.setGameController(this);
         player0 = factory.getPlayer(playerOne);
         player1 = factory.getPlayer(playerTwo);
         this.board = board;
@@ -40,11 +41,14 @@ public class GameController implements Runnable{
         while (!finished){
 
            nextMove();
-           if (lastMove != null) {
-               board.receiveMove(lastMove, playerTurn);
+           if (!finished){
+               if (lastMove != null) {
+                   board.receiveMove(lastMove, playerTurn);
+               }
+               playerTurn = !playerTurn;
+               checkWinSituation();
            }
-           playerTurn = !playerTurn;
-            checkWinSituation();
+
         }
         try {
             Thread.sleep(100);
@@ -86,6 +90,8 @@ public class GameController implements Runnable{
         }
     }
 
-
+    public boolean gameDone(){
+        return finished;
+    }
 
 }

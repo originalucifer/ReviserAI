@@ -85,7 +85,7 @@ public class TicTacToeController implements GameControls, GameStatusView{
 
             }if (buttonID.equals("StartGame")){
                 if (gameController == null){
-                    PlayerFactory factory = new TicTacToePlayerFactory(this, board);
+                    TicTacToePlayerFactory factory = new TicTacToePlayerFactory(this, board);
                     String playerx = playerX.getSelectionModel().getSelectedItem().toString();
                     String playero = playerO.getSelectionModel().getSelectedItem().toString();
                     gameController = new GameController(playerx, playero, board, factory, this);
@@ -109,6 +109,7 @@ public class TicTacToeController implements GameControls, GameStatusView{
         statusLabel.setText("Choose a player");
         gameController.endGame();
         gameController = null;
+        following = null;
     }
 
     /**
