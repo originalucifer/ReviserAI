@@ -1,7 +1,7 @@
 package ServerConnection;
 
 import Games.Controllers.TabControllers.ConnectionController;
-import Games.Models.Boards.Game;
+import Games.Models.Games.Game;
 
 /**
  * Created by rik on 3/30/17.

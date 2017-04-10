@@ -1,6 +1,6 @@
 package ServerConnection;
 
-import Games.Models.Boards.Game;
+import Games.Models.Games.Game;
 
 import java.util.Arrays;
 

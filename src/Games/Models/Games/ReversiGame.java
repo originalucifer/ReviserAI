@@ -1,4 +1,4 @@
-package Games.Models.Boards;
+package Games.Models.Games;
 
 /**
  * Created by robin on 5-4-17.

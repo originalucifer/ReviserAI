@@ -1,4 +1,4 @@
-package Games.Models.Boards;
+package Games.Models.Games;
 
 import Games.Controllers.TabControllers.TicTacToeController;
 

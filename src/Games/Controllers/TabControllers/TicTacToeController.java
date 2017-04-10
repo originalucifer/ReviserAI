@@ -1,6 +1,6 @@
 package Games.Controllers.TabControllers;
 
-import Games.Models.Boards.TicTacToeGame;
+import Games.Models.Games.TicTacToeGame;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
