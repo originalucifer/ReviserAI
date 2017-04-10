@@ -98,7 +98,7 @@ public class TicTacToeBoard implements Board{
     public boolean isFull(){
         for (char[] chars : board){
             for (char c : chars){
-                if(c == ' '){return false;}
+                if(c != 'X' && c != 'O'){return false;}
             }
         }
         return true;
@@ -120,10 +120,35 @@ public class TicTacToeBoard implements Board{
 
     public void receiveMove(int move, boolean player){
         updateBoard(move, player);
+        gui.addMove(gui.getButton(getCol(move), getRow(move)));
         Platform.runLater(() -> {
             gui.getButton(getCol(move), getRow(move)).setText(String.valueOf(getPlayerSignature(player)));
         });
 
+    }
+
+    /*
+    * 0: player 0 wins
+    * 1: player 1 wins
+    * 2: draw
+    * 3: game going on
+     */
+
+    @Override
+    public int getGameStatus(){
+        Boolean w = getWinner();
+        if (w != null){
+            if (w){
+                return 1;
+            } else {
+                return 0;
+            }
+        }
+        if (isFull()){
+            return 2;
+        }else {
+            return 3;
+        }
     }
 
     public int getRow(int index){

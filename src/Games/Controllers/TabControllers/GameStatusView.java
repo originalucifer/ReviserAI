@@ -5,4 +5,5 @@ package Games.Controllers.TabControllers;
  */
 public interface GameStatusView {
     public void gameWon(boolean winner);
+    public void draw();
 }

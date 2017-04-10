@@ -81,6 +81,7 @@ public class TicTacToeController implements GameControls, GameStatusView{
         Button button = (Button) actionEvent.getTarget();
         String buttonID = button.getId();
             if (buttonID.equals("reset")){
+                reset();
                 board = new TicTacToeBoard(this);
                 for (Button b : pressedButtons) {
                     b.setText("");
@@ -96,6 +97,14 @@ public class TicTacToeController implements GameControls, GameStatusView{
                     new Thread(gameController).start();
                 }
             }
+
+    }
+
+    public void addMove(Button button){
+        pressedButtons.add(button);
+    }
+
+    private void reset(){
 
     }
 
@@ -155,6 +164,11 @@ public class TicTacToeController implements GameControls, GameStatusView{
 //        Scene scene = new Scene(statusLabel,200,100);
 //        stage.setScene(scene);
 //        stage.show();
+    }
+
+    @Override
+    public void draw() {
+        statusLabel.setText("It is a draw");
     }
 
     public void updateButton(int col, int row, String value){

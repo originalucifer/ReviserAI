@@ -54,14 +54,16 @@ public class GameController implements Runnable{
     }
 
     private void checkWinSituation() {
-        if (winner == null){
-            winner = board.getWinner();
+        switch (board.getGameStatus()){
+            case 0: Platform.runLater(() -> gui.gameWon(false));
+            break;
+            case 1: Platform.runLater(() -> gui.gameWon(true));
+                break;
+            case 2: Platform.runLater(() -> gui.draw());
+            break;
+            case 3: return;
         }
-        if (winner != null){
-            endGame();
-            Platform.runLater(() -> gui.gameWon(!playerTurn));
-
-        }
+        endGame();
     }
 
     public void setWinner(boolean winner) {
