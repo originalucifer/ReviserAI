@@ -51,7 +51,7 @@ public class GameController implements Runnable{
 
         }
         try {
-            Thread.sleep(100);
+            Thread.sleep(2100);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }

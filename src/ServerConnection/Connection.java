@@ -58,7 +58,7 @@ public class Connection implements Runnable{
 
 	@Override
 	public void run() {
-		while (running) {connect();}
+		connect();
 	}
 
 	public void terminate(){

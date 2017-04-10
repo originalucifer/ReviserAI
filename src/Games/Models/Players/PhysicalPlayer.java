@@ -46,7 +46,6 @@ public class PhysicalPlayer implements Player, ObserveBoardInput {
     public void update(int field) {
         if (turn && move == null){
             //TODO check if move is valid
-            System.out.println("Field: "+field);
             move = field;
         }
 
