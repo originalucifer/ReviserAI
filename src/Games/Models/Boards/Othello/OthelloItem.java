@@ -1,6 +1,6 @@
 package Games.Models.Boards.Othello;
 
-import Games.Models.OthelloPlayer;
+import Games.Models.Players.OthelloPlayer;
 import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.shape.Rectangle;

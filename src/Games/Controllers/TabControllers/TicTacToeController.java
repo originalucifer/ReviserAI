@@ -15,7 +15,6 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
-
 import java.util.ArrayList;
 
 
@@ -48,8 +47,6 @@ public class TicTacToeController extends ConnectionController implements GameCon
     private boolean gameEnded;
     private boolean playerX = false;
 
-
-    public TicTacToeController() {}
 
     /**
      * checks if AI or Manual and X or O has been selected and makes connection in the superclass.
@@ -101,13 +98,13 @@ public class TicTacToeController extends ConnectionController implements GameCon
     /**
      * clear the tic-tac-toe board for a new game. At the start of a match
      */
-    public void startMatch(boolean myturn) {
+    public void startMatch(boolean myTurn) {
         gameEnded = false;
         clearButtons();board.clearBoard();
         PlayerFactory factory = new TicTacToePlayerFactory(this, board, connectionHandler.getCommandCalls());
         String[] players = getPlayers();
         GameController gameController;
-        if (myturn){
+        if (myTurn){
             gameController = new GameController(players[0], players[1], board, factory, this);
         } else {
             gameController = new GameController(players[1], players[0], board, factory, this);
@@ -117,7 +114,7 @@ public class TicTacToeController extends ConnectionController implements GameCon
 
     /**
      * returns the types of players for the game
-     * @return
+     * @return array with players
      */
     private String[] getPlayers(){
         String[] players = new String[2];

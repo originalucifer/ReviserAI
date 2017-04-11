@@ -1,4 +1,4 @@
-package Games.Models;
+package Games.Models.Players;
 
 import Games.Models.Boards.Othello.OthelloItem;
 

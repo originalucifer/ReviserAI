@@ -2,9 +2,7 @@ package Games.Controllers.TabControllers;
 
 import Games.Models.Boards.Othello.OthelloBoard;
 import Games.Models.Boards.Othello.OthelloItem;
-import Games.Models.OthelloPlayer;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
+import Games.Models.Players.OthelloPlayer;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -50,8 +48,8 @@ public class OthelloController {
     @FXML
     public Button blackPlayerButton;
 
-    ObservableList<String> whiteMovesData;
-    ObservableList<String> blackMovesData;
+    private ObservableList<String> whiteMovesData;
+    private ObservableList<String> blackMovesData;
 
     public void initialize(){
         whiteMovesData = FXCollections.observableArrayList();
@@ -66,34 +64,28 @@ public class OthelloController {
      * Set the listeners for the AI checkboxes.
      */
     private void checkBoxListeners() {
-        checkWhiteAi.selectedProperty().addListener(new ChangeListener<Boolean>() {
-            @Override
-            public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
-                if(newValue){
-                    OthelloBoard.getWhite().setAi(true);
-                    whitePlayerButton.setDisable(true);
-                } else {
-                    OthelloBoard.getWhite().setAi(false);
-                    whitePlayerButton.setDisable(false);
-                }
-
-                checkBothAi();
+        checkWhiteAi.selectedProperty().addListener((observable, oldValue, newValue) -> {
+            if(newValue){
+                OthelloBoard.getWhite().setAi(true);
+                whitePlayerButton.setDisable(true);
+            } else {
+                OthelloBoard.getWhite().setAi(false);
+                whitePlayerButton.setDisable(false);
             }
+
+            checkBothAi();
         });
 
-        checkBlackAi.selectedProperty().addListener(new ChangeListener<Boolean>() {
-            @Override
-            public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
-                if(newValue){
-                    OthelloBoard.getBlack().setAi(true);
-                    blackPlayerButton.setDisable(true);
-                } else {
-                    OthelloBoard.getBlack().setAi(false);
-                    blackPlayerButton.setDisable(false);
-                }
-
-                checkBothAi();
+        checkBlackAi.selectedProperty().addListener((observable, oldValue, newValue) -> {
+            if(newValue){
+                OthelloBoard.getBlack().setAi(true);
+                blackPlayerButton.setDisable(true);
+            } else {
+                OthelloBoard.getBlack().setAi(false);
+                blackPlayerButton.setDisable(false);
             }
+
+            checkBothAi();
         });
     }
 

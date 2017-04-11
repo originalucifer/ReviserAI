@@ -76,9 +76,7 @@ public class TicTacToeBoard implements Board{
      */
     public void receiveMove(int move, boolean player){
         updateBoard(move, player);
-        Platform.runLater(() -> {
-            gui.getButton(getCol(move), getRow(move)).setText(String.valueOf(getPlayerSignature(player)));
-        });
+        Platform.runLater(() -> gui.getButton(getCol(move), getRow(move)).setText(String.valueOf(getPlayerSignature(player))));
     }
 
     /**
@@ -86,7 +84,7 @@ public class TicTacToeBoard implements Board{
      * @param index move
      * @return row
      */
-    public int getRow(int index){
+    private int getRow(int index){
         return index / 3;
     }
 
@@ -95,7 +93,7 @@ public class TicTacToeBoard implements Board{
      * @param index move
      * @return column
      */
-    public int getCol(int index){
+    private int getCol(int index){
         return index % 3;
     }
 

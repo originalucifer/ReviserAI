@@ -16,11 +16,10 @@ import javafx.scene.control.TextField;
 public class ConnectionController {
 
     @FXML TextArea serverOutput;
-    @FXML TextField loginTf;
+    @FXML private TextField loginTf;
     @FXML TextField challengeTf;
-    @FXML TextField acceptChallengeTf;
-
-    ConnectionHandler connectionHandler = new ConnectionHandler(this);
+    @FXML private TextField acceptChallengeTf;
+    public ConnectionHandler connectionHandler = new ConnectionHandler(this);
     boolean loggedIn = false;
 
     public ConnectionController(){
@@ -133,22 +132,7 @@ public class ConnectionController {
      * Subscribes user to specified Game on the Server
      * should be overridden in the subclass
      */
-    public void subscribe(){
-        /*
-        if (connectionHandler.isConnected() && loggedIn){
-            String game = subscribeTf.getText();
-            if(!game.equals("")){
-                game = correctCase(game);
-                connectionHandler.subscribe(game);
-                serverOutput.appendText("\nSubscribed for game: \"" +game+"\"");
-            }else{
-                serverOutput.appendText("\nWarning: Enter a valid game");
-            }
-        } else {
-            serverOutput.appendText("\nWarning: You must first connect and log in");
-        }
-        */
-    }
+    public void subscribe(){}
 
     /**
      * Challenges another player for a specified game
@@ -197,14 +181,4 @@ public class ConnectionController {
         serverOutput.appendText("\n"+serverMessage);
     }
 
-
-    /**
-     * Returns the entered string with a uppercase first character and all other characters lowercase
-     *
-     * @param inputVal entered string
-     * @return corrected String
-     */
-    private String correctCase (String inputVal) {
-        return inputVal.substring(0,1).toUpperCase() + inputVal.substring(1).toLowerCase();
-    }
 }

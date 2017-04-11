@@ -6,20 +6,17 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import java.io.IOException;
 
 /**
  * Main class which starts the application.
  */
 public class Main extends Application {
 
-    private Stage primaryStage;
-
     /**
      * Start the javaFX application
      *
      * @param primaryStage main stage
-     * @throws Exception
+     * @throws Exception exception
      */
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -35,7 +32,7 @@ public class Main extends Application {
     /**
      * Get connection with the GameServer and launch the javaFX application
      *
-     * @param args
+     * @param args arguments
      */
     public static void main(String[] args) {
         launch(args);

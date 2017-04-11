@@ -1,29 +1,35 @@
 package Games.Controllers.AI;
 
-import Games.Controllers.TabControllers.TicTacToeController;
-import Games.Models.Boards.TicTacToeBoard;
-
 import java.util.ArrayList;
 
 /**
+ * AI for playing TicTacToe.
+ *
  * Created by rik on 3-4-17.
  */
 public class TicTacToeAI implements AI{
-	private TicTacToeBoard board;
 	private char[] playingField;
 	private char me = 'm';
 	private char opponent = 'e';
 	private char nothing = 'n';
-	private TicTacToeController controller;
 
-	public TicTacToeAI(TicTacToeBoard board) {
-		board = board;
+    /**
+     * Create a TicTacToeAI
+     * With a new playingField in it
+     */
+	public TicTacToeAI() {
 		playingField = new char[9];
 		for (int i = 0; i < 9; i++){
 		    playingField[i] = nothing;
         }
 	}
 
+    /**
+     * Gets the best possible move after adding the opponentsMove to the playingField
+     *
+     * @param opponentsMove integer
+     * @return integer bestMove
+     */
 	@Override
 	public int getBestMove(Integer opponentsMove) {
 	    if (opponentsMove != null){
@@ -45,6 +51,7 @@ public class TicTacToeAI implements AI{
 		return highMove;
 	}
 
+
 	private int getBoardValue(char[] field, boolean max){
         ArrayList<Integer> moves = getAvailableMovesIndex(field);
         switch (getBoardState(field)){
@@ -56,7 +63,6 @@ public class TicTacToeAI implements AI{
         int value;
         if (max){
             value = -100;
-            int does;
             for (int move : moves){
                 char[] copy = field.clone();
                 copy[move] = max ? me : opponent;
@@ -67,7 +73,6 @@ public class TicTacToeAI implements AI{
             }
         }else {
             value = 200;
-            int does;
             for (int move : moves){
                 char[] copy = field.clone();
                 copy[move] = max ? me : opponent;
@@ -114,6 +119,12 @@ public class TicTacToeAI implements AI{
         return 3;
     }
 
+    /**
+     * Gets the valid moves
+     *
+     * @param field playingField
+     * @return arraylist with valid moves.
+     */
     private ArrayList<Integer> getAvailableMovesIndex(char[] field){
         ArrayList<Integer> moves = new ArrayList<>();
         for (int i = 0; i < 9; i++){
@@ -124,11 +135,14 @@ public class TicTacToeAI implements AI{
         return moves;
     }
 
+    /**
+     * Checks if the move is valid.
+     * @param index move
+     * @param field entire playingField
+     * @return boolean valid.
+     */
     private boolean isMoveValid(int index, char [] field){
-        if (field[index] == nothing){
-            return true;
-        }
-        return false;
+        return field[index] == nothing;
     }
 
 }

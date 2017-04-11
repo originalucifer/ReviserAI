@@ -1,4 +1,4 @@
-package Games.Models;
+package Games.Controllers.AI;
 
 import Games.Models.Boards.Othello.OthelloBoard;
 import Games.Models.Boards.Othello.OthelloItem;

@@ -6,12 +6,14 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.layout.VBox;
-
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
 
+/**
+ * MainController which loads the tabs for each game
+ */
 public class MainController extends VBox{
 
     @FXML

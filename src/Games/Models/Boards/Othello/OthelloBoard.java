@@ -1,10 +1,9 @@
 package Games.Models.Boards.Othello;
 
 import Games.Controllers.TabControllers.OthelloController;
-import Games.Models.OthelloAI;
-import Games.Models.OthelloPlayer;
+import Games.Controllers.AI.OthelloAI;
+import Games.Models.Players.OthelloPlayer;
 import javafx.scene.control.Alert;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;

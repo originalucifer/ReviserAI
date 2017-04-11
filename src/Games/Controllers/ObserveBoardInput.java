@@ -1,8 +1,10 @@
 package Games.Controllers;
 
 /**
+ * Interface for the Board input observer
+ *
  * Created by rik on 4/5/17.
  */
 public interface ObserveBoardInput {
-    public void update(int field);
+    void update(int field);
 }
