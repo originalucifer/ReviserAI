@@ -55,7 +55,6 @@ public class MainController extends VBox{
             if (tabViews != null) {
                 for(File tabView : tabViews){
                     if(!tabException.contains(tabView.getName())){
-                        System.out.println("loading "+tabView.getName());
                         tabs.add(FXMLLoader.load(getClass().getResource("../Views/Tabs/" +tabView.getName())));
                     }
                 }

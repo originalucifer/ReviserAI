@@ -61,7 +61,6 @@ public class OthelloBoard implements Board{
      */
     public static void startGame(){
         started = true;
-        System.out.println("started!");
     }
 
     /**
