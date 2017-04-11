@@ -1,4 +1,4 @@
-package Games.Controllers.TabControllers;
+package Games.Controllers;
 
 import ServerConnection.ConnectionHandler;
 import javafx.event.ActionEvent;
@@ -15,13 +15,13 @@ import javafx.scene.control.TextField;
  */
 public class ConnectionController {
 
-    @FXML TextArea serverOutput;
-    @FXML TextField loginTf;
-    @FXML TextField challengeTf;
-    @FXML TextField acceptChallengeTf;
+    @FXML public TextArea serverOutput;
+    @FXML public TextField loginTf;
+    @FXML public TextField challengeTf;
+    @FXML public TextField acceptChallengeTf;
 
-    ConnectionHandler connectionHandler = new ConnectionHandler(this);
-    boolean loggedIn = false;
+    public ConnectionHandler connectionHandler = new ConnectionHandler(this);
+    public boolean loggedIn = false;
 
     public ConnectionController(){
     }
@@ -63,7 +63,7 @@ public class ConnectionController {
      *
      * If it fails it shutdown entire application
      */
-    void getConnection(){
+    public void getConnection(){
             try {
                 connectionHandler.connect();
                 Thread.sleep(1000);
