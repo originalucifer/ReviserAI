@@ -13,7 +13,6 @@ public class TicTacToeBoard implements Board{
     private int boardSize = 3;
     public char[][] board = new char[boardSize][boardSize];
     private TicTacToeController gui;
-    private boolean playerX;
     private Boolean ended = null;
     private String endStatus;
 
@@ -68,12 +67,12 @@ public class TicTacToeBoard implements Board{
         return index / 3;
     }
 
-    public void makeMove(int move){
-        gui.returnGuiMove(String.valueOf(move));
-    }
-
     public int getCol(int index){
         return index % 3;
+    }
+
+    public void makeMove(int move){
+        gui.returnGuiMove(String.valueOf(move));
     }
 
     @Override
@@ -126,13 +125,5 @@ public class TicTacToeBoard implements Board{
             }
         }
         ended = false;
-    }
-
-    /**
-     * Sets X or O
-     * @param player character
-     */
-    public void setPlayerX(boolean player){
-        this.playerX = player;
     }
 }

@@ -20,6 +20,10 @@ public class CommandCalls implements Observer{
 	}
 
 
+	/**
+	 * Retrieves the messages from the listener.
+	 * @param line message
+	 */
 	@Override
     public void update(String line) {
 		if (line != null && !line.isEmpty()) {
@@ -126,7 +130,11 @@ public class CommandCalls implements Observer{
         }
     }
 
-    private void move(String[] arguments){
+	/**
+	 * Handles the move from the server.
+	 * @param arguments
+	 */
+	private void move(String[] arguments){
 	    String name = arguments[1].replaceAll("\\W", "");
 	    if (!name.equals(playerName)){
 			sendInput(arguments[3]);

@@ -19,3 +19,7 @@
 .ai-checkbox {
     -fx-text-fill: white;
 }
+
+.statusBox {
+    -fx-background-color: #696969;
+}

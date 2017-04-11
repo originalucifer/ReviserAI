@@ -63,11 +63,6 @@ public class TicTacToeController extends ConnectionController implements GameCon
     public void getConnection() {
         if (playerTypeChosen && playerChosen){
                 if (!connectionHandler.isConnected()){
-                    if (AI){
-                        board.setPlayerX(true);
-                    } else {
-                        board.setPlayerX(false);
-                    }
                     super.getConnection();
                     connectionHandler.setBoard(board);
                 } else {
