@@ -15,6 +15,7 @@ public class OthelloPlayer {
     private String color;
     private String name;
     private ArrayList<OthelloItem> moves;
+    private boolean ai = false;
 
     public OthelloPlayer(String color, String name) {
         this.color = color;
@@ -64,6 +65,24 @@ public class OthelloPlayer {
                     && ((OthelloPlayer) player).getName() == this.getName();
         }
         return false;
+    }
+
+    /**
+     * See if this player is a human or ai player
+     *
+     * @return true if the player is an ai.
+     */
+    public boolean isAi() {
+        return ai;
+    }
+
+    /**
+     * Set the player as an ai instead of a human.
+     * 
+     * @param ai boolean if this player is an AI
+     */
+    public void setAi(boolean ai) {
+        this.ai = ai;
     }
 
     @Override
