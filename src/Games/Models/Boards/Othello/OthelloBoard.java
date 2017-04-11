@@ -81,8 +81,7 @@ public class OthelloBoard {
         else
             updateValidMoves(whiteItems);
 
-        System.out.println("AI MOVE");
-        if(activePlayer.isAi()){
+        if(activePlayer.isAi() && hasStarted()){
             ai.makeMove();
         }
 
