@@ -17,7 +17,6 @@
         <center>
             <BorderPane styleClass="contentPane">
 
-
                 <!-- From here the tic-tac-toe field is displayed-->
                 <!-- The idea for this tic-tac-ticTacToeGameoard comes from https://github.com/yfain/java24hourtrainer2ndedition/blob/master/TicTacToe/src/tictactoe/TicTacToe.fxml-->
                 <top>
