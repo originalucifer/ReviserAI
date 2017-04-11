@@ -8,35 +8,122 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.collections.FXCollections?>
+<?import java.lang.String?>
 
 <Tab text="Tic-Tac-Toe" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Games.Controllers.TabControllers.TicTacToeController">
     <BorderPane stylesheets="@../../Style/TicTacToe.css">
         <center>
-            <!-- The idea for this tic-tac-toe board comes from https://github.com/yfain/java24hourtrainer2ndedition/blob/master/TicTacToe/src/tictactoe/TicTacToe.fxml-->
-            <GridPane fx:id="bordView" alignment="CENTER" >
-                <Button fx:id="b0" styleClass="ticTacToeButton" onAction="#boardButtonClickHandler" prefHeight="120.0" prefWidth="120.0" />
-                <Button fx:id="b1" styleClass="ticTacToeButton" onAction="#boardButtonClickHandler" prefHeight="120.0" prefWidth="120.0" GridPane.columnIndex="1" />
-                <Button fx:id="b2" styleClass="ticTacToeButton" onAction="#boardButtonClickHandler" prefHeight="120.0" prefWidth="120.0" GridPane.columnIndex="2" />
-                <Button fx:id="b3" styleClass="ticTacToeButton" onAction="#boardButtonClickHandler" prefHeight="120.0" prefWidth="120.0" GridPane.rowIndex="1" />
-                <Button fx:id="b4" styleClass="ticTacToeButton" onAction="#boardButtonClickHandler" prefHeight="120.0" prefWidth="120.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                <Button fx:id="b5" styleClass="ticTacToeButton" onAction="#boardButtonClickHandler" prefHeight="120.0" prefWidth="120.0" GridPane.columnIndex="2" GridPane.rowIndex="1" />
-                <Button fx:id="b6" styleClass="ticTacToeButton" onAction="#boardButtonClickHandler" prefHeight="120.0" prefWidth="120.0" GridPane.rowIndex="2" />
-                <Button fx:id="b7" styleClass="ticTacToeButton" onAction="#boardButtonClickHandler" prefHeight="120.0" prefWidth="120.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                <Button fx:id="b8" styleClass="ticTacToeButton" onAction="#boardButtonClickHandler" prefHeight="120.0" prefWidth="120.0" GridPane.columnIndex="2" GridPane.rowIndex="2" />
-            </GridPane>
+            <BorderPane styleClass="contentPane">
+
+
+                <!-- From here the tic-tac-toe field is displayed-->
+                <!-- The idea for this tic-tac-ticTacToeGameoard comes from https://github.com/yfain/java24hourtrainer2ndedition/blob/master/TicTacToe/src/tictactoe/TicTacToe.fxml-->
+                <top>
+                    <GridPane prefHeight="600" alignment="CENTER" >
+                        <Button fx:id="b0" styleClass="ticTacToeButton" onAction="#boardButtonClickHandler" prefHeight="120.0" prefWidth="120.0" />
+                        <Button fx:id="b1" styleClass="ticTacToeButton" onAction="#boardButtonClickHandler" prefHeight="120.0" prefWidth="120.0" GridPane.columnIndex="1" />
+                        <Button fx:id="b2" styleClass="ticTacToeButton" onAction="#boardButtonClickHandler" prefHeight="120.0" prefWidth="120.0" GridPane.columnIndex="2" />
+                        <Button fx:id="b3" styleClass="ticTacToeButton" onAction="#boardButtonClickHandler" prefHeight="120.0" prefWidth="120.0" GridPane.rowIndex="1" />
+                        <Button fx:id="b4" styleClass="ticTacToeButton" onAction="#boardButtonClickHandler" prefHeight="120.0" prefWidth="120.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                        <Button fx:id="b5" styleClass="ticTacToeButton" onAction="#boardButtonClickHandler" prefHeight="120.0" prefWidth="120.0" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                        <Button fx:id="b6" styleClass="ticTacToeButton" onAction="#boardButtonClickHandler" prefHeight="120.0" prefWidth="120.0" GridPane.rowIndex="2" />
+                        <Button fx:id="b7" styleClass="ticTacToeButton" onAction="#boardButtonClickHandler" prefHeight="120.0" prefWidth="120.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                        <Button fx:id="b8" styleClass="ticTacToeButton" onAction="#boardButtonClickHandler" prefHeight="120.0" prefWidth="120.0" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+                    </GridPane>
+                </top>
+
+                <!-- From here the statusbox of the game is displayed-->
+                <bottom>
+                    <VBox styleClass="statusBox" alignment="BOTTOM_CENTER">
+                        <padding><Insets top="10" right="10" bottom="10" left="10"/></padding>
+                        <HBox prefHeight="20" styleClass="actionBox" spacing="3">
+                            <padding><Insets top="3" right="3" bottom="3" left="3"/></padding>
+                            <Label text="Choose player: " alignment="BASELINE_LEFT" styleClass="actionLabel"/>
+                            <Label text="X or O " alignment="BASELINE_LEFT" styleClass="actionLabel"/>
+                            <ComboBox fx:id="X_O">
+                                <items>
+                                    <FXCollections fx:factory="observableArrayList">
+                                        <String fx:value="X" />
+                                        <String fx:value="O" />
+                                    </FXCollections>
+                                </items>
+                                <value>
+                                    <String fx:value="..." />
+                                </value>
+                            </ComboBox>
+                            <Label text="AI or Manual: " alignment="BASELINE_LEFT" styleClass="actionLabel"/>
+                            <ComboBox fx:id="AI_MANUAL">
+                                <items>
+                                    <FXCollections fx:factory="observableArrayList">
+                                        <String fx:value="MANUAL" />
+                                        <String fx:value="AI" />
+                                    </FXCollections>
+                                </items>
+                                <value>
+                                    <String fx:value="..." />
+                                </value>
+                            </ComboBox>
+                            <Button text="Choose" id="Choose" onAction="#actionButtonClickHandler" styleClass="actionButton" alignment="BASELINE_LEFT"/>
+                        </HBox>
+                        <Label text="Choose a player" fx:id="statusLabel" styleClass="statusLabel"/>
+                    </VBox>
+                </bottom>
+            </BorderPane>
         </center>
-        <bottom>
-            <VBox styleClass="statusBox" alignment="BOTTOM_CENTER">
+
+
+
+        <!-- From here the connectionbox is displayed-->
+        <right>
+            <VBox prefWidth="400" prefHeight="770" spacing="5" stylesheets="@../../Style/Connection.css" styleClass="connectionBox" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1">
                 <padding><Insets top="10" right="10" bottom="10" left="10"/></padding>
-                <HBox prefHeight="20" styleClass="actionBox" spacing="3">
+
+                <Button text="Connect" onAction="#buttonEventHandler" styleClass="connectBt"/>
+                <Button text="Get gamelist" onAction="#buttonEventHandler" styleClass="connectBt"/>
+                <Button text="Get playerlist" onAction="#buttonEventHandler" styleClass="connectBt"/>
+
+                <VBox styleClass="box" spacing="5">
                     <padding><Insets top="3" right="3" bottom="3" left="3"/></padding>
-                    <Label text="choose player: " alignment="BASELINE_LEFT" styleClass="actionLabel"/>
-                    <Button text="X" id="X" onAction="#actionButtonClickHandler" styleClass="actionButton" alignment="BASELINE_LEFT"/>
-                    <Button text="O" id="O" onAction="#actionButtonClickHandler" styleClass="actionButton" alignment="BASELINE_LEFT"/>
-                    <Button text="Reset Game" id="reset" onAction="#actionButtonClickHandler" styleClass="actionButton" alignment="BASELINE_RIGHT"/>
-                </HBox>
-                <Label text="Choose a player" fx:id="statusLabel" styleClass="statusLabel"/>
+                    <Button text="Login" onAction="#buttonEventHandler"/>
+                    <Label text="Player name: "/>
+                    <TextField fx:id="loginTf"/>
+                </VBox>
+
+                <VBox styleClass="box" spacing="5">
+                    <padding><Insets top="3" right="3" bottom="3" left="3"/></padding>
+                    <Button text="Subscribe" onAction="#buttonEventHandler"/>
+                    <!--<Label text="Game name: "/>-->
+                    <!--<TextField fx:id="subscribeTf"/>-->
+                </VBox>
+
+                <VBox styleClass="box" spacing="5">
+                    <padding><Insets top="3" right="3" bottom="3" left="3"/></padding>
+                    <Button text="Challenge" onAction="#buttonEventHandler"/>
+                    <Label text="&#60;PlayerName&#62;"/>
+                    <TextField fx:id="challengeTf"/>
+                </VBox>
+
+                <VBox styleClass="box" spacing="5">
+                    <padding><Insets top="3" right="3" bottom="3" left="3"/></padding>
+                    <Button text="Accept Challenge" onAction="#buttonEventHandler"/>
+                    <Label text="&#60;Challenge Number&#62;: "/>
+                    <TextField fx:id="acceptChallengeTf"/>
+                </VBox>
+
+                <Button text="Logout" onAction="#buttonEventHandler" styleClass="closeConnectBt"/>
+                <Button text="Close connection" onAction="#buttonEventHandler" styleClass="closeConnectBt"/>
+                <Label/>
+
+                <VBox styleClass="box" spacing="5">
+                    <padding><Insets top="3" right="3" bottom="3" left="3"/></padding>
+                    <Label text="Server output: "/>
+                    <TextArea styleClass="serverOutput" fx:id="serverOutput" editable="false" prefHeight="200"/>
+                </VBox>
             </VBox>
-        </bottom>
+        </right>
     </BorderPane>
 </Tab>

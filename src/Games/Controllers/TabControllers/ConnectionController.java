@@ -1,4 +1,4 @@
-package Games.Controllers;
+package Games.Controllers.TabControllers;
 
 import ServerConnection.ConnectionHandler;
 import javafx.event.ActionEvent;
@@ -15,16 +15,16 @@ import javafx.scene.control.TextField;
  */
 public class ConnectionController {
 
-    @FXML private TextArea serverOutput;
-    @FXML private TextField subscribeTf;
-    @FXML private TextField loginTf;
-    @FXML private TextField challengeTf;
-    @FXML private TextField acceptChallengeTf;
+    @FXML TextArea serverOutput;
+    @FXML TextField loginTf;
+    @FXML TextField challengeTf;
+    @FXML TextField acceptChallengeTf;
 
-    private ConnectionHandler connectionHandler = new ConnectionHandler(this);
-    private boolean loggedIn = false;
+    ConnectionHandler connectionHandler = new ConnectionHandler(this);
+    boolean loggedIn = false;
 
-    public ConnectionController(){}
+    public ConnectionController(){
+    }
 
 
     /**
@@ -57,13 +57,13 @@ public class ConnectionController {
         }
     }
 
+
     /**
      * Connects to the server.
      *
      * If it fails it shutdown entire application
      */
-    private void getConnection(){
-        if (!connectionHandler.isConnected()){
+    void getConnection(){
             try {
                 connectionHandler.connect();
                 Thread.sleep(1000);
@@ -72,13 +72,10 @@ public class ConnectionController {
                 System.out.println(e);
                 serverOutput.appendText("\nConnection could not be made");
             }
-        } else {
-            serverOutput.appendText("\nWarning: You are already connected");
-        }
     }
 
     /**
-     * requests gamelist from gameserver
+     * requests gameList from gameServer
      */
     private void getGameList(){
         if (connectionHandler.isConnected()){
@@ -89,7 +86,7 @@ public class ConnectionController {
     }
 
     /**
-     * requests gamelist from gameserver
+     * requests playerList from gameServer
      */
     private void getPlayerList(){
         if (connectionHandler.isConnected()){
@@ -134,8 +131,10 @@ public class ConnectionController {
 
     /**
      * Subscribes user to specified Game on the Server
+     * should be overridden in the subclass
      */
-    private void subscribe(){
+    public void subscribe(){
+        /*
         if (connectionHandler.isConnected() && loggedIn){
             String game = subscribeTf.getText();
             if(!game.equals("")){
@@ -148,26 +147,13 @@ public class ConnectionController {
         } else {
             serverOutput.appendText("\nWarning: You must first connect and log in");
         }
+        */
     }
 
     /**
      * Challenges another player for a specified game
      */
-    private void challenge(){
-        if (connectionHandler.isConnected() && loggedIn){
-            String challenge = challengeTf.getText();
-            String[] split = challenge.split("\\s+");
-            if(split.length == 2 && !split[0].equals("") && !split[1].equals("")){
-                split[1] = correctCase(split[1]);
-                connectionHandler.challenge(split);
-                serverOutput.appendText("\n\n\""+split[0]+"\" challenged, for a game of: \"" +split[1]+ "\"");
-            }else{
-                serverOutput.appendText("\nWarning: Enter a valid name and game for the challenge");
-            }
-        } else {
-            serverOutput.appendText("\nWarning: You must first connect and log in");
-        }
-    }
+    public void challenge(){}
 
     /**
      * Accept challenge belonging to specified challenge ID
@@ -177,7 +163,7 @@ public class ConnectionController {
             String challengeID = acceptChallengeTf.getText();
             if(!challengeID.equals("")){
                 connectionHandler.acceptChallenge(challengeID);
-                serverOutput.appendText("\n\nChallenge \"" +challengeID+ "\" accepted");
+                serverOutput.appendText("\nChallenge \"" +challengeID+ "\" accepted");
             }else{
                 serverOutput.appendText("\nWarning: Enter a valid challenge id");
             }

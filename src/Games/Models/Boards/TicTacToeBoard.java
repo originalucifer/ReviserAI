@@ -1,15 +1,24 @@
 package Games.Models.Boards;
 
+import Games.Controllers.TabControllers.TicTacToeController;
+import javafx.application.Platform;
+
 /**
  * Class for the TicTacToeBoard.
  *
  * Created by robin on 31-3-17.
  */
-public class TicTacToeBoard {
+public class TicTacToeBoard implements Board{
 
-    char[][] board = new char[3][3];
+    private int boardSize = 3;
+    public char[][] board = new char[boardSize][boardSize];
+    private TicTacToeController gui;
+    private boolean playerX;
+    private Boolean ended = null;
+    private String endStatus;
 
-    public TicTacToeBoard(){
+    public TicTacToeBoard(TicTacToeController gui){
+        this.gui = gui;
     }
 
     /**
@@ -19,64 +28,111 @@ public class TicTacToeBoard {
      * @param row    the clicked row
      * @param player X or O?
      */
-    public void updateBoard(int column, int row, char player){
+    private void updateBoard(int column, int row, char player){
         board[column][row] = player;
     }
 
-
-
     /**
-     * Finds 3 in a row
+     * Adds the clicked field to the board
      *
-     * @return true if 3 in a row is found, else return false
+     * @param lastMove the clicked board index
+     * @param playerTurn first or second to play player
      */
+    @Override
+    public void updateBoard(int lastMove, boolean playerTurn) {
+        updateBoard(getCol(lastMove), getRow(lastMove), getPlayerSignature(playerTurn));
+    }
 
-    public boolean find3InARow(){
-        // check diagonal rows
-        if ((board[0][0] == board[1][1] && board[0][0] == board[2][2] && (board[0][0] == 'X' || board[0][0] == 'O'))
-                ||
-                (board[0][2] == board[1][1] && board[0][2] == board[2][0] && (board[0][2] == 'X' || board[0][2] == 'O'))) {
-            return true;
-        }
-        //check horizontal rows and vertical rows
-        for (int i = 0; i < 3; ++i) {
-            if ((board[i][0] == board[i][1] && board[i][0] == board[i][2] && (board[i][0] == 'X' || board[i][0] == 'O'))
-                    ||
-                    (board[0][i] == board[1][i] && board[0][i] == board[2][i] && (board[0][i] == 'X' || board[0][i] == 'O'))) {
-                return true;
-            }
-        }
-        return false;
+    @Override
+    public Boolean getEnded() {
+        return ended;
+    }
+
+    @Override
+    public String getEndStatus(){
+        return endStatus;
+    }
+
+    private char getPlayerSignature(boolean player){
+        return player ? 'O' : 'X';
+    }
+
+    public void receiveMove(int move, boolean player){
+        updateBoard(move, player);
+        Platform.runLater(() -> {
+            gui.getButton(getCol(move), getRow(move)).setText(String.valueOf(getPlayerSignature(player)));
+        });
+    }
+
+    public int getRow(int index){
+        return index / 3;
+    }
+
+    public void makeMove(int move){
+        gui.returnGuiMove(String.valueOf(move));
+    }
+
+    public int getCol(int index){
+        return index % 3;
+    }
+
+    @Override
+    public void win() {
+        ended = true;
+        endStatus = "won";
+        gui.gameEnded("won");
+    }
+
+    @Override
+    public void loss(){
+        ended = true;
+        endStatus = "lost";
+        gui.gameEnded("lost");
+    }
+
+    @Override
+    public void draw(){
+        ended = true;
+        endStatus = "draw";
+        gui.gameEnded("draw");
+    }
+
+    @Override
+    public void yourTurn() {
+        gui.getGuiMove();
+    }
+
+    @Override
+    public void move(String move, boolean thisplayer) {
     }
 
 
     /**
-     * Checks if the field is full (If its a tie)
-     * @return boolean field full.
+     * Starts a new game, clears the boards
      */
-    public boolean isFull(){
-        for (char[] chars : board){
-            for (char c : chars){
-                if(c == ' '){return false;}
-            }
-        }
-        return true;
+    @Override
+    public void matchStart(boolean myturn){
+        clearBoard();
+        gui.startMatch(myturn);
     }
-
 
     /**
-     * for debugging
-     * TODO remove this method
+     * Clear the board
      */
-    public void showBoard(){
-        for (char[] chars : board){
-            for (char c : chars){
-                System.out.print(c);
+    public void clearBoard() {
+        for (int i = 0; i < boardSize; i++){
+            for (int j = 0; j < boardSize; j++){
+                board[i][j] = ' ';
             }
-            System.out.print("\n");
         }
+        ended = false;
     }
 
-
-
+    /**
+     * Sets X or O
+     * @param player character
+     */
+    public void setPlayerX(boolean player){
+        this.playerX = player;
+    }
 }

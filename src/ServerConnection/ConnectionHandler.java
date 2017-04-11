@@ -1,6 +1,7 @@
 package ServerConnection;
 
-import Games.Controllers.ConnectionController;
+import Games.Controllers.TabControllers.ConnectionController;
+import Games.Models.Boards.Board;
 
 /**
  * Created by rik on 3/30/17.
@@ -10,6 +11,7 @@ public class ConnectionHandler {
 	private Connection connection;
     private ReceiveListener listen;
 	private ServerCommands serverCommands;
+	private CommandCalls commandCalls;
 	private boolean connected = false;
 	private ConnectionController connectionController;
 
@@ -27,7 +29,7 @@ public class ConnectionHandler {
 		new Thread(connection).start();
 		new Thread(listen).start();
 		serverCommands =new ServerCommands(connection);
-		new CommandCalls(listen,this);
+		commandCalls = new CommandCalls(listen,this);
 
 		connected = true;
 	}
@@ -38,6 +40,7 @@ public class ConnectionHandler {
      */
 	public void login(String name){
 		serverCommands.login(name);
+		setPlayerName(name);
 	}
 
     /**
@@ -69,10 +72,14 @@ public class ConnectionHandler {
 
     /**
      * Challenges the speficied player for a specified game
-     * @param challenge
      */
-	public void challenge(String[] challenge){
-		serverCommands.custom("challenge \"" +challenge[0]+ "\" \""+challenge[1]+"\"");
+	public void challenge(String name, String game){
+		serverCommands.custom("challenge \"" +name+ "\" \""+game+"\"");
+	}
+
+
+	public void makeMove(String move){
+		serverCommands.move(move);
 	}
 
     /**
@@ -92,6 +99,14 @@ public class ConnectionHandler {
 		connected = false;
 	}
 
+	public void setBoard(Board board){
+		commandCalls.setBoard(board);
+	}
+
+	public void setPlayerName(String name){
+		commandCalls.setPlayerName(name);
+	}
+
 	public boolean isConnected(){
 		return connected;
 	}
@@ -104,5 +119,9 @@ public class ConnectionHandler {
      */
 	public void updateOutput(String serverResponse){
         connectionController.updateServerOutput(serverResponse);
+	}
+
+	public CommandCalls getCommandCalls(){
+		return commandCalls;
 	}
 }

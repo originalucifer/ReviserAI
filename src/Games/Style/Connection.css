@@ -11,6 +11,7 @@
 }
 
 .connectionBox {
+    -fx-background-color: #696969;
 }
 
 .status {
