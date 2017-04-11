@@ -8,12 +8,16 @@ import Games.Models.Factories.TicTacToePlayerFactory;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
+import javafx.scene.text.Text;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import java.util.ArrayList;
 
@@ -247,18 +251,21 @@ public class TicTacToeController extends ConnectionController implements GameCon
         gameEnded = true;
         Platform.runLater(()-> {
             statusLabel.setText("Game Ended");
-            Stage stage = new Stage();
-            Label label = new Label();
+            final Stage popUp = new Stage();
+            popUp.initModality(Modality.WINDOW_MODAL);
+            Button okButton = new Button("Ok");
+            okButton.setOnAction(arg0 -> popUp.close());
+            Text message = new Text();message.setFont(new Font(20));
             switch (status){
-                case "won": label.setText("You have won!!");break;
-                case "lost": label.setText("You have lost.");break;
-                case "draw": label.setText("It's a draw");break;
+                case "won": message.setText("You have won!!");break;
+                case "lost": message.setText("You have lost.");break;
+                case "draw": message.setText("It's a draw");break;
             }
-            label.setAlignment(Pos.CENTER);
-            label.setFont(new Font(30));
-            Scene scene = new Scene(label,250,100);
-            stage.setScene(scene);
-            stage.show();
+            VBox vBox = new VBox(message,okButton);
+            vBox.setAlignment(Pos.CENTER);vBox.setPadding(new Insets(10));
+            Scene popUpScene = new Scene(vBox);
+            popUp.setScene(popUpScene);
+            popUp.show();
         });
     }
 
