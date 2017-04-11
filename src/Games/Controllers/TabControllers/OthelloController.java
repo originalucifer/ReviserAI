@@ -2,14 +2,16 @@ package Games.Controllers.TabControllers;
 
 import Games.Models.Boards.Othello.OthelloBoard;
 import Games.Models.Boards.Othello.OthelloItem;
-import Games.Models.OthelloAI;
 import Games.Models.OthelloPlayer;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.GridPane;
@@ -36,17 +38,72 @@ public class OthelloController {
     @FXML
     public ListView<String> whiteMoves;
 
-    private OthelloAI ai;
+    @FXML
+    public CheckBox checkBlackAi;
+
+    @FXML
+    public CheckBox checkWhiteAi;
+
+    @FXML
+    public Button whitePlayerButton;
+
+    @FXML
+    public Button blackPlayerButton;
 
     ObservableList<String> whiteMovesData;
     ObservableList<String> blackMovesData;
 
-
     public void initialize(){
         whiteMovesData = FXCollections.observableArrayList();
         blackMovesData = FXCollections.observableArrayList();
-        ai = new OthelloAI();
+
+        checkBoxListeners();
+
         OthelloBoard.initialize(this);
+    }
+
+    /**
+     * Set the listeners for the AI checkboxes.
+     */
+    private void checkBoxListeners() {
+        checkWhiteAi.selectedProperty().addListener(new ChangeListener<Boolean>() {
+            @Override
+            public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+                if(newValue){
+                    OthelloBoard.getWhite().setAi(true);
+                    whitePlayerButton.setDisable(true);
+                } else {
+                    OthelloBoard.getWhite().setAi(false);
+                    whitePlayerButton.setDisable(false);
+                }
+
+                checkBothAi();
+            }
+        });
+
+        checkBlackAi.selectedProperty().addListener(new ChangeListener<Boolean>() {
+            @Override
+            public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+                if(newValue){
+                    OthelloBoard.getBlack().setAi(true);
+                    blackPlayerButton.setDisable(true);
+                } else {
+                    OthelloBoard.getBlack().setAi(false);
+                    blackPlayerButton.setDisable(false);
+                }
+
+                checkBothAi();
+            }
+        });
+    }
+
+    /**
+     * Check if we need to start the game with AI vs AI
+     */
+    private void checkBothAi() {
+        if(checkWhiteAi.isSelected() && checkBlackAi.isSelected()){
+            startGame("white");
+        }
     }
 
     public void addMove(OthelloPlayer player,OthelloItem item){
@@ -76,9 +133,27 @@ public class OthelloController {
             setStatus("Game is still running. "+OthelloBoard.getActivePlayer().getName()+" is next.");
         }else {
             Button colorPick = (Button) actionEvent.getSource();
-            OthelloBoard.setActivePlayer(colorPick.getId());
-            OthelloBoard.startGame();
+            startGame(colorPick.getId());
         }
+    }
+
+    public void startGame(String activePlayer){
+        OthelloBoard.setActivePlayer(activePlayer);
+
+        disableButtons(true);
+        OthelloBoard.startGame();
+    }
+
+    /**
+     * Disable or Enable the player buttons
+     *
+     * @param disable boolean to disable to buttons or enable them
+     */
+    public void disableButtons(boolean disable) {
+        blackPlayerButton.setDisable(disable);
+        whitePlayerButton.setDisable(disable);
+        checkBlackAi.setDisable(disable);
+        checkWhiteAi.setDisable(disable);
     }
 
     /**
@@ -136,9 +211,9 @@ public class OthelloController {
         whiteMovesData.remove(item.getPositionString());
     }
 
-    public void moveAI(ActionEvent actionEvent) {
-        if(OthelloBoard.hasStarted()){
-            ai.makeMove();
-        }
+    public void makeWhiteAi(ActionEvent actionEvent) {
+    }
+
+    public void makeBlackAi(ActionEvent actionEvent) {
     }
 }

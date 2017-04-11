@@ -53,13 +53,18 @@
             </VBox>
         </HBox>
 
-        <VBox prefHeight="80" styleClass="statusBox" alignment="BOTTOM_CENTER">
+        <VBox prefHeight="120" styleClass="statusBox" alignment="BOTTOM_CENTER">
             <HBox prefHeight="15" styleClass="actionBox" spacing="5">
                 <Label text="Choose color: " alignment="BASELINE_LEFT" styleClass="actionLabel"/>
-                <Button text="White" id="white" onAction="#pickColor" styleClass="actionButton" alignment="BASELINE_LEFT"/>
-                <Button text="Black" id="black" onAction="#pickColor" styleClass="actionButton" alignment="BASELINE_LEFT"/>
+                <VBox prefHeight="40">
+                    <Button text="White" id="white" fx:id="whitePlayerButton" onAction="#pickColor" styleClass="actionButton" alignment="BASELINE_LEFT"/>
+                    <CheckBox text="Make ai" fx:id="checkWhiteAi" styleClass="ai-checkbox" id="whiteAi" onAction="#makeWhiteAi" alignment="BOTTOM_LEFT"/>
+                </VBox>
+                <VBox prefHeight="30">
+                    <Button text="Black" id="black" onAction="#pickColor" fx:id="blackPlayerButton" styleClass="actionButton" alignment="BASELINE_LEFT"/>
+                    <CheckBox styleClass="ai-checkbox" fx:id="checkBlackAi" text="Make ai" id="blackAi" onAction="#makeBlackAi" alignment="BOTTOM_LEFT" />
+                </VBox>
                 <Button text="Reset Game" id="reset" onAction="#resetGame" styleClass="actionButton" alignment="BASELINE_RIGHT"/>
-                <Button text="AI move" id="reset" onAction="#moveAI" styleClass="actionButton" alignment="BASELINE_RIGHT"/>
             </HBox>
             <Label text="Choose a player" fx:id="statusLabel" styleClass="statusLabel"/>
         </VBox>

@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.Random;
 
 /**
- * Class ${CLASS}
+ * Class OthelloAI
  *
  * @author koen
  * @version 0.1 (4/11/17)

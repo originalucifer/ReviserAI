@@ -1,6 +1,7 @@
 package Games.Models.Boards.Othello;
 
 import Games.Controllers.TabControllers.OthelloController;
+import Games.Models.OthelloAI;
 import Games.Models.OthelloPlayer;
 import javafx.scene.control.Alert;
 
@@ -32,6 +33,7 @@ public class OthelloBoard {
 
     static OthelloPlayer black;
     static OthelloPlayer white;
+    static OthelloAI ai;
 
 
     /**
@@ -44,6 +46,7 @@ public class OthelloBoard {
         OthelloBoard.controller = controller;
         OthelloBoard.black = new OthelloPlayer("black","BlackPlayer");
         OthelloBoard.white = new OthelloPlayer("white","whitePlayer");
+        OthelloBoard.ai = new OthelloAI();
 
         controller.setStatus("Pick a color.");
         draw();
@@ -57,6 +60,7 @@ public class OthelloBoard {
      */
     public static void startGame(){
         started = true;
+        System.out.println("started!");
     }
 
     /**
@@ -76,6 +80,11 @@ public class OthelloBoard {
             updateValidMoves(blackItems);
         else
             updateValidMoves(whiteItems);
+
+        System.out.println("AI MOVE");
+        if(activePlayer.isAi()){
+            ai.makeMove();
+        }
 
     }
 
@@ -152,6 +161,9 @@ public class OthelloBoard {
         blackItems.clear();
         controller.resetMoveList();
         controller.boardView.getChildren().clear();
+        controller.disableButtons(false);
+        controller.checkBlackAi.setSelected(false);
+        controller.checkWhiteAi.setSelected(false);
         for (int i = 0; i < 50; ++i) System.out.println(); // clear log
         initialize(controller);
     }
@@ -350,6 +362,24 @@ public class OthelloBoard {
      */
     public static ArrayList<OthelloItem> getValidMoves() {
         return validMoves;
+    }
+
+    /**
+     * Get the black player object
+     *
+     * @return OthelloPlayer that plays for black
+     */
+    public static OthelloPlayer getBlack() {
+        return black;
+    }
+
+    /**
+     * Get the white player object
+     *
+     * @return OtheloPLayer that plays for white
+     */
+    public static OthelloPlayer getWhite() {
+        return white;
     }
 
     /**

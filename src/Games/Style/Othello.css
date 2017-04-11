@@ -15,3 +15,7 @@
     -fx-pref-height: 31;
     -fx-pref-width: 31;
 }
+
+.ai-checkbox {
+    -fx-text-fill: white;
+}
