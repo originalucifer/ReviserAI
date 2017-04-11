@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<?import javafx.scene.shape.Rectangle?>
+<Tab text="Othello" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Games.Controllers.TabControllers.OthelloController">
+    <VBox prefHeight="480.0" prefWidth="720.0" stylesheets="@../../Style/Othello.css" alignment="CENTER">
+
+
+        <HBox prefHeight="370" prefWidth="720" style="-fx-border-color: black; -fx-border-width: 0px" alignment="CENTER">
+            <VBox>
+                <Label text="White"/>
+                <ListView fx:id="whiteMoves">
+                </ListView>
+            </VBox>
+
+            <VBox styleClass="coordinates" fx:id="yCoordinates">
+                <Label/> <!-- empty label to move y coordinates 1 unit down -->
+                <Label text="0"/>
+                <Label text="1"/>
+                <Label text="2"/>
+                <Label text="3"/>
+                <Label text="4"/>
+                <Label text="5"/>
+                <Label text="6"/>
+                <Label text="7"/>
+            </VBox>
+
+            <VBox prefWidth="250" >
+                <HBox prefWidth="250" prefHeight="31" styleClass="coordinates" fx:id="xCoordinates">
+                    <Label text="0"/>
+                    <Label text="1"/>
+                    <Label text="2"/>
+                    <Label text="3"/>
+                    <Label text="4"/>
+                    <Label text="5"/>
+                    <Label text="6"/>
+                    <Label text="7"/>
+                </HBox>
+
+                <GridPane fx:id="boardView" alignment="TOP_CENTER" prefHeight="200.0" prefWidth="250.0" >
+                </GridPane>
+            </VBox>
+            <VBox styleClass="coordinates" fx:id="yCoordinates">
+                <Label/> <!-- empty label To space listview -->
+            </VBox>
+
+            <VBox>
+                <Label text="Black"/>
+                <ListView fx:id="blackMoves">
+                </ListView>
+            </VBox>
+        </HBox>
+
+        <VBox prefHeight="120" styleClass="statusBox" alignment="BOTTOM_CENTER">
+            <HBox prefHeight="15" styleClass="actionBox" spacing="5">
+                <Label text="Choose color: " alignment="BASELINE_LEFT" styleClass="actionLabel"/>
+                <VBox prefHeight="40">
+                    <Button text="White" id="white" fx:id="whitePlayerButton" onAction="#pickColor" styleClass="actionButton" alignment="BASELINE_LEFT"/>
+                    <CheckBox text="Make ai" fx:id="checkWhiteAi" styleClass="ai-checkbox" id="whiteAi" onAction="#makeWhiteAi" alignment="BOTTOM_LEFT"/>
+                </VBox>
+                <VBox prefHeight="30">
+                    <Button text="Black" id="black" onAction="#pickColor" fx:id="blackPlayerButton" styleClass="actionButton" alignment="BASELINE_LEFT"/>
+                    <CheckBox styleClass="ai-checkbox" fx:id="checkBlackAi" text="Make ai" id="blackAi" onAction="#makeBlackAi" alignment="BOTTOM_LEFT" />
+                </VBox>
+                <Button text="Reset Game" id="reset" onAction="#resetGame" styleClass="actionButton" alignment="BASELINE_RIGHT"/>
+            </HBox>
+            <Label text="Choose a player" fx:id="statusLabel" styleClass="statusLabel"/>
+        </VBox>
+    </VBox>
+</Tab>
