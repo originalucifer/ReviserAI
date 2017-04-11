@@ -42,20 +42,38 @@ public class TicTacToeBoard implements Board{
         updateBoard(getCol(lastMove), getRow(lastMove), getPlayerSignature(playerTurn));
     }
 
+    /**
+     * returns true if the game has ended
+     * @return boolean
+     */
     @Override
     public Boolean getEnded() {
         return ended;
     }
 
+    /**
+     * Gets the status (win,draw,lost)
+     * @return endStatus
+     */
     @Override
     public String getEndStatus(){
         return endStatus;
     }
 
+    /**
+     * Gets the player signature
+     * @param player which player
+     * @return x or o
+     */
     private char getPlayerSignature(boolean player){
         return player ? 'O' : 'X';
     }
 
+    /**
+     * Recieve move from the gamecontroller
+     * @param move move
+     * @param player which player
+     */
     public void receiveMove(int move, boolean player){
         updateBoard(move, player);
         Platform.runLater(() -> {
@@ -63,18 +81,35 @@ public class TicTacToeBoard implements Board{
         });
     }
 
+    /**
+     * get the row of the move
+     * @param index move
+     * @return row
+     */
     public int getRow(int index){
         return index / 3;
     }
 
+    /**
+     * gets the column of the move
+     * @param index move
+     * @return column
+     */
     public int getCol(int index){
         return index % 3;
     }
 
+    /**
+     * sends the move to the server
+     * @param move move
+     */
     public void makeMove(int move){
         gui.returnGuiMove(String.valueOf(move));
     }
 
+    /**
+     * game has been won
+     */
     @Override
     public void win() {
         ended = true;
@@ -82,6 +117,9 @@ public class TicTacToeBoard implements Board{
         gui.gameEnded("won");
     }
 
+    /**
+     * game has been lost
+     */
     @Override
     public void loss(){
         ended = true;
@@ -89,6 +127,9 @@ public class TicTacToeBoard implements Board{
         gui.gameEnded("lost");
     }
 
+    /**
+     * game is a draw
+     */
     @Override
     public void draw(){
         ended = true;
@@ -96,11 +137,19 @@ public class TicTacToeBoard implements Board{
         gui.gameEnded("draw");
     }
 
+    /**
+     * set its your turn
+     */
     @Override
     public void yourTurn() {
         gui.getGuiMove();
     }
 
+    /**
+     * recieve move made.
+     * @param move move
+     * @param thisplayer which player
+     */
     @Override
     public void move(String move, boolean thisplayer) {
     }

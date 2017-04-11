@@ -41,21 +41,15 @@ public class TicTacToeController extends ConnectionController implements GameCon
     @FXML private ComboBox AI_MANUAL;
 
     private TicTacToeBoard board = new TicTacToeBoard(this);
-    private ArrayList<Button> pressedButtons = new ArrayList<>();
     private boolean playerChosen = false;
-    private GameController gameController;
     private ArrayList<ObserveBoardInput> following;
     private boolean playerTypeChosen = false;
-    private boolean AI = false;
     private boolean yourTurn = false;
     private boolean gameEnded;
     private boolean playerX = false;
 
-    /**
-     * constructor
-     */
-    public TicTacToeController() {
-    }
+
+    public TicTacToeController() {}
 
     /**
      * checks if AI or Manual and X or O has been selected and makes connection in the superclass.
@@ -109,10 +103,10 @@ public class TicTacToeController extends ConnectionController implements GameCon
      */
     public void startMatch(boolean myturn) {
         gameEnded = false;
-        clearButtons();
-        board.clearBoard();
+        clearButtons();board.clearBoard();
         PlayerFactory factory = new TicTacToePlayerFactory(this, board, connectionHandler.getCommandCalls());
         String[] players = getPlayers();
+        GameController gameController;
         if (myturn){
             gameController = new GameController(players[0], players[1], board, factory, this);
         } else {
@@ -173,7 +167,6 @@ public class TicTacToeController extends ConnectionController implements GameCon
             Button clickedButton = (Button) actionEvent.getTarget();
             String buttonLabel = clickedButton.getText();
             if ("".equals(buttonLabel)) {
-                pressedButtons.add(clickedButton);
                 int clickedField = Integer.parseInt(clickedButton.getId().replaceAll("[^0-9]", ""));
                 sendInput(clickedField);
             } else {
@@ -193,15 +186,6 @@ public class TicTacToeController extends ConnectionController implements GameCon
         String buttonID = button.getId();
         if (!connectionHandler.isConnected()) {
             if (buttonID.equals("Choose")) {
-                String playerType = AI_MANUAL.getSelectionModel().getSelectedItem().toString();
-                switch (playerType) {
-                    case "AI":
-                        AI = true;
-                        break;
-                    case "MANUAL":
-                        AI = false;
-                        break;
-                }
                 String player = X_O.getSelectionModel().getSelectedItem().toString();
                 switch (player) {
                     case "X":
@@ -216,6 +200,9 @@ public class TicTacToeController extends ConnectionController implements GameCon
         }
     }
 
+    /**
+     * Clears all the buttons
+     */
     private void clearButtons(){
         for (int i = 0; i < 3; i++){
             for (int j =0; j< 3; j++) {
@@ -225,6 +212,12 @@ public class TicTacToeController extends ConnectionController implements GameCon
         }
     }
 
+    /**
+     * return the button belonging to the specific row and column
+     * @param col column
+     * @param row row
+     * @return Button
+     */
     public Button getButton(int col, int row){
         if (col == 0){
             switch (row){
@@ -272,11 +265,10 @@ public class TicTacToeController extends ConnectionController implements GameCon
         });
     }
 
-
-    public void updateButton(int col, int row, String value){
-        getButton(col, row).setText(value);
-    }
-
+    /**
+     * Adds the Observer for the board input to the following list
+     * @param you Observer
+     */
     public void follow(ObserveBoardInput you){
         if (following == null) {
             following = new ArrayList<>();
@@ -284,6 +276,10 @@ public class TicTacToeController extends ConnectionController implements GameCon
         following.add(you);
     }
 
+    /**
+     * Sends the pressed button to the following observers.
+     * @param index pressed button
+     */
     private void sendInput(int index){
         if (following == null) return;
         for (ObserveBoardInput listener : following) {
