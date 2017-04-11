@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-
-<?import javafx.scene.shape.Rectangle?>
 <Tab text="Othello" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Games.Controllers.TabControllers.OthelloController">
     <BorderPane styleClass="contentPane">
         <center>
@@ -77,7 +76,65 @@
             </BorderPane>
         </center>
         <right>
-            <fx:include source="../ConnectionView.xml" />
+            <VBox prefWidth="400" prefHeight="770" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml"
+                  spacing="5" stylesheets="@../../Style/Connection.css" styleClass="connectionBox">
+
+                <padding>
+                    <Insets top="10" right="10" bottom="10" left="10"/>
+                </padding>
+
+                <Button text="Connect" onAction="#buttonEventHandler" styleClass="connectBt"/>
+                <Button text="Get gamelist" onAction="#buttonEventHandler" styleClass="connectBt"/>
+                <Button text="Get playerlist" onAction="#buttonEventHandler" styleClass="connectBt"/>
+
+                <VBox styleClass="box" spacing="5">
+                    <padding>
+                        <Insets top="3" right="3" bottom="3" left="3"/>
+                    </padding>
+                    <Button text="Login" onAction="#buttonEventHandler"/>
+                    <Label text="Player name: "/>
+                    <TextField fx:id="loginTf"/>
+                </VBox>
+
+                <VBox styleClass="box" spacing="5">
+                    <padding>
+                        <Insets top="3" right="3" bottom="3" left="3"/>
+                    </padding>
+                    <Button text="Subscribe" onAction="#buttonEventHandler"/>
+                    <!--<Label text="Game name: "/>-->
+                    <!--<TextField fx:id="subscribeTf"/>-->
+                </VBox>
+
+                <VBox styleClass="box" spacing="5">
+                    <padding>
+                        <Insets top="3" right="3" bottom="3" left="3"/>
+                    </padding>
+                    <Button text="Challenge" onAction="#buttonEventHandler"/>
+                    <Label text="&#60;PlayerName&#62;"/>
+                    <TextField fx:id="challengeTf"/>
+                </VBox>
+
+                <VBox styleClass="box" spacing="5">
+                    <padding>
+                        <Insets top="3" right="3" bottom="3" left="3"/>
+                    </padding>
+                    <Button text="Accept Challenge" onAction="#buttonEventHandler"/>
+                    <Label text="&#60;Challenge Number&#62;: "/>
+                    <TextField fx:id="acceptChallengeTf"/>
+                </VBox>
+
+                <Button text="Logout" onAction="#buttonEventHandler" styleClass="closeConnectBt"/>
+                <Button text="Close connection" onAction="#buttonEventHandler" styleClass="closeConnectBt"/>
+                <Label/>
+
+                <VBox styleClass="box" spacing="5">
+                    <padding>
+                        <Insets top="3" right="3" bottom="3" left="3"/>
+                    </padding>
+                    <Label text="Server output: "/>
+                    <TextArea styleClass="serverOutput" fx:id="serverOutput" editable="false" prefHeight="200"/>
+                </VBox>
+            </VBox>
         </right>
     </BorderPane>
 </Tab>
