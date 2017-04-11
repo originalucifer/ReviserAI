@@ -2,6 +2,7 @@ package Games.Controllers.TabControllers;
 
 import Games.Models.Boards.Othello.OthelloBoard;
 import Games.Models.Boards.Othello.OthelloItem;
+import Games.Models.OthelloAI;
 import Games.Models.OthelloPlayer;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -35,6 +36,8 @@ public class OthelloController {
     @FXML
     public ListView<String> whiteMoves;
 
+    private OthelloAI ai;
+
     ObservableList<String> whiteMovesData;
     ObservableList<String> blackMovesData;
 
@@ -42,6 +45,7 @@ public class OthelloController {
     public void initialize(){
         whiteMovesData = FXCollections.observableArrayList();
         blackMovesData = FXCollections.observableArrayList();
+        ai = new OthelloAI();
         OthelloBoard.initialize(this);
     }
 
@@ -130,5 +134,11 @@ public class OthelloController {
      */
     public void removeWhiteList(OthelloItem item) {
         whiteMovesData.remove(item.getPositionString());
+    }
+
+    public void moveAI(ActionEvent actionEvent) {
+        if(OthelloBoard.hasStarted()){
+            ai.makeMove();
+        }
     }
 }

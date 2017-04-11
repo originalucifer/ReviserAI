@@ -77,23 +77,29 @@ public class OthelloItem extends Rectangle {
             t -> {
                 OthelloItem rectangle = ((OthelloItem) (t.getSource()));
                 rectangle.setStyle(disableInnerShadow);
-
-                if(!OthelloBoard.validMoves.contains(this)){
-                    OthelloBoard.controller.setStatus("Illegal move! Use the blue indications. "+OthelloBoard.getActivePlayer());
-                    setColor(); // don't change the color of a players item when clicked.
-                } else{
-                    setPlayer(OthelloBoard.getActivePlayer());
-
-                    // override the other players items if necessary
-                    if(overrides != null){
-                        for (OthelloItem item : overrides) {
-                            override(item);
-                        }
-                    }
-
-                    OthelloBoard.nextTurn();
-                }
+                clicked();
             };
+
+    /**
+     * Click this OthelloItem
+     */
+    public void clicked() {
+        if(!OthelloBoard.validMoves.contains(this)){
+            OthelloBoard.controller.setStatus("Illegal move! Use the blue indications. "+OthelloBoard.getActivePlayer());
+            setColor(); // don't change the color of a players item when clicked.
+        } else{
+            setPlayer(OthelloBoard.getActivePlayer());
+
+            // override the other players items if necessary
+            if(overrides != null){
+                for (OthelloItem item : overrides) {
+                    override(item);
+                }
+            }
+
+            OthelloBoard.nextTurn();
+        }
+    }
 
     /**
      * Call an override on an item. It changes the color of the item to

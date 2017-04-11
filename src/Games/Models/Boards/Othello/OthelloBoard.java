@@ -2,15 +2,12 @@ package Games.Models.Boards.Othello;
 
 import Games.Controllers.TabControllers.OthelloController;
 import Games.Models.OthelloPlayer;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import javafx.scene.Node;
 import javafx.scene.control.Alert;
-import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
-import javafx.scene.layout.GridPane;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
 
 
 /**
@@ -344,6 +341,15 @@ public class OthelloBoard {
     public static void addBlackItem(OthelloItem othelloItem){
         controller.addMove(black,othelloItem);
         blackItems.add(othelloItem);
+    }
+
+    /**
+     * Getter for the valid moves of the current player
+     *
+     * @return ArrayList with OthelloItems where the player can make a move
+     */
+    public static ArrayList<OthelloItem> getValidMoves() {
+        return validMoves;
     }
 
     /**
