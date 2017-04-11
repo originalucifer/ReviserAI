@@ -7,7 +7,7 @@ import java.util.LinkedList;
 
 public class Connection implements Runnable{
 
-	private String hostAdress = "127.0.0.1";
+	private String hostAddress = "127.0.0.1";
 	private int hostPort = 7789;
 
 	private ReceiveListener listen;
@@ -22,7 +22,7 @@ public class Connection implements Runnable{
 	public void connect(){
 		//https://docs.oracle.com/javase/tutorial/displayCode.html?code=https://docs.oracle.com/javase/tutorial/networking/sockets/examples/EchoClient.java
 		try (
-				Socket echoSocket = new Socket(hostAdress, hostPort);
+				Socket echoSocket = new Socket(hostAddress, hostPort);
 				PrintWriter out =
 						new PrintWriter(echoSocket.getOutputStream(), true);
 
@@ -43,6 +43,7 @@ public class Connection implements Runnable{
 					input = in.readLine();
 					listen.addLine(input);
 				}
+				Thread.sleep(10);
 			}
 		} catch (UnknownHostException e) {
 			System.err.println("Don't know about host ");
@@ -50,6 +51,8 @@ public class Connection implements Runnable{
 		} catch (IOException e) {
 			System.err.println("Couldn't get I/O for the connection to ");
 			System.exit(1);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
 		}
 	}
 
@@ -67,7 +70,7 @@ public class Connection implements Runnable{
 	}
 
 	public void setHost(String adress){
-		this.hostAdress = adress;
+		this.hostAddress = adress;
 	}
 
 	public void setHost(int port){
@@ -76,7 +79,7 @@ public class Connection implements Runnable{
 	}
 
 	public void setHost(String adress,int port){
-		this.hostAdress = adress;
+		this.hostAddress = adress;
 		this.hostPort = port;
 	}
 

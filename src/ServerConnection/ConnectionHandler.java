@@ -1,7 +1,7 @@
 package ServerConnection;
 
 import Games.Controllers.TabControllers.ConnectionController;
-import Games.Models.Games.Game;
+import Games.Models.Boards.Board;
 
 /**
  * Created by rik on 3/30/17.
@@ -99,8 +99,8 @@ public class ConnectionHandler {
 		connected = false;
 	}
 
-	public void setGame(Game game){
-		commandCalls.setGame(game);
+	public void setBoard(Board board){
+		commandCalls.setBoard(board);
 	}
 
 	public void setPlayerName(String name){
@@ -119,5 +119,9 @@ public class ConnectionHandler {
      */
 	public void updateOutput(String serverResponse){
         connectionController.updateServerOutput(serverResponse);
+	}
+
+	public CommandCalls getCommandCalls(){
+		return commandCalls;
 	}
 }

@@ -16,7 +16,6 @@ import javafx.scene.control.TextField;
 public class ConnectionController {
 
     @FXML TextArea serverOutput;
-    @FXML TextField subscribeTf;
     @FXML TextField loginTf;
     @FXML TextField challengeTf;
     @FXML TextField acceptChallengeTf;

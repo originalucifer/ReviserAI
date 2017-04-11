@@ -1,16 +1,18 @@
 package ServerConnection;
 
-import Games.Models.Games.Game;
-
+import Games.Controllers.ObserveBoardInput;
+import Games.Models.Boards.Board;
+import java.util.ArrayList;
 import java.util.Arrays;
 
 /**
  * Created by rik on 3/29/17.
  */
 public class CommandCalls implements Observer{
-	private Game game;
+	private Board board;
 	private ConnectionHandler connectionHandler;
 	private String playerName;
+	private ArrayList<ObserveServerInput> following;
 
 	public CommandCalls(Observable info, ConnectionHandler connectionHandler) {
 		info.follow(this);
@@ -78,16 +80,16 @@ public class CommandCalls implements Observer{
 			    move(getArguments(arguments));break;
 			case "YOURTURN":
 			    connectionHandler.updateOutput("Your Turn");
-			    game.yourTurn();break;
+			    board.yourTurn();break;
 			case "WIN":
 				connectionHandler.updateOutput("You have won");
-			    game.win();break;
+			    board.win();break;
 			case "LOSS":
 				connectionHandler.updateOutput("You have lost");
-			    game.loss();break;
+			    board.loss();break;
 			case "DRAW":
 				connectionHandler.updateOutput("It's a draw");
-			    game.draw();break;
+			    board.draw();break;
 		}
 	}
 
@@ -98,7 +100,13 @@ public class CommandCalls implements Observer{
      */
 	private void match(String[] arguments){
 	    connectionHandler.updateOutput("Match of "+ arguments[3]+ " against: "+arguments[5].replace("}","")+" started.");
-	    game.matchStart();
+		String name = arguments[1].replaceAll("\\W", "");
+		if (name.equals(playerName)){
+			board.matchStart(true);
+		} else {
+			board.matchStart(false);
+		}
+
     }
 
     /**
@@ -120,10 +128,11 @@ public class CommandCalls implements Observer{
 
     private void move(String[] arguments){
 	    String name = arguments[1].replaceAll("\\W", "");
-	    if (name.equals(playerName)){
-	        game.move(arguments[3],true);
+	    if (!name.equals(playerName)){
+			sendInput(arguments[3]);
+	        board.move(arguments[3],false);
         }else{
-	        game.move(arguments[3],false);
+	        board.move(arguments[3],true);
         }
     }
 
@@ -146,10 +155,10 @@ public class CommandCalls implements Observer{
 
     /**
      * sets the game to play
-     * @param game gameToPlay
+     * @param board gameToPlay
      */
-	public void setGame(Game game){
-	    this.game = game;
+	public void setBoard(Board board){
+	    this.board = board;
     }
 
 	/**
@@ -175,5 +184,19 @@ public class CommandCalls implements Observer{
      */
 	private void print(String s) {
 		connectionHandler.updateOutput(s);
+	}
+
+	public void follow(ObserveServerInput you){
+		if (following == null) {
+			following = new ArrayList<>();
+		}
+		following.add(you);
+	}
+
+	private void sendInput(String move){
+		if (following == null) return;
+		for (ObserveServerInput listener : following) {
+			listener.update(move);
+		}
 	}
 }
