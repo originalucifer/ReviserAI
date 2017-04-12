@@ -239,4 +239,12 @@ public class OthelloController extends ConnectionController{
             serverOutput.appendText("\nWarning: You must first connect and log in");
         }
     }
+
+    /**
+     * Challenges another player for a Reversi
+     */
+    public void challenge(){
+        super.challengeForGame("Reversi");
+    }
+
 }

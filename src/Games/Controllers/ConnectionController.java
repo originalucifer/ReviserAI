@@ -1,5 +1,6 @@
 package Games.Controllers;
 
+import Games.Controllers.TabControllers.TicTacToeController;
 import ServerConnection.ConnectionHandler;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -137,9 +138,30 @@ public class ConnectionController {
     public void subscribe(){}
 
     /**
-     * Challenges another player for a specified game
+     * Challenge, should be overridden in subclass.
      */
-    public void challenge(){}
+    public void challenge(){
+    }
+
+    /**
+     * Challenge another player for the specified game.
+     * @param game Name of current game.
+     */
+    public void challengeForGame(String game){
+        if (connectionHandler.isConnected() && loggedIn){
+            String challenge = challengeTf.getText();
+            challenge = challenge.replace("\\s+","");
+            System.out.println(challenge+"Challenged!!!!");
+            if(!challenge.equals("")){
+                connectionHandler.challenge(challenge,game);
+                serverOutput.appendText("\nChallenged: \""+challenge+"\" for a game of: \""+game+"\"");
+            }else{
+                serverOutput.appendText("\nWarning: Enter a valid name and game for the challenge");
+            }
+        } else {
+            serverOutput.appendText("\nWarning: You must first connect and log in");
+        }
+    }
 
     /**
      * Accept challenge belonging to specified challenge ID

@@ -82,22 +82,10 @@ public class TicTacToeController extends ConnectionController implements GameCon
     }
 
     /**
-     * Challenges another player for a specified game
+     * Challenges another player for a Tic-tac-toe
      */
     public void challenge(){
-        if (connectionHandler.isConnected() && loggedIn){
-            String challenge = challengeTf.getText();
-            challenge = challenge.replace("\\s+","");
-            System.out.println(challenge+"Challenged!!!!");
-            if(!challenge.equals("")){
-                connectionHandler.challenge(challenge,"Tic-tac-toe");
-                serverOutput.appendText("\nChallenged: \""+challenge+"\" for a game of: \"Tic-tac-toe\"");
-            }else{
-                serverOutput.appendText("\nWarning: Enter a valid name and game for the challenge");
-            }
-        } else {
-            serverOutput.appendText("\nWarning: You must first connect and log in");
-        }
+        super.challengeForGame("Tic-tac-toe");
     }
 
     /**
