@@ -20,8 +20,8 @@ public class ConnectionController {
     @FXML public TextField challengeTf;
     @FXML public TextField acceptChallengeTf;
 
-    public ConnectionHandler connectionHandler = new ConnectionHandler(this);
-    public boolean loggedIn = false;
+    protected ConnectionHandler connectionHandler = new ConnectionHandler(this);
+    protected boolean loggedIn = false;
 
 
     public ConnectionController(){

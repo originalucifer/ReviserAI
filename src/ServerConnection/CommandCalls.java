@@ -1,6 +1,5 @@
 package ServerConnection;
 
-import Games.Controllers.ObserveBoardInput;
 import Games.Models.Boards.Board;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -14,7 +13,7 @@ public class CommandCalls implements Observer{
 	private String playerName;
 	private ArrayList<ObserveServerInput> following;
 
-	public CommandCalls(Observable info, ConnectionHandler connectionHandler) {
+	CommandCalls(Observable info, ConnectionHandler connectionHandler) {
 		info.follow(this);
 		this.connectionHandler = connectionHandler;
 	}

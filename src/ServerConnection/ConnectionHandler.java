@@ -4,6 +4,8 @@ import Games.Controllers.ConnectionController;
 import Games.Models.Boards.Board;
 
 /**
+ * Handles the connection, connects all classes needed
+ *
  * Created by rik on 3/30/17.
  */
 public class ConnectionHandler {
@@ -52,7 +54,7 @@ public class ConnectionHandler {
 
     /**
      * subscribes user to specified game
-     * @param game
+     * @param game Name for the game to subscribe to
      */
 	public void subscribe(String game) {
 		serverCommands.subscribe(game);
@@ -84,7 +86,7 @@ public class ConnectionHandler {
 
     /**
      * accepts challenge belonging to challenge id
-     * @param challengeID
+     * @param challengeID id number for the challenge
      */
 	public void acceptChallenge(String challengeID){
 		serverCommands.custom("challenge accept " + challengeID);
@@ -103,7 +105,7 @@ public class ConnectionHandler {
 		commandCalls.setBoard(board);
 	}
 
-	public void setPlayerName(String name){
+	private void setPlayerName(String name){
 		commandCalls.setPlayerName(name);
 	}
 
@@ -115,9 +117,9 @@ public class ConnectionHandler {
      * update the output textarea in the connectionController
      *
      * Can possibly be done cleaner.
-     * @param serverResponse
+     * @param serverResponse response from te server
      */
-	public void updateOutput(String serverResponse){
+	void updateOutput(String serverResponse){
         connectionController.updateServerOutput(serverResponse);
 	}
 

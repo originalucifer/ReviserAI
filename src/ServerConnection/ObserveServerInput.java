@@ -1,8 +1,10 @@
 package ServerConnection;
 
 /**
+ * Observer interface for the commandcalls
+ *
  * Created by robin on 10-4-17.
  */
 public interface ObserveServerInput {
-    public void update(String move);
+    void update(String move);
 }

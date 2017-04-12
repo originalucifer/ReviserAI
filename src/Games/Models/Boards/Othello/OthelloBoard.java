@@ -4,6 +4,7 @@ import Games.Controllers.TabControllers.OthelloController;
 import Games.Controllers.AI.OthelloAI;
 import Games.Models.Players.OthelloPlayer;
 import Games.Models.Boards.Board;
+import ServerConnection.ConnectionHandler;
 import javafx.scene.control.Alert;
 import java.util.ArrayList;
 import java.util.HashMap;

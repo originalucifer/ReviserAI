@@ -15,11 +15,11 @@ public class Connection implements Runnable{
 	private volatile boolean running = true;
 
 
-	public Connection(ReceiveListener listener){
+	Connection(ReceiveListener listener){
 		listen = listener;
 	}
 
-	public void connect(){
+	private void connect(){
 		//https://docs.oracle.com/javase/tutorial/displayCode.html?code=https://docs.oracle.com/javase/tutorial/networking/sockets/examples/EchoClient.java
 		try (
 				Socket echoSocket = new Socket(hostAddress, hostPort);
@@ -61,11 +61,11 @@ public class Connection implements Runnable{
 		while (running) {connect();}
 	}
 
-	public void terminate(){
+	void terminate(){
 		running = false;
 	}
 
-	public void addToSend(String message){
+	void addToSend(String message){
 		toSend.add(message);
 	}
 
