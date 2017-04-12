@@ -1,6 +1,6 @@
 package ServerConnection;
 
-import Games.Controllers.TabControllers.ConnectionController;
+import Games.Controllers.ConnectionController;
 import Games.Models.Boards.Board;
 
 /**

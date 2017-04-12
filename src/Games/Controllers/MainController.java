@@ -56,8 +56,9 @@ public class MainController extends VBox{
             File[] tabViews = new File("./src/Games/Views/Tabs").listFiles();
             if (tabViews != null) {
                 for(File tabView : tabViews){
-                    if(!tabException.contains(tabView.getName()))
+                    if(!tabException.contains(tabView.getName())){
                         tabs.add(FXMLLoader.load(getClass().getResource("../Views/Tabs/" +tabView.getName())));
+                    }
                 }
             }
         } catch (IOException e) {

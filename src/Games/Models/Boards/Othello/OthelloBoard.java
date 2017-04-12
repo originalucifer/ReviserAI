@@ -3,6 +3,7 @@ package Games.Models.Boards.Othello;
 import Games.Controllers.TabControllers.OthelloController;
 import Games.Controllers.AI.OthelloAI;
 import Games.Models.Players.OthelloPlayer;
+import Games.Models.Boards.Board;
 import javafx.scene.control.Alert;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -16,7 +17,7 @@ import java.util.Objects;
  * @author koen
  * @version 0.1 (4/3/17)
  */
-public class OthelloBoard {
+public class OthelloBoard implements Board{
 
     private static final int boardSize = 8;
 
@@ -48,7 +49,7 @@ public class OthelloBoard {
         OthelloBoard.ai = new OthelloAI();
 
         controller.setStatus("Pick a color.");
-        draw();
+        drawItems();
     }
 
     /**
@@ -59,7 +60,6 @@ public class OthelloBoard {
      */
     public static void startGame(){
         started = true;
-        System.out.println("started!");
     }
 
     /**
@@ -121,7 +121,7 @@ public class OthelloBoard {
     /**
      * Draw the OthelloBoard with 4 start items in the middle.
      */
-    public static void draw(){
+    public static void drawItems(){
         for (int row = 0; row < boardSize; row++) {
             for (int column = 0; column < boardSize; column++) {
                 OthelloItem othelloItem = new OthelloItem(column,row);
@@ -136,6 +136,16 @@ public class OthelloBoard {
                 controller.boardView.add(othelloItem,column,row);
             }
         }
+    }
+
+    @Override
+    public void yourTurn() {
+
+    }
+
+    @Override
+    public void move(String move, boolean thisplayer) {
+
     }
 
     /**
@@ -331,6 +341,46 @@ public class OthelloBoard {
                 }
             }
         }
+    }
+
+    @Override
+    public void updateBoard(int lastMove, boolean playerTurn) {
+        System.out.println("update board lastMove: "+lastMove+" player turn: "+playerTurn);
+    }
+
+    @Override
+    public Boolean getEnded() {
+        return hasStarted();
+    }
+
+    @Override
+    public String getEndStatus() {
+        return "get end status";
+    }
+
+    @Override
+    public void receiveMove(int move, boolean player) {
+        System.out.println("receive move"+move+" from player: "+player);
+    }
+
+    @Override
+    public void matchStart(boolean myturn) {
+        System.out.println("match start my turn "+myturn);
+    }
+
+    @Override
+    public void win() {
+        System.out.println("win");
+    }
+
+    @Override
+    public void loss() {
+        System.out.println("loss");
+    }
+
+    @Override
+    public void draw() {
+        System.out.println("draw");
     }
 
     /**
