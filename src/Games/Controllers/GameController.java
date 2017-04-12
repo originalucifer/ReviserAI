@@ -3,7 +3,7 @@ package Games.Controllers;
 import Games.Controllers.TabControllers.GameStatusView;
 import Games.Models.Factories.PlayerFactory;
 import Games.Models.Players.Player;
-import Games.Models.Boards.TicTacToeBoard;
+import Games.Models.Boards.TicTacToe.TicTacToeBoard;
 
 
 /**
@@ -53,7 +53,6 @@ public class GameController implements Runnable{
     private void checkEndSituation() {
         Boolean ended = board.getEnded();
         if (ended){
-            gui.gameEnded(board.getEndStatus());
             endGame();
         }
     }

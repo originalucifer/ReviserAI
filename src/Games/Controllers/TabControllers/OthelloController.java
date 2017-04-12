@@ -209,4 +209,34 @@ public class OthelloController extends ConnectionController{
 
     public void makeBlackAi(ActionEvent actionEvent) {
     }
+
+
+    /**
+     * //TODO should setup connection with the server
+     */
+    public void getConnection() {
+//        if (playerTypeChosen && playerChosen){
+            if (!connectionHandler.isConnected()){
+                super.getConnection();
+//                connectionHandler.setBoard(OthelloBoard);
+//                TODO somehow the othelloBoard should be set so that the methods yourTurn etc can be called.
+            } else {
+                serverOutput.appendText("\nWarning: You are already connected");
+            }
+//        } else {
+//            serverOutput.appendText("\nYou must first choose AI or GUI and X or O");
+//        }
+    }
+
+    /**
+     * Subscribes user to current Game on the Server
+     */
+    public void subscribe(){
+        if (connectionHandler.isConnected() && loggedIn){
+            connectionHandler.subscribe("Reversi");
+            serverOutput.appendText("\nSubscribed for game: \"Reversi\"");
+        } else {
+            serverOutput.appendText("\nWarning: You must first connect and log in");
+        }
+    }
 }

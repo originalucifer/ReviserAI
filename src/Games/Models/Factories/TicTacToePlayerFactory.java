@@ -2,7 +2,7 @@ package Games.Models.Factories;
 
 import Games.Controllers.AI.TicTacToeAI;
 import Games.Controllers.TabControllers.GameControls;
-import Games.Models.Boards.TicTacToeBoard;
+import Games.Models.Boards.TicTacToe.TicTacToeBoard;
 import Games.Models.Players.AIplayer;
 import Games.Models.Players.OpponentPlayer;
 import Games.Models.Players.PhysicalPlayer;

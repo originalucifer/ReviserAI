@@ -36,6 +36,8 @@ public class OthelloBoard implements Board{
     static OthelloPlayer white;
     static OthelloAI ai;
 
+    private static ConnectionHandler connectionHandler;
+
 
     /**
      * Initialize the static OthelloBoard with the OthelloController.
@@ -141,11 +143,11 @@ public class OthelloBoard implements Board{
 
     @Override
     public void yourTurn() {
-
+        nextTurn();
     }
 
     @Override
-    public void move(String move, boolean thisplayer) {
+    public void moveMade(String move) {
 
     }
 
@@ -355,18 +357,13 @@ public class OthelloBoard implements Board{
     }
 
     @Override
-    public String getEndStatus() {
-        return "get end status";
-    }
-
-    @Override
     public void receiveMove(int move, boolean player) {
         System.out.println("receive move"+move+" from player: "+player);
     }
 
     @Override
-    public void matchStart(boolean myturn) {
-        System.out.println("match start my turn "+myturn);
+    public void matchStart(boolean myTurn) {
+        System.out.println("match start my turn "+myTurn);
     }
 
     @Override
@@ -439,4 +436,5 @@ public class OthelloBoard implements Board{
     public static int getBoardSize() {
         return boardSize;
     }
+
 }

@@ -3,7 +3,7 @@ package Games.Controllers.TabControllers;
 import Games.Controllers.ConnectionController;
 import Games.Controllers.GameController;
 import Games.Controllers.ObserveBoardInput;
-import Games.Models.Boards.TicTacToeBoard;
+import Games.Models.Boards.TicTacToe.TicTacToeBoard;
 import Games.Models.Factories.PlayerFactory;
 import Games.Models.Factories.TicTacToePlayerFactory;
 import javafx.application.Platform;

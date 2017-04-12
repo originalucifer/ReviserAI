@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 /**
+ * Recieves recieved message from server and executes correct steps.
+ *
  * Created by rik on 3/29/17.
  */
 public class CommandCalls implements Observer{
@@ -40,7 +42,7 @@ public class CommandCalls implements Observer{
 		switch (split[0]) {
 			case "ERR": error(getArguments(split));
 			break;
-			case "OK": acknowledgement();
+			case "OK":
 			break;
 			case "SVR": SVR(getArguments(split));
 			break;
@@ -137,9 +139,9 @@ public class CommandCalls implements Observer{
 	    String name = arguments[1].replaceAll("\\W", "");
 	    if (!name.equals(playerName)){
 			sendInput(arguments[3]);
-	        board.move(arguments[3],false);
+	        board.moveMade(arguments[3]);
         }else{
-	        board.move(arguments[3],true);
+	        board.moveMade(arguments[3]);
         }
     }
 
@@ -154,11 +156,6 @@ public class CommandCalls implements Observer{
         }
         connectionHandler.updateOutput(output.toString());
     }
-
-
-	private void acknowledgement(){
-
-	}
 
     /**
      * sets the game to play
