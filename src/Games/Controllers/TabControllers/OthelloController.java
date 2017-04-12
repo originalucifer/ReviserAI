@@ -229,15 +229,10 @@ public class OthelloController extends ConnectionController{
     }
 
     /**
-     * Subscribes user to current Game on the Server
+     * Subscribes user to Reversi on the Server
      */
     public void subscribe(){
-        if (connectionHandler.isConnected() && loggedIn){
-            connectionHandler.subscribe("Reversi");
-            serverOutput.appendText("\nSubscribed for game: \"Reversi\"");
-        } else {
-            serverOutput.appendText("\nWarning: You must first connect and log in");
-        }
+        super.subscribeForGame("Reversi");
     }
 
     /**

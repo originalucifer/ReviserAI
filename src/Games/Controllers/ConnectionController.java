@@ -22,7 +22,7 @@ public class ConnectionController {
     @FXML public TextField acceptChallengeTf;
 
     protected ConnectionHandler connectionHandler = new ConnectionHandler(this);
-    protected boolean loggedIn = false;
+    private boolean loggedIn = false;
 
 
     public ConnectionController(){
@@ -132,10 +132,22 @@ public class ConnectionController {
     }
 
     /**
-     * Subscribes user to specified Game on the Server
-     * should be overridden in the subclass
+     * Subscribe, should be overridden in the subclass
      */
     public void subscribe(){}
+
+    /**
+     * Subscribes user to specified Game
+     * @param game name of the game to subscribe to
+     */
+    protected void subscribeForGame(String game){
+        if (connectionHandler.isConnected() && loggedIn){
+            connectionHandler.subscribe(game);
+            serverOutput.appendText("\nSubscribed for game: \""+game+"\"");
+        } else {
+            serverOutput.appendText("\nWarning: You must first connect and log in");
+        }
+    }
 
     /**
      * Challenge, should be overridden in subclass.
@@ -147,7 +159,7 @@ public class ConnectionController {
      * Challenge another player for the specified game.
      * @param game Name of current game.
      */
-    public void challengeForGame(String game){
+    protected void challengeForGame(String game){
         if (connectionHandler.isConnected() && loggedIn){
             String challenge = challengeTf.getText();
             challenge = challenge.replace("\\s+","");

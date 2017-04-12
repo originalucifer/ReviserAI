@@ -70,15 +70,10 @@ public class TicTacToeController extends ConnectionController implements GameCon
     }
 
     /**
-     * Subscribes user to current Game on the Server
+     * Subscribes user to Tic-tac-toe on the Server
      */
     public void subscribe(){
-        if (connectionHandler.isConnected() && loggedIn){
-                connectionHandler.subscribe("Tic-tac-toe");
-                serverOutput.appendText("\nSubscribed for game: \"Tic-tac-toe\"");
-        } else {
-            serverOutput.appendText("\nWarning: You must first connect and log in");
-        }
+        super.subscribeForGame("Tic-tac-toe");
     }
 
     /**
