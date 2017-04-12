@@ -138,10 +138,10 @@ public class OthelloController {
     }
 
     public void startGame(String activePlayer){
-        OthelloBoard.setActivePlayer(activePlayer);
 
-        disableButtons(true);
         OthelloBoard.startGame();
+        disableButtons(true);
+        OthelloBoard.setActivePlayer(activePlayer);
     }
 
     /**
