@@ -173,7 +173,12 @@ public class CommandCalls implements Observer{
 	 */
     private void playerList(String[] arguments) {
     	for (String arg : arguments){
-    		connectionHandler.updatePlayerListOutput(arg.replaceAll("\\W", ""));
+    		String name = arg.replaceAll("\\W", "");
+    		if (name.equals(playerName)){
+    			connectionHandler.updatePlayerListOutput("(Self) "+name);
+			} else {
+				connectionHandler.updatePlayerListOutput(name);
+			}
 		}
 	}
 

@@ -147,7 +147,7 @@
                 </VBox>
 
 
-                <VBox prefWidth="200" spacing="5">
+                <VBox prefWidth="170" spacing="5">
                     <VBox styleClass="box" spacing="5">
                         <padding>
                             <Insets top="3" right="3" bottom="3" left="3"/>

@@ -211,6 +211,7 @@ public class ConnectionController {
                 loggedIn = false;
             }
             connectionHandler.quitConnection();
+            playerListOutput.setText("");gameListOutput.setText("");
             serverOutput.appendText("\nConnection closed");
         } else {
             serverOutput.appendText("\nWarning: You are not connected");
@@ -243,8 +244,8 @@ public class ConnectionController {
      * update the playerListOutput textArea with all players
      * @param playerName name of the players
      */
-    public void updatePlayerListOutput(String playerName) { playerListOutput.appendText(playerName+"\n");
+    public void updatePlayerListOutput(String playerName) { playerListOutput.appendText("- "+playerName+"\n");
     }
 
-    public void updateGameListOutput(String gameName){ gameListOutput.appendText(gameName+"\n");}
+    public void updateGameListOutput(String gameName){ gameListOutput.appendText("- "+gameName+"\n");}
 }

@@ -23,7 +23,7 @@ public class Main extends Application {
         // Create main stage for the application
         Parent root = FXMLLoader.load(getClass().getResource("Views/MainLayout.fxml"));
         primaryStage.setTitle("Reviser (AI) Games");
-        Scene scene = new Scene(root, 1400, 800);
+        Scene scene = new Scene(root, 1370, 800);
         primaryStage.setScene(scene);
         primaryStage.setOnCloseRequest(WindowEvent -> Platform.exit());
         primaryStage.show();

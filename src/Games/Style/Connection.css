@@ -41,7 +41,3 @@
 .serverOutput .scroll-pane .content{
     -fx-background-color: transparent;
 }
-
-.output{
-    -fx-font-size: 15;
-}
