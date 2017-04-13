@@ -30,9 +30,6 @@ public class OthelloAI {
             10000,-3000,1000,800,800,-3000,10000
     };
 
-
-
-
     public OthelloAI(){
         AIboard = new char[64];
         for (int i = 0; i < 64; i++){
@@ -42,7 +39,11 @@ public class OthelloAI {
 
     public void makeMove(){
         updateBoard();
-        getAvailableMoves(AIboard, black);
+        char player = OthelloBoard.activePlayer == OthelloBoard.black ? black : white;
+        for (int i : getAvailableMoves(AIboard, player)){
+            System.out.print(i);
+        }
+        System.out.println();
         Random randomGenerator = new Random();
         ArrayList<OthelloItem> validMoves = OthelloBoard.getValidMoves();
         int index = randomGenerator.nextInt(validMoves.size());
@@ -55,6 +56,17 @@ public class OthelloAI {
             AIboard[getIndex(item.getColumn(), item.getRow())] = item.getPlayer().getColor().equals("black") ? black : white;
         }
     }
+
+    private int calculateBoardPosition(char[] board, char player){
+        int value = 0;
+        for (int field = 0; field < 64; field++){
+            if (board[field] == player){
+                value += boardValues[field];
+            }
+        }
+        return value;
+    }
+
 
     private ArrayList<Integer> getAvailableMoves(char[] board, char player){
         char opp = player == white ? black : white;
@@ -101,7 +113,7 @@ public class OthelloAI {
                         search -= 8;
                     }
                 }
-                if (i - 8 <= 63 && board[i - 8] == nothing) {
+                if (i - 8 >= 0 && board[i - 8] == nothing) {
                     int search = i + 8;
                     while(true){
                         if (search < 0 || search > 63) break;
@@ -149,7 +161,7 @@ public class OthelloAI {
                         search -= 1;
                     }
                 }
-                if (i - 1 <= 63 && board[i - 1] == nothing) {
+                if (i - 1 >= 0 && board[i - 1] == nothing) {
                     int search = i + 1;
                     while(true){
                         if (search < 0 || search > 63) break;
