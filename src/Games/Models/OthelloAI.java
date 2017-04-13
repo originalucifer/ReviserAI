@@ -1,5 +1,6 @@
 package Games.Models;
 
+import Games.Controllers.AI.AI;
 import Games.Models.Boards.Othello.OthelloBoard;
 import Games.Models.Boards.Othello.OthelloItem;
 
@@ -20,14 +21,14 @@ public class OthelloAI {
     private char white = 'w';
     //othellomaster.com/OM/Report/HTML/img13.png
     private int[] boardValues = {
-            10000,-3000,1000,800,800,-3000,10000,
+            10000,-3000,1000,800,800,1000,-3000,10000,
             -3000,-5000,-450,-500,-500,-450,-5000,-3000,
             1000,-450,30,10,10,30,-450,1000,
             800,-500,10,50,50,10,-500,800,
             800,-500,10,50,50,10,-500,800,
             1000,-450,30,10,10,30,-450,1000,
             -3000,-5000,-450,-500,-500,-450,-5000,-3000,
-            10000,-3000,1000,800,800,-3000,10000
+            10000,-3000,1000,800,800,1000,-3000,10000
     };
 
     public OthelloAI(){
@@ -40,10 +41,19 @@ public class OthelloAI {
     public void makeMove(){
         updateBoard();
         char player = OthelloBoard.activePlayer == OthelloBoard.black ? black : white;
-        for (int i : getAvailableMoves(AIboard, player)){
-            System.out.print(i);
+        int bestMove = 0;
+        int bestValue = -9999999;
+        ArrayList<Integer> mo = getAvailableMoves(AIboard, player);
+        mo.get(0);
+        for (int i : mo){
+            AIboard[i] = player;
+            int v = calculateBoardPosition(AIboard, player);
+            if (v > bestValue){
+                bestMove = i;
+                bestValue = v;
+            }
+            AIboard[i] = nothing;
         }
-        System.out.println();
         Random randomGenerator = new Random();
         ArrayList<OthelloItem> validMoves = OthelloBoard.getValidMoves();
         int index = randomGenerator.nextInt(validMoves.size());
@@ -53,6 +63,9 @@ public class OthelloAI {
 
     private void updateBoard(){
         for (OthelloItem item : OthelloBoard.blackItems){
+            AIboard[getIndex(item.getColumn(), item.getRow())] = item.getPlayer().getColor().equals("black") ? black : white;
+        }
+        for (OthelloItem item : OthelloBoard.whiteItems){
             AIboard[getIndex(item.getColumn(), item.getRow())] = item.getPlayer().getColor().equals("black") ? black : white;
         }
     }
@@ -72,6 +85,7 @@ public class OthelloAI {
         char opp = player == white ? black : white;
         ArrayList<Integer> moves = new ArrayList<>();
         for (int i = 0; i < 64; i++){
+
             //looking for opponents place
             if (board[i] == opp){
                 int row = getRow(i);
