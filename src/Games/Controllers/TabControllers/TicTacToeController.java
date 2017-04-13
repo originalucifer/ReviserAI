@@ -93,9 +93,9 @@ public class TicTacToeController extends ConnectionController implements GameCon
         String[] players = getPlayers();
         GameController gameController;
         if (myTurn){
-            gameController = new GameController(players[0], players[1], board, factory, this);
+            gameController = new GameController(players[0], players[1], board, factory);
         } else {
-            gameController = new GameController(players[1], players[0], board, factory, this);
+            gameController = new GameController(players[1], players[0], board, factory);
         }
         new Thread(gameController).start();
     }

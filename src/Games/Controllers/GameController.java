@@ -18,13 +18,11 @@ public class GameController implements Runnable{
     private boolean finished = false;
     private Integer lastMove = null;
     private boolean playerTurn = false; //false = 0 & true = 1
-    private GameStatusView gui;
 
-    public GameController(String playerOne, String playerTwo, TicTacToeBoard board, PlayerFactory factory, GameStatusView gui){
+    public GameController(String playerOne, String playerTwo, TicTacToeBoard board, PlayerFactory factory){
         player0 = factory.getPlayer(playerOne);
         player1 = factory.getPlayer(playerTwo);
         this.board = board;
-        this.gui = gui;
     }
 
     private void endGame(){

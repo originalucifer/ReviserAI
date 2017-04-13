@@ -1,6 +1,5 @@
 package Games.Controllers;
 
-import Games.Controllers.TabControllers.TicTacToeController;
 import ServerConnection.ConnectionHandler;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -17,9 +16,14 @@ import javafx.scene.control.TextField;
 public class ConnectionController {
 
     @FXML public TextArea serverOutput;
+    @FXML public TextArea gameListOutput;
+    @FXML public TextArea playerListOutput;
     @FXML public TextField loginTf;
     @FXML public TextField challengeTf;
     @FXML public TextField acceptChallengeTf;
+    @FXML public TextField portNumber;
+    @FXML public TextField hostNumber;
+
 
     protected ConnectionHandler connectionHandler = new ConnectionHandler(this);
     private boolean loggedIn = false;
@@ -36,7 +40,7 @@ public class ConnectionController {
      */
     public void buttonEventHandler(ActionEvent actionEvent){
         Button clickedButton = (Button) actionEvent.getTarget();
-        String buttonLabel = clickedButton.getText();
+        String buttonLabel = clickedButton.getId();
         switch (buttonLabel){
             case "Connect" :
                 this.getConnection();break;
@@ -70,6 +74,8 @@ public class ConnectionController {
                 connectionHandler.connect();
                 Thread.sleep(1000);
                 serverOutput.appendText("\nConnection made");
+                connectionHandler.getGameList();
+                connectionHandler.getPlayerList();
             }catch (Exception e){
                 System.out.println(e);
                 serverOutput.appendText("\nConnection could not be made");
@@ -81,6 +87,7 @@ public class ConnectionController {
      */
     private void getGameList(){
         if (connectionHandler.isConnected()){
+            gameListOutput.setText("");
             connectionHandler.getGameList();
         } else {
             serverOutput.appendText("\nWarning: You are not connected");
@@ -92,6 +99,7 @@ public class ConnectionController {
      */
     private void getPlayerList(){
         if (connectionHandler.isConnected()){
+            playerListOutput.setText("");
             connectionHandler.getPlayerList();
         } else {
             serverOutput.appendText("\nWarning: You are not connected");
@@ -209,6 +217,20 @@ public class ConnectionController {
         }
     }
 
+    public void setHost(ActionEvent actionEvent) {
+        if (!connectionHandler.isConnected()){
+            String host = hostNumber.getText();
+            String port = portNumber.getText();
+            if (!host.equals("") && !port.equals("")){
+                connectionHandler.setHost(host,Integer.parseInt(port));
+            } else {
+                serverOutput.setText("\nWarning: Specify a valid address");
+            }
+        } else {
+            serverOutput.setText("\nWarning: You are already connected");
+        }
+    }
+
     /**
      * updates the serverOutput textarea.
      * @param serverMessage response from server
@@ -217,4 +239,12 @@ public class ConnectionController {
         serverOutput.appendText("\n"+serverMessage);
     }
 
+    /**
+     * update the playerListOutput textArea with all players
+     * @param playerName name of the players
+     */
+    public void updatePlayerListOutput(String playerName) { playerListOutput.appendText(playerName+"\n");
+    }
+
+    public void updateGameListOutput(String gameName){ gameListOutput.appendText(gameName+"\n");}
 }

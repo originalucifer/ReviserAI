@@ -54,7 +54,7 @@ public class CommandCalls implements Observer{
 
     /**
      * Handles the SVR commands from the server
-     * @param arguments
+     * @param arguments array with the message details
      */
 	private void SVR(String[] arguments) {
 		switch (arguments[0]) {
@@ -63,10 +63,10 @@ public class CommandCalls implements Observer{
 			case "GAME":game(getArguments(arguments));
 				break;
 			// Display gameList here
-			case "GAMELIST": connectionHandler.updateOutput(Arrays.toString(arguments));
+			case "GAMELIST":gameList(getArguments(arguments));
 				break;
 			// Display playerList here
-			case "PLAYERLIST": connectionHandler.updateOutput(Arrays.toString(arguments));
+			case "PLAYERLIST":playerList(getArguments(arguments));
 				break;
 		}
 	}
@@ -133,7 +133,7 @@ public class CommandCalls implements Observer{
 
 	/**
 	 * Handles the move from the server.
-	 * @param arguments
+	 * @param arguments array with move details
 	 */
 	private void move(String[] arguments){
 	    String name = arguments[1].replaceAll("\\W", "");
@@ -147,7 +147,7 @@ public class CommandCalls implements Observer{
 
     /**
      * Prints the ERROR messages from the server to the output field.
-     * @param arguments
+     * @param arguments arguments in the error message
      */
     private void error(String arguments[]) {
         StringBuilder output = new StringBuilder("Warning: ");
@@ -156,6 +156,26 @@ public class CommandCalls implements Observer{
         }
         connectionHandler.updateOutput(output.toString());
     }
+
+	/**
+	 * For each game recieved sent it to the gameList textArea.
+	 * @param arguments list with games
+	 */
+	private void gameList(String[] arguments){
+		for (String arg : arguments){
+			connectionHandler.updateGameListOutput(arg.replaceAll("\\W", ""));
+		}
+	}
+
+	/**
+	 * for each player recieved sent it to the playerList textArea
+	 * @param arguments names of the players
+	 */
+    private void playerList(String[] arguments) {
+    	for (String arg : arguments){
+    		connectionHandler.updatePlayerListOutput(arg.replaceAll("\\W", ""));
+		}
+	}
 
     /**
      * sets the game to play
@@ -169,7 +189,7 @@ public class CommandCalls implements Observer{
 	 * sets the name of the player
 	 * @param name playerName
 	 */
-	public void setPlayerName(String name){
+	void setPlayerName(String name){
 		this.playerName = name;
 	}
 
@@ -184,7 +204,7 @@ public class CommandCalls implements Observer{
 
     /**
      * print the string to the outputArea
-     * @param s
+     * @param s message
      */
 	private void print(String s) {
 		connectionHandler.updateOutput(s);

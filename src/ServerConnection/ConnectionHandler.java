@@ -2,6 +2,9 @@ package ServerConnection;
 
 import Games.Controllers.ConnectionController;
 import Games.Models.Boards.Board;
+import sun.net.TelnetInputStream;
+
+import java.awt.*;
 
 /**
  * Handles the connection, connects all classes needed
@@ -17,6 +20,9 @@ public class ConnectionHandler {
 	private boolean connected = false;
 	private ConnectionController connectionController;
 
+	private String hostAddress = "127.0.0.1";
+	private int hostPort = 7789;
+
 	public ConnectionHandler(ConnectionController c) {
 		this.connectionController = c;
 	}
@@ -28,6 +34,7 @@ public class ConnectionHandler {
 
 		listen = new ReceiveListener();
 		connection = new Connection(listen);
+		connection.setHost(hostAddress,hostPort);
 		new Thread(connection).start();
 		new Thread(listen).start();
 		serverCommands =new ServerCommands(connection);
@@ -70,7 +77,8 @@ public class ConnectionHandler {
     /**
      * requests the playerlist
      */
-	public void getPlayerList(){ serverCommands.getPlayerList();}
+	public void getPlayerList(){
+		serverCommands.getPlayerList();}
 
     /**
      * Challenges the speficied player for a specified game
@@ -79,7 +87,10 @@ public class ConnectionHandler {
 		serverCommands.custom("challenge \"" +name+ "\" \""+game+"\"");
 	}
 
-
+	/**
+	 * sends chosen move to the server
+	 * @param move chosen move
+	 */
 	public void makeMove(String move){
 		serverCommands.move(move);
 	}
@@ -123,9 +134,32 @@ public class ConnectionHandler {
         connectionController.updateServerOutput(serverResponse);
 	}
 
+	/**
+	 * updates the playerlist textArea in the connectionController
+	 *
+	 * @param playerName name of the player
+	 */
+	void updatePlayerListOutput(String playerName) { connectionController.updatePlayerListOutput(playerName);}
+
+	/**
+	 * updates the gameList textArea in the connectionController
+	 *
+	 * @param gameName name of the game
+	 */
+	void updateGameListOutput(String gameName) { connectionController.updateGameListOutput(gameName);}
+
 	public CommandCalls getCommandCalls(){
 		return commandCalls;
 	}
 
 
+	/**
+	 * Allaws you to change the adress of the server
+	 * @param host IP address
+	 * @param port portNumber
+	 */
+    public void setHost(String host, int port) {
+		this.hostAddress = host;
+		this.hostPort = port;
+    }
 }

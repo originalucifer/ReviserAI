@@ -69,17 +69,13 @@ public class Connection implements Runnable{
 		toSend.add(message);
 	}
 
-	public void setHost(String adress){
-		this.hostAddress = adress;
-	}
-
-	public void setHost(int port){
-		this.hostPort = port;
-
-	}
-
-	public void setHost(String adress,int port){
-		this.hostAddress = adress;
+	/**
+	 * Sets the address and port for the server
+	 * @param address serverAdress
+	 * @param port serverPort
+	 */
+	void setHost(String address, int port){
+		this.hostAddress = address;
 		this.hostPort = port;
 	}
 
