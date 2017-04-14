@@ -17,6 +17,7 @@ public class OthelloPlayer implements Player {
     private String name;
     private ArrayList<OthelloItem> moves;
     private boolean ai = false;
+    private boolean remote = false;
 
     public OthelloPlayer(String color, String name) {
         this.color = color;
@@ -84,6 +85,24 @@ public class OthelloPlayer implements Player {
      */
     public void setAi(boolean ai) {
         this.ai = ai;
+    }
+
+    /**
+     * Check if the player is a remote player over the server
+     *
+     * @return boolean true if the player is a remote player
+     */
+    public boolean isRemote() {
+        return remote;
+    }
+
+    /**
+     * Set the player as a remote player from the server.
+     *
+     * @param remote boolean true to set the player as a remote player
+     */
+    public void setRemote(boolean remote) {
+        this.remote = remote;
     }
 
     @Override

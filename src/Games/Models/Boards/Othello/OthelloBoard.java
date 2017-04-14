@@ -5,6 +5,7 @@ import Games.Controllers.AI.OthelloAI;
 import Games.Models.Players.OthelloPlayer;
 import Games.Models.Boards.Board;
 import ServerConnection.ConnectionHandler;
+import javafx.application.Platform;
 import javafx.scene.control.Alert;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -18,8 +19,9 @@ import java.util.Objects;
  * @author koen
  * @version 0.1 (4/3/17)
  */
-public class OthelloBoard implements Board{
+public final class OthelloBoard implements Board{
 
+    private static volatile OthelloBoard instance = null;
     private static final int boardSize = 8;
 
     static boolean started = false;
@@ -36,8 +38,20 @@ public class OthelloBoard implements Board{
     static OthelloPlayer white;
     static OthelloAI ai;
 
-    private static ConnectionHandler connectionHandler;
+    public static ConnectionHandler connectionHandler;
 
+    private OthelloBoard() {}
+
+    public static OthelloBoard getInstance() {
+        if (instance == null) {
+            synchronized(OthelloBoard.class) {
+                if (instance == null) {
+                    instance = new OthelloBoard();
+                }
+            }
+        }
+        return instance;
+    }
 
     /**
      * Initialize the static OthelloBoard with the OthelloController.
@@ -47,11 +61,12 @@ public class OthelloBoard implements Board{
     public static void initialize(OthelloController controller){
 
         OthelloBoard.controller = controller;
+        OthelloBoard.connectionHandler = controller.getConnectionHandler();
         OthelloBoard.black = new OthelloPlayer("black","BlackPlayer");
         OthelloBoard.white = new OthelloPlayer("white","whitePlayer");
         OthelloBoard.ai = new OthelloAI();
-
         controller.setStatus("Pick a color.");
+
         drawItems();
     }
 
@@ -66,13 +81,25 @@ public class OthelloBoard implements Board{
     }
 
     /**
+     * Receive updates from server
+     */
+    public static void update(String line){
+        System.out.println("LINE");
+    }
+
+    /**
      * Set an active player
      *
      * @param player Player that needs to make a move.
      */
     public static void setActivePlayer(OthelloPlayer player){
         OthelloBoard.activePlayer = player;
-        controller.setStatus(player.getName()+" is next.");
+        System.out.println("ACTIVE PLAYER IS "+player);
+
+        if(player.isRemote())
+            controller.setStatus("Remote player is next.");
+        else
+            controller.setStatus(player.getName()+" is next.");
 
         // Clear the valid moves block.
         removeValidMoves();
@@ -90,17 +117,6 @@ public class OthelloBoard implements Board{
     }
 
     /**
-     * Clean out the blue valid moves and the ArrayList with valid moves.
-     */
-    private static void removeValidMoves() {
-        for (OthelloItem validMove : validMoves) {
-            if(!validMove.hasPlayer())
-                validMove.setStyle("-fx-fill: red");
-        }
-        validMoves.clear();
-    }
-
-    /**
      * Set the active player by String with the color of the player.
      *
      * @param color black or white
@@ -110,6 +126,17 @@ public class OthelloBoard implements Board{
             setActivePlayer(black);
         else
             setActivePlayer(white);
+    }
+
+    /**
+     * Clean out the blue valid moves and the ArrayList with valid moves.
+     */
+    private static void removeValidMoves() {
+        for (OthelloItem validMove : validMoves) {
+            if(!validMove.hasPlayer())
+                validMove.setStyle("-fx-fill: red");
+        }
+        validMoves.clear();
     }
 
     /**
@@ -143,12 +170,22 @@ public class OthelloBoard implements Board{
 
     @Override
     public void yourTurn() {
-        nextTurn();
+        System.out.println("yourturn");
     }
 
     @Override
     public void moveMade(String move) {
+        if(activePlayer.isRemote()){
+            int[] rowCol = convertLocation(Integer.valueOf(move.replaceAll("[^\\d.]","")));
+            OthelloItem item = controller.getOthelloItemByLocation(rowCol[0], rowCol[1]);
+            item.clicked(false);
+        }
+    }
 
+    public int[] convertLocation(int location){
+        int row = (int) Math.floor(location / boardSize);
+        int col = location % boardSize;
+        return new int[]{row, col};
     }
 
     /**
@@ -164,19 +201,21 @@ public class OthelloBoard implements Board{
      * Clear the board and all necessary properties then recall the initialize.
      * This will reuse the GridPane and StatusLabel
      */
-    public static void reset() {
-        started = false;
-        activePlayer = null;
-        validMoves.clear();
-        whiteItems.clear();
-        blackItems.clear();
-        controller.resetMoveList();
-        controller.boardView.getChildren().clear();
-        controller.disableButtons(false);
-        controller.checkBlackAi.setSelected(false);
-        controller.checkWhiteAi.setSelected(false);
-        for (int i = 0; i < 50; ++i) System.out.println(); // clear log
-        initialize(controller);
+    public static synchronized void reset() {
+        Platform.runLater(() -> {
+            started = false;
+            activePlayer = null;
+            validMoves.clear();
+            whiteItems.clear();
+            blackItems.clear();
+            controller.resetMoveList();
+            controller.boardView.getChildren().clear();
+            controller.disableButtons(false);
+            controller.checkBlackAi.setSelected(false);
+            controller.checkWhiteAi.setSelected(false);
+            for (int i = 0; i < 50; ++i) System.out.println(); // clear log
+            initialize(controller);
+        });
     }
 
     /**
@@ -363,22 +402,38 @@ public class OthelloBoard implements Board{
 
     @Override
     public void matchStart(boolean myTurn) {
-        System.out.println("match start my turn "+myTurn);
+        System.out.println("CALLED");
+
+        if (!OthelloBoard.hasStarted()){
+
+            // First run of match start
+            if (!myTurn)
+                black.setRemote(true);
+            else
+                white.setRemote(true);
+
+            controller.startGame("black");
+        }else {
+            nextTurn();
+        }
     }
 
     @Override
     public void win() {
         System.out.println("win");
+        OthelloBoard.reset();
     }
 
     @Override
     public void loss() {
         System.out.println("loss");
+        OthelloBoard.reset();
     }
 
     @Override
     public void draw() {
         System.out.println("draw");
+        OthelloBoard.reset();
     }
 
     /**
@@ -436,5 +491,4 @@ public class OthelloBoard implements Board{
     public static int getBoardSize() {
         return boardSize;
     }
-
 }

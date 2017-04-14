@@ -1,9 +1,12 @@
 package Games.Controllers.TabControllers;
 
 import Games.Controllers.ConnectionController;
+import Games.Models.Boards.Board;
 import Games.Models.Boards.Othello.OthelloBoard;
 import Games.Models.Boards.Othello.OthelloItem;
 import Games.Models.Players.OthelloPlayer;
+import ServerConnection.ConnectionHandler;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -51,8 +54,14 @@ public class OthelloController extends ConnectionController{
 
     private ObservableList<String> whiteMovesData;
     private ObservableList<String> blackMovesData;
+    private ConnectionHandler connectionHandler;
 
     public void initialize(){
+        // connect to the server
+        super.getConnection();
+        connectionHandler = super.connectionHandler;
+        connectionHandler.setBoard(OthelloBoard.getInstance());
+
         whiteMovesData = FXCollections.observableArrayList();
         blackMovesData = FXCollections.observableArrayList();
 
@@ -99,21 +108,25 @@ public class OthelloController extends ConnectionController{
         }
     }
 
-    public void addMove(OthelloPlayer player,OthelloItem item){
-        if(Objects.equals(player.getColor(), "black")) {
-            blackMovesData.add(item.getPositionString());
-            blackMoves.setItems(blackMovesData);
-        } else {
-            whiteMovesData.add(item.getPositionString());
-            whiteMoves.setItems(whiteMovesData);
-        }
+    public synchronized void addMove(OthelloPlayer player,OthelloItem item){
+        Platform.runLater(() -> {
+            if(Objects.equals(player.getColor(), "black")) {
+                blackMovesData.add(item.getPositionString());
+                blackMoves.setItems(blackMovesData);
+            } else {
+                whiteMovesData.add(item.getPositionString());
+                whiteMoves.setItems(whiteMovesData);
+            }
+        });
     }
 
-    public void resetMoveList(){
-        whiteMovesData = FXCollections.observableArrayList();
-        blackMovesData = FXCollections.observableArrayList();
-        blackMoves.setItems(blackMovesData);
-        whiteMoves.setItems(whiteMovesData);
+    public synchronized void resetMoveList(){
+        Platform.runLater(() -> {
+            whiteMovesData = FXCollections.observableArrayList();
+            blackMovesData = FXCollections.observableArrayList();
+            blackMoves.setItems(blackMovesData);
+            whiteMoves.setItems(whiteMovesData);
+        });
     }
 
     /**
@@ -175,8 +188,8 @@ public class OthelloController extends ConnectionController{
      *
      * @param status String with current status of the game.
      */
-    public void setStatus(String status){
-        statusLabel.setText(status);
+    public synchronized void setStatus(String status){
+        Platform.runLater(() -> statusLabel.setText(status));
     }
 
     /**
@@ -191,8 +204,10 @@ public class OthelloController extends ConnectionController{
      *
      * @param item OthelloItem to remove
      */
-    public void removeBlackList(OthelloItem item) {
-        blackMovesData.remove(item.getPositionString());
+    public synchronized void removeBlackList(OthelloItem item) {
+        Platform.runLater(() -> {
+            blackMovesData.remove(item.getPositionString());
+        });
     }
 
     /**
@@ -200,8 +215,10 @@ public class OthelloController extends ConnectionController{
      *
      * @param item OthelloItem to remove
      */
-    public void removeWhiteList(OthelloItem item) {
-        whiteMovesData.remove(item.getPositionString());
+    public synchronized void removeWhiteList(OthelloItem item) {
+        Platform.runLater(() -> {
+            whiteMovesData.remove(item.getPositionString());
+        });
     }
 
     public void makeWhiteAi(ActionEvent actionEvent) {
@@ -226,6 +243,15 @@ public class OthelloController extends ConnectionController{
 //        } else {
 //            serverOutput.appendText("\nYou must first choose AI or GUI and X or O");
 //        }
+    }
+
+    /**
+     * Get the connectionhandler from this controller
+     *
+     * @return ConnectionHandler
+     */
+    public ConnectionHandler getConnectionHandler() {
+        return connectionHandler;
     }
 
     /**

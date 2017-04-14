@@ -38,7 +38,7 @@ public class CommandCalls implements Observer{
      */
 	private void findCommand(String com){
 		String split[] = com.split(" ");
-		System.out.println(Arrays.toString(split));
+//		System.out.println(Arrays.toString(split));
 		switch (split[0]) {
 			case "ERR": error(getArguments(split));
 			break;

@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Objects;
 
-import static Games.Models.Boards.Othello.OthelloBoard.controller;
+import static Games.Models.Boards.Othello.OthelloBoard.*;
 
 /**
  * Class OthelloItem
@@ -77,18 +77,25 @@ public class OthelloItem extends Rectangle {
             t -> {
                 OthelloItem rectangle = ((OthelloItem) (t.getSource()));
                 rectangle.setStyle(disableInnerShadow);
-                clicked();
+                clicked(true);
             };
 
     /**
      * Click this OthelloItem
      */
-    public void clicked() {
+    public void clicked(boolean humanClick) {
         if(!OthelloBoard.validMoves.contains(this)){
             OthelloBoard.controller.setStatus("Illegal move! Use the blue indications. "+OthelloBoard.getActivePlayer());
             setColor(); // don't change the color of a players item when clicked.
-        } else{
+        } else if(OthelloBoard.activePlayer.isRemote() && humanClick){
+            OthelloBoard.controller.setStatus("Wait for the remote player to make a move");
+            setColor(); // don't change the color of a players item when clicked.
+        } else {
             setPlayer(OthelloBoard.getActivePlayer());
+
+            // Only send a move command if we made a move, not when te remote player made a move.
+            if(!OthelloBoard.getActivePlayer().isRemote())
+                connectionHandler.makeMove(String.valueOf(convertLocation(row,column)));
 
             // override the other players items if necessary
             if(overrides != null){
@@ -99,6 +106,17 @@ public class OthelloItem extends Rectangle {
 
             OthelloBoard.nextTurn();
         }
+    }
+
+    /**
+     * Convert the row,column location to a single dimension integer
+     *
+     * @param row int of the item to convert
+     * @param column int of the item to convert
+     * @return int with the single dimension value of the location.
+     */
+    public int convertLocation(int row, int column){
+        return ((row+1)*getBoardSize())-(getBoardSize()-(column));
     }
 
     /**
@@ -128,6 +146,8 @@ public class OthelloItem extends Rectangle {
             } else {
                 setStyle("-fx-fill: white");
             }
+        } else if(validMoves.contains(this)){
+            setStyle("-fx-fill: blue;");
         }
     }
 
