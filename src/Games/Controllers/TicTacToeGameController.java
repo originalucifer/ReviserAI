@@ -7,11 +7,11 @@ import Games.Models.Boards.TicTacToe.TicTacToeBoard;
 
 
 /**
- * GameController handles the playing of the game.
+ * TicTacToeGameController handles the playing of the game.
  *
  * Created by rik on 4/5/17.
  */
-public class GameController implements Runnable{
+public class TicTacToeGameController implements Runnable{
     private Player player0;
     private Player player1;
     private TicTacToeBoard board;
@@ -19,7 +19,7 @@ public class GameController implements Runnable{
     private Integer lastMove = null;
     private boolean playerTurn = false; //false = 0 & true = 1
 
-    public GameController(String playerOne, String playerTwo, TicTacToeBoard board, PlayerFactory factory){
+    public TicTacToeGameController(String playerOne, String playerTwo, TicTacToeBoard board, PlayerFactory factory){
         player0 = factory.getPlayer(playerOne);
         player1 = factory.getPlayer(playerTwo);
         this.board = board;

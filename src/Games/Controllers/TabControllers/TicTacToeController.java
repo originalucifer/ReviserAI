@@ -1,7 +1,7 @@
 package Games.Controllers.TabControllers;
 
 import Games.Controllers.ConnectionController;
-import Games.Controllers.GameController;
+import Games.Controllers.TicTacToeGameController;
 import Games.Controllers.ObserveBoardInput;
 import Games.Models.Boards.TicTacToe.TicTacToeBoard;
 import Games.Models.Factories.PlayerFactory;
@@ -91,13 +91,13 @@ public class TicTacToeController extends ConnectionController implements GameCon
         clearButtons();board.clearBoard();
         PlayerFactory factory = new TicTacToePlayerFactory(this, board, connectionHandler.getCommandCalls());
         String[] players = getPlayers();
-        GameController gameController;
+        TicTacToeGameController ticTacToeGameController;
         if (myTurn){
-            gameController = new GameController(players[0], players[1], board, factory);
+            ticTacToeGameController = new TicTacToeGameController(players[0], players[1], board, factory);
         } else {
-            gameController = new GameController(players[1], players[0], board, factory);
+            ticTacToeGameController = new TicTacToeGameController(players[1], players[0], board, factory);
         }
-        new Thread(gameController).start();
+        new Thread(ticTacToeGameController).start();
     }
 
     /**
