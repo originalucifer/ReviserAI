@@ -144,10 +144,10 @@ public class OthelloController extends ConnectionController{
     }
 
     public void startGame(String activePlayer){
+        OthelloBoard.startGame();
         OthelloBoard.setActivePlayer(activePlayer);
 
         disableButtons(true);
-        OthelloBoard.startGame();
     }
 
     /**

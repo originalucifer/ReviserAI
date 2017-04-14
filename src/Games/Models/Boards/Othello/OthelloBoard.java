@@ -278,7 +278,7 @@ public final class OthelloBoard implements Board{
      * @param overrides ArrayList with the items we will override with this move
      * @return ArrayList with items that will be taken where the last item is a legit move.
      */
-    public static ArrayList<OthelloItem> checkMoveInPosition(OthelloItem othelloItem, String position, ArrayList<OthelloItem> overrides){
+    public synchronized static ArrayList<OthelloItem> checkMoveInPosition(OthelloItem othelloItem, String position, ArrayList<OthelloItem> overrides){
 
 //        System.out.println("Checking "+othelloItem.getPositionString()+" to the "+position);
 
@@ -351,7 +351,7 @@ public final class OthelloBoard implements Board{
      *
      * @param othelloItem OthelloItem neighbour of player item to check valid moves from.
      */
-    public static void drawValidMoveFromItem(OthelloItem othelloItem) {
+    public synchronized static void drawValidMoveFromItem(OthelloItem othelloItem) {
 
         HashMap<String, OthelloItem> neighbours = othelloItem.getNeighbours();
 
@@ -407,11 +407,12 @@ public final class OthelloBoard implements Board{
         if (!OthelloBoard.hasStarted()){
 
             // First run of match start
-            if (!myTurn)
+            if (!myTurn) {
                 black.setRemote(true);
-            else
+            }else {
+                black.setAi(true);
                 white.setRemote(true);
-
+            }
             controller.startGame("black");
         }else {
             nextTurn();
