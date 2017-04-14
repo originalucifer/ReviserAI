@@ -38,27 +38,48 @@ public class OthelloAI {
         }
     }
 
+    private char getOpponent(char player){
+        return player == white ? black : white;
+    }
+
     public void makeMove(){
         updateBoard();
         char player = OthelloBoard.activePlayer == OthelloBoard.black ? black : white;
         int bestMove = 0;
         int bestValue = -9999999;
         ArrayList<Integer> mo = getAvailableMoves(AIboard, player);
-        mo.get(0);
         for (int i : mo){
             AIboard[i] = player;
             int v = calculateBoardPosition(AIboard, player);
+            System.out.print(i + " ");
             if (v > bestValue){
                 bestMove = i;
                 bestValue = v;
             }
             AIboard[i] = nothing;
         }
-        Random randomGenerator = new Random();
+        System.out.println();
+        int row = getRow(bestMove);
+        int col = getCol(bestMove);
         ArrayList<OthelloItem> validMoves = OthelloBoard.getValidMoves();
-        int index = randomGenerator.nextInt(validMoves.size());
-        OthelloItem item = validMoves.get(index);
-        item.clicked();
+        OthelloItem clicking = null;
+        for (OthelloItem item : validMoves){
+            if (item.getColumn() == col && item.getRow() == row){
+                clicking = item;
+                break;
+            }
+        }
+        if (clicking == null){
+            System.out.println("random");
+            Random randomGenerator = new Random();
+            int index = randomGenerator.nextInt(validMoves.size());
+            OthelloItem item = validMoves.get(index);
+            item.clicked();
+        }else {
+            System.out.println("smart");
+            clicking.clicked();
+        }
+
     }
 
     private void updateBoard(){
@@ -80,9 +101,137 @@ public class OthelloAI {
         return value;
     }
 
+    private void doMove(char[] board, int move, char player){
+        char opp = getOpponent(player);
+        board[move] = player;
+        int row = getRow(move);
+        int col = getCol(move);
+        ArrayList<Integer> toFlip = new ArrayList<>();
+        if (move - 9 >= 0 && board[move - 9] == nothing) {
+            int search = move + 9;
+            while(true){
+                if (search < 0 || search > 63) break;
+                if (getCol(search) < col) break;
+                if (board[search] == nothing) break;
+                if (board[search] == player){
+                    for (int k = move + 9; k < search; k += 9){
+                        board[k] = player;
+                    }
+                    break;
+                }
+                search += 9;
+            }
+        }
+        if (move + 9 <= 63 && board[move + 9] == nothing) {
+            int search =  - 9;
+            while(true){
+                if (search < 0 || search > 63) break;
+                if (getCol(search) > col) break;
+                if (board[search] == nothing) break;
+                if (board[search] == player){
+                    for (int k = move - 9; k > search; k -= 9){
+                        board[k] = player;
+                    }
+                    break;
+                }
+                search -= 9;
+            }
+        }
 
+        if (move + 8 <= 63 && board[move + 8] == nothing) {
+            int search = move - 8;
+            while(true){
+                if (search < 0 || search > 63) break;
+                if (board[search] == nothing) break;
+                if (board[search] == player){
+                    for (int k = move -8; k > search; k -= 8){
+                        board[k] = player;
+                    }
+                    break;
+                }
+                search -= 8;
+            }
+        }
+        if (move - 8 >= 0 && board[move - 8] == nothing) {
+            int search = move + 8;
+            while(true){
+                if (search < 0 || search > 63) break;
+                if (board[search] == nothing) break;
+                if (board[search] == player){
+                    for (int k = move + 8; k < search; k += 8){
+                        board[k] = player;
+                    }
+                    break;
+                }
+                search += 8;
+            }
+        }
+
+        if (move - 7 >= 0 && board[move - 7] == nothing) {
+            int search = move + 7;
+            while(true){
+                if (search < 0 || search > 63) break;
+                if (getCol(search) > col) break;
+                if (board[search] == nothing) break;
+                if (board[search] == player){
+                    for (int k = move + 7; k < search; k += 7){
+                        board[k] = player;
+                    }
+                    break;
+                }
+                search += 7;
+            }
+        }
+        if (move + 7 <= 63 && board[move + 7] == nothing) {
+            int search = move - 7;
+            while(true){
+                if (search < 0 || search > 63) break;
+                if (getCol(search) < col) break;
+                if (board[search] == nothing) break;
+                if (board[search] == player){
+                    for (int k = move - 7; k > search; k -= 7){
+                        board[k] = player;
+                    }
+                    break;
+                }
+                search -= 7;
+            }
+        }
+        if (move + 1 <= 63 && board[move + 1] == nothing) {
+            int search = move - 1;
+            while(true){
+                if (search < 0 || search > 63) break;
+                if (getRow(search) > row) break;
+                if (board[search] == nothing) break;
+                if (board[search] == player){
+                    for (int k = move - 1; k > search; k -= 1){
+                        board[k] = player;
+                    }
+                    break;
+                }
+                search -= 1;
+            }
+        }
+        if (move - 1 >= 0 && board[move - 1] == nothing) {
+            int search = move + 1;
+            while(true){
+                if (search < 0 || search > 63) break;
+                if (getRow(search) < row) break;
+                if (board[search] == nothing) break;
+                if (board[search] == player){
+                    for (int k = move + 1; k < search; k += 1){
+                        board[k] = player;
+                    }
+                    break;
+                }
+                search += 1;
+            }
+        }
+    }
+
+//Returned results do not match always othelloBoard.getValidMoves.
     private ArrayList<Integer> getAvailableMoves(char[] board, char player){
-        char opp = player == white ? black : white;
+        char opp = getOpponent(player);
         ArrayList<Integer> moves = new ArrayList<>();
         for (int i = 0; i < 64; i++){
 
@@ -96,6 +245,7 @@ public class OthelloAI {
                     while(true){
                         if (search < 0 || search > 63) break;
                         if (getCol(search) < col) break;
+                        if (board[search] == nothing) break;
                         if (board[search] == player){
                             moves.add(i-9);
                             break;
@@ -108,6 +258,7 @@ public class OthelloAI {
                     while(true){
                         if (search < 0 || search > 63) break;
                         if (getCol(search) > col) break;
+                        if (board[search] == nothing) break;
                         if (board[search] == player){
                             moves.add(i+9);
                             break;
@@ -120,6 +271,7 @@ public class OthelloAI {
                     int search = i - 8;
                     while(true){
                         if (search < 0 || search > 63) break;
+                        if (board[search] == nothing) break;
                         if (board[search] == player){
                             moves.add(i+8);
                             break;
@@ -131,6 +283,7 @@ public class OthelloAI {
                     int search = i + 8;
                     while(true){
                         if (search < 0 || search > 63) break;
+                        if (board[search] == nothing) break;
                         if (board[search] == player){
                             moves.add(i-8);
                             break;
@@ -144,6 +297,7 @@ public class OthelloAI {
                     while(true){
                         if (search < 0 || search > 63) break;
                         if (getCol(search) > col) break;
+                        if (board[search] == nothing) break;
                         if (board[search] == player){
                             moves.add(i-7);
                             break;
@@ -156,6 +310,7 @@ public class OthelloAI {
                     while(true){
                         if (search < 0 || search > 63) break;
                         if (getCol(search) < col) break;
+                        if (board[search] == nothing) break;
                         if (board[search] == player){
                             moves.add(i+7);
                             break;
@@ -168,6 +323,7 @@ public class OthelloAI {
                     while(true){
                         if (search < 0 || search > 63) break;
                         if (getRow(search) > row) break;
+                        if (board[search] == nothing) break;
                         if (board[search] == player){
                             moves.add(i+1);
                             break;
@@ -180,6 +336,7 @@ public class OthelloAI {
                     while(true){
                         if (search < 0 || search > 63) break;
                         if (getRow(search) < row) break;
+                        if (board[search] == nothing) break;
                         if (board[search] == player){
                             moves.add(i-1);
                             break;
@@ -199,7 +356,6 @@ public class OthelloAI {
     private int getCol(int index){
         return index % 8;
     }
-
 
     private int getIndex(int column, int row){
         return row * 8 + column;
