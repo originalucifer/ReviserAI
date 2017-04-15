@@ -44,43 +44,39 @@ public class OthelloAI {
 
     public void makeMove(){
         updateBoard();
+        printBoard(AIboard);
         char player = OthelloBoard.activePlayer == OthelloBoard.black ? black : white;
-        int bestMove = 0;
+        OthelloItem bestMove = null;
         int bestValue = -9999999;
-        ArrayList<Integer> mo = getAvailableMoves(AIboard, player);
-        for (int i : mo){
-            AIboard[i] = player;
-            int v = calculateBoardPosition(AIboard, player);
-            System.out.print(i + " ");
+        ArrayList<OthelloItem> validMoves = OthelloBoard.getValidMoves();
+        for (OthelloItem item : validMoves){
+            int index = getIndex(item.getColumn(),item.getRow());
+            int v = getValue(index, getOpponent(player), AIboard, 0);
             if (v > bestValue){
-                bestMove = i;
+                bestMove = item;
                 bestValue = v;
             }
-            AIboard[i] = nothing;
         }
-        System.out.println();
-        int row = getRow(bestMove);
-        int col = getCol(bestMove);
-        ArrayList<OthelloItem> validMoves = OthelloBoard.getValidMoves();
-        OthelloItem clicking = null;
-        for (OthelloItem item : validMoves){
-            if (item.getColumn() == col && item.getRow() == row){
-                clicking = item;
-                break;
+        bestMove.clicked();
+    }
+
+    private int getValue(int move, char player, char[] board, int depth){
+        char[] newBoard = doMove(board, move, player);
+        if (depth >= 4) return calculateBoardPosition(newBoard);
+        ArrayList<Integer> newMoves = getAvailableMoves(newBoard, player);
+        char opponent = getOpponent(player);
+        int bestValue = -999999;
+        int side = player == white ? 1 : -1;
+        for (int m : newMoves){
+            int v = getValue(m, opponent, newBoard, depth++);
+            if (side * v > bestValue){
+                bestValue = v;
             }
         }
-        if (clicking == null){
-            System.out.println("random");
-            Random randomGenerator = new Random();
-            int index = randomGenerator.nextInt(validMoves.size());
-            OthelloItem item = validMoves.get(index);
-            item.clicked();
-        }else {
-            System.out.println("smart");
-            clicking.clicked();
-        }
-
+        return bestValue;
     }
+
+
 
     private void updateBoard(){
         for (OthelloItem item : OthelloBoard.blackItems){
@@ -91,7 +87,11 @@ public class OthelloAI {
         }
     }
 
-    private int calculateBoardPosition(char[] board, char player){
+    private int calculateBoardPosition(char[] board){
+        return calculateBoardPositionPlayer(board, white) - calculateBoardPositionPlayer(board, black);
+    }
+
+    private int calculateBoardPositionPlayer(char[] board, char player){
         int value = 0;
         for (int field = 0; field < 64; field++){
             if (board[field] == player){
@@ -101,13 +101,13 @@ public class OthelloAI {
         return value;
     }
 
-    private void doMove(char[] board, int move, char player){
+    private char[] doMove(char[] oldBoard, int move, char player){
+        char[] board = oldBoard.clone();
         char opp = getOpponent(player);
         board[move] = player;
         int row = getRow(move);
         int col = getCol(move);
-        ArrayList<Integer> toFlip = new ArrayList<>();
-        if (move - 9 >= 0 && board[move - 9] == nothing) {
+        if (move + 9 <= 63 && board[move + 9] == opp) {
             int search = move + 9;
             while(true){
                 if (search < 0 || search > 63) break;
@@ -122,7 +122,7 @@ public class OthelloAI {
                 search += 9;
             }
         }
-        if (move + 9 <= 63 && board[move + 9] == nothing) {
+        if (move - 9 >= 0 && board[move - 9] == opp) {
             int search =  - 9;
             while(true){
                 if (search < 0 || search > 63) break;
@@ -138,7 +138,7 @@ public class OthelloAI {
             }
         }
 
-        if (move + 8 <= 63 && board[move + 8] == nothing) {
+        if (move - 8 >= 0 && board[move - 8] == opp) {
             int search = move - 8;
             while(true){
                 if (search < 0 || search > 63) break;
@@ -152,7 +152,7 @@ public class OthelloAI {
                 search -= 8;
             }
         }
-        if (move - 8 >= 0 && board[move - 8] == nothing) {
+        if (move + 8 <= 63 && board[move + 8] == opp) {
             int search = move + 8;
             while(true){
                 if (search < 0 || search > 63) break;
@@ -167,7 +167,7 @@ public class OthelloAI {
             }
         }
 
-        if (move - 7 >= 0 && board[move - 7] == nothing) {
+        if (move + 7 <= 63 && board[move + 7] == opp) {
             int search = move + 7;
             while(true){
                 if (search < 0 || search > 63) break;
@@ -182,7 +182,7 @@ public class OthelloAI {
                 search += 7;
             }
         }
-        if (move + 7 <= 63 && board[move + 7] == nothing) {
+        if (move - 7 >= 0 && board[move - 7] == opp) {
             int search = move - 7;
             while(true){
                 if (search < 0 || search > 63) break;
@@ -197,7 +197,7 @@ public class OthelloAI {
                 search -= 7;
             }
         }
-        if (move + 1 <= 63 && board[move + 1] == nothing) {
+        if (move - 1 >= 0 && board[move - 1] == opp) {
             int search = move - 1;
             while(true){
                 if (search < 0 || search > 63) break;
@@ -212,7 +212,7 @@ public class OthelloAI {
                 search -= 1;
             }
         }
-        if (move - 1 >= 0 && board[move - 1] == nothing) {
+        if (move + 1 <= 63 && board[move + 1] == opp) {
             int search = move + 1;
             while(true){
                 if (search < 0 || search > 63) break;
@@ -227,6 +227,7 @@ public class OthelloAI {
                 search += 1;
             }
         }
+        return board;
     }
 
     private ArrayList<Integer> getAvailableMoves(char[] board, char player){
@@ -358,5 +359,14 @@ public class OthelloAI {
 
     private int getIndex(int column, int row){
         return row * 8 + column;
+    }
+
+    private void printBoard(char[] board){
+        for (int r = 0; r < 8; r++){
+            for (int c = 0; c < 8; c++){
+                System.out.print(" " +getIndex(c,r)+":"+ board[getIndex(c,r)]);
+            }
+            System.out.println();
+        }
     }
 }
