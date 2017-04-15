@@ -176,9 +176,21 @@ public final class OthelloBoard implements Board{
     @Override
     public void moveMade(String move) {
         if(activePlayer.isRemote()){
-            int[] rowCol = convertLocation(Integer.valueOf(move.replaceAll("[^\\d.]","")));
-            OthelloItem item = controller.getOthelloItemByLocation(rowCol[0], rowCol[1]);
-            item.clicked(false);
+
+            int moveInt = Integer.valueOf(move.replaceAll("[^\\d.]",""));
+
+            if(activePlayer.getOtherPlayer().getLastMove() == null){
+                int[] rowCol = convertLocation(moveInt);
+                OthelloItem item = controller.getOthelloItemByLocation(rowCol[0], rowCol[1]);
+                item.clicked(false,"Server move made");
+            } else {
+                // Only emulate the move if its not the same as the last move of the other player
+                if(activePlayer.getOtherPlayer().getLastMove().getSingleLocation() != moveInt){
+                    int[] rowCol = convertLocation(moveInt);
+                    OthelloItem item = controller.getOthelloItemByLocation(rowCol[0], rowCol[1]);
+                    item.clicked(false,"Server move made");
+                }
+            }
         }
     }
 
@@ -402,7 +414,6 @@ public final class OthelloBoard implements Board{
 
     @Override
     public void matchStart(boolean myTurn) {
-        System.out.println("CALLED");
 
         if (!OthelloBoard.hasStarted()){
 
@@ -410,7 +421,7 @@ public final class OthelloBoard implements Board{
             if (!myTurn) {
                 black.setRemote(true);
             }else {
-                black.setAi(true);
+//                black.setAi(true);
                 white.setRemote(true);
             }
             controller.startGame("black");
@@ -422,20 +433,21 @@ public final class OthelloBoard implements Board{
     @Override
     public void win() {
         System.out.println("win");
-        OthelloBoard.reset();
+//        OthelloBoard.reset();
     }
 
     @Override
     public void loss() {
         System.out.println("loss");
-        OthelloBoard.reset();
+//        OthelloBoard.reset();
     }
 
     @Override
     public void draw() {
         System.out.println("draw");
-        OthelloBoard.reset();
+//        OthelloBoard.reset();
     }
+
 
     /**
      * Add a OthelloItem from the white 1player to the board.

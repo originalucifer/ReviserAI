@@ -77,35 +77,58 @@ public class OthelloItem extends Rectangle {
             t -> {
                 OthelloItem rectangle = ((OthelloItem) (t.getSource()));
                 rectangle.setStyle(disableInnerShadow);
-                clicked(true);
+                clicked(true,"mouse event");
             };
 
     /**
      * Click this OthelloItem
      */
-    public synchronized void clicked(boolean humanClick) {
-        if(!OthelloBoard.validMoves.contains(this)){
-            OthelloBoard.controller.setStatus("Illegal move! Use the blue indications. "+OthelloBoard.getActivePlayer());
-            setColor(); // don't change the color of a players item when clicked.
-        } else if(OthelloBoard.activePlayer.isRemote() && humanClick){
-            OthelloBoard.controller.setStatus("Wait for the remote player to make a move");
-            setColor(); // don't change the color of a players item when clicked.
-        } else {
-            setPlayer(OthelloBoard.getActivePlayer());
+    public synchronized void clicked(boolean humanClick, String from) {
+        if(!
+                hasPlayer()) {
 
-            // Only send a move command if we made a move, not when te remote player made a move.
-            if(!OthelloBoard.getActivePlayer().isRemote())
-                connectionHandler.makeMove(String.valueOf(convertLocation(row,column)));
+            System.out.println("==");
+            System.out.println("From:" + from);
+            System.out.println("click " + this.toString() + " by " + getActivePlayer());
+            System.out.println(OthelloBoard.validMoves);
+            System.out.println("==");
+            System.out.println(
 
-            // override the other players items if necessary
-            if(overrides != null){
-                for (OthelloItem item : overrides) {
-                    override(item);
+            );
+
+            if (!OthelloBoard.validMoves.contains(this)) {
+                OthelloBoard.controller.setStatus("Illegal move! Use the blue indications. " + OthelloBoard.getActivePlayer());
+                setColor(); // don't change the color of a players item when clicked.
+            } else if (OthelloBoard.activePlayer.isRemote() && humanClick) {
+                OthelloBoard.controller.setStatus("Wait for the remote player to make a move");
+                setColor(); // don't change the color of a players item when clicked.
+            } else {
+                setPlayer(OthelloBoard.getActivePlayer());
+                getActivePlayer().setLastMove(this);
+
+                // Only send a move command if we made a move, not when te remote player made a move.
+                if (!OthelloBoard.getActivePlayer().isRemote())
+                    connectionHandler.makeMove(String.valueOf(convertLocation(row, column)));
+
+                // override the other players items if necessary
+                if (overrides != null) {
+                    for (OthelloItem item : overrides) {
+                        override(item);
+                    }
                 }
-            }
 
-            OthelloBoard.nextTurn();
+                OthelloBoard.nextTurn();
+            }
         }
+    }
+
+    /**
+     * Get the 1 dimension location integer.
+     *
+     * @return int with the location of this item.
+     */
+    public int getSingleLocation(){
+        return convertLocation(row,column);
     }
 
     /**
@@ -337,7 +360,7 @@ public class OthelloItem extends Rectangle {
      * @return String with the Row and Column in a human fashion
      */
     public String getPositionString(){
-        return getColumn() + ":" + getRow();
+        return getColumn() + ":" + getRow() +" ("+convertLocation(row,column)+")";
     }
 
     @Override
