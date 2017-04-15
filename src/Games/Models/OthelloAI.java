@@ -229,7 +229,6 @@ public class OthelloAI {
         }
     }
 
-//Returned results do not match always othelloBoard.getValidMoves.
     private ArrayList<Integer> getAvailableMoves(char[] board, char player){
         char opp = getOpponent(player);
         ArrayList<Integer> moves = new ArrayList<>();
@@ -240,7 +239,7 @@ public class OthelloAI {
                 int row = getRow(i);
                 int col = getCol(i);
 
-                if (i - 9 >= 0 && board[i - 9] == nothing) {
+                if (i - 9 >= 0 && getCol(i-9) < col && board[i - 9] == nothing) {
                     int search = i + 9;
                     while(true){
                         if (search < 0 || search > 63) break;
@@ -253,7 +252,7 @@ public class OthelloAI {
                     search += 9;
                     }
                 }
-                if (i + 9 <= 63 && board[i + 9] == nothing) {
+                if (i + 9 <= 63 && getCol(i+9) > col && board[i + 9] == nothing) {
                     int search = i - 9;
                     while(true){
                         if (search < 0 || search > 63) break;
@@ -292,7 +291,7 @@ public class OthelloAI {
                     }
                 }
 
-                if (i - 7 >= 0 && board[i - 7] == nothing) {
+                if (i - 7 >= 0 && getCol(i-7) > col && board[i - 7] == nothing) {
                     int search = i + 7;
                     while(true){
                         if (search < 0 || search > 63) break;
@@ -305,7 +304,7 @@ public class OthelloAI {
                         search += 7;
                     }
                 }
-                if (i + 7 <= 63 && board[i + 7] == nothing) {
+                if (i + 7 <= 63 && getCol(i+7) < col && board[i + 7] == nothing) {
                     int search = i - 7;
                     while(true){
                         if (search < 0 || search > 63) break;
@@ -318,7 +317,7 @@ public class OthelloAI {
                         search -= 7;
                     }
                 }
-                if (i + 1 <= 63 && board[i + 1] == nothing) {
+                if (i + 1 <= 63 && getRow(i+1) == row && board[i + 1] == nothing) {
                     int search = i - 1;
                     while(true){
                         if (search < 0 || search > 63) break;
@@ -331,7 +330,7 @@ public class OthelloAI {
                         search -= 1;
                     }
                 }
-                if (i - 1 >= 0 && board[i - 1] == nothing) {
+                if (i - 1 >= 0 && getRow(i-1) == row && board[i - 1] == nothing) {
                     int search = i + 1;
                     while(true){
                         if (search < 0 || search > 63) break;
