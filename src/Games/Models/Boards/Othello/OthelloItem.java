@@ -19,7 +19,7 @@ import static Games.Models.Boards.Othello.OthelloBoard.controller;
  */
 public class OthelloItem extends Rectangle {
 
-    private final int itemSize = 30;
+    private final int itemSize = 40;
     private final String styleClass = "boardRectangle";
     private final String enableInnerShadow = "-fx-effect:innershadow(three-pass-box, rgba(0,0,0,0.8), 10, 0.2, 3, 3);";
     private final String disableInnerShadow = "-fx-effect:innershadow(three-pass-box, rgba(0,0,0,0), 10, 0.2, 3, 3);";

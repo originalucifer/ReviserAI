@@ -1,5 +1,6 @@
 package Games.Controllers.TabControllers;
 
+import Games.Controllers.ConnectionController;
 import Games.Models.Boards.Othello.OthelloBoard;
 import Games.Models.Boards.Othello.OthelloItem;
 import Games.Models.OthelloPlayer;
@@ -24,7 +25,7 @@ import java.util.Objects;
  * @author koen
  * @version 0.1 (4/3/17)
  */
-public class OthelloController {
+public class OthelloController extends ConnectionController{
 
     @FXML
     public Label statusLabel;

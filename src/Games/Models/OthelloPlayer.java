@@ -1,6 +1,7 @@
 package Games.Models;
 
 import Games.Models.Boards.Othello.OthelloItem;
+import Games.Models.Players.Player;
 
 import java.util.ArrayList;
 
@@ -10,7 +11,7 @@ import java.util.ArrayList;
  * @author koen
  * @version 0.1 (4/3/17)
  */
-public class OthelloPlayer {
+public class OthelloPlayer implements Player {
 
     private String color;
     private String name;
@@ -88,5 +89,16 @@ public class OthelloPlayer {
     @Override
     public String toString() {
         return getName()+" ("+getColor()+")";
+    }
+
+    @Override
+    public void yourTurn() {
+        System.out.println("your turn call");
+    }
+
+    @Override
+    public int getYourMove(Integer opponentsMove) {
+        System.out.println("get your move");
+        return 0;
     }
 }
