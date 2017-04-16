@@ -1,11 +1,14 @@
 package Games;
 
+import Games.Models.Boards.Othello.OthelloBoard;
 import javafx.application.Application;
 import javafx.application.Platform;
+import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 
 /**
  * Main class which starts the application.
@@ -27,6 +30,11 @@ public class Main extends Application {
         primaryStage.setScene(scene);
         primaryStage.setOnCloseRequest(WindowEvent -> Platform.exit());
         primaryStage.show();
+
+        primaryStage.setOnCloseRequest(event -> {
+            if(OthelloBoard.connectionHandler.isConnected())
+                OthelloBoard.connectionHandler.quitConnection();
+        });
     }
 
     /**
