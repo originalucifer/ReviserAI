@@ -2,6 +2,7 @@ package Games.Models;
 
 import Games.Controllers.AI.AI;
 import Games.Models.Boards.Othello.OthelloBoard;
+import Games.Models.Boards.Othello.OthelloBoardFunctions;
 import Games.Models.Boards.Othello.OthelloItem;
 
 import java.util.ArrayList;
@@ -75,8 +76,6 @@ public class OthelloAI {
         }
         return bestValue;
     }
-
-
 
     private void updateBoard(){
         for (OthelloItem item : OthelloBoard.blackItems){
@@ -349,6 +348,33 @@ public class OthelloAI {
         return moves;
     }
 
+
+
+    private ArrayList<Integer> getPossibleMoves(char[] board, char player){
+        char opponent = getOpponent(player);
+
+        ArrayList<Integer> moves = new ArrayList<>();
+        for (int i = 0; i < 64; i++){
+            if (board[i] == nothing){
+                int r = OthelloBoardFunctions.searchForPlayerTopLeft(board, player, i);
+                if (r != -1){
+                    moves.add(i);
+                    continue;
+                }
+            }
+        }
+        return moves;
+    }
+
+
+    private void printBoard(char[] board){
+        for (int r = 0; r < 8; r++){
+            for (int c = 0; c < 8; c++){
+                System.out.print(" " +OthelloBoardFunctions.getIndex(c,r)+":"+ board[OthelloBoardFunctions.getIndex(c,r)]);
+            }
+            System.out.println();
+        }
+    }
     private int getRow(int index){
         return index / 8;
     }
@@ -359,14 +385,5 @@ public class OthelloAI {
 
     private int getIndex(int column, int row){
         return row * 8 + column;
-    }
-
-    private void printBoard(char[] board){
-        for (int r = 0; r < 8; r++){
-            for (int c = 0; c < 8; c++){
-                System.out.print(" " +getIndex(c,r)+":"+ board[getIndex(c,r)]);
-            }
-            System.out.println();
-        }
     }
 }
