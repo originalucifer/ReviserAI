@@ -1,8 +1,11 @@
 package Games.Controllers.TabControllers;
 
+import Games.Controllers.ConnectionController;
 import Games.Models.Boards.Othello.OthelloBoard;
 import Games.Models.Boards.Othello.OthelloItem;
 import Games.Models.Players.OthelloPlayer;
+import ServerConnection.ConnectionHandler;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -22,7 +25,7 @@ import java.util.Objects;
  * @author koen
  * @version 0.1 (4/3/17)
  */
-public class OthelloController {
+public class OthelloController extends ConnectionController{
 
     @FXML
     public Label statusLabel;
@@ -50,8 +53,14 @@ public class OthelloController {
 
     private ObservableList<String> whiteMovesData;
     private ObservableList<String> blackMovesData;
+    private ConnectionHandler connectionHandler;
 
     public void initialize(){
+        // connect to the server
+        super.getConnection();
+        connectionHandler = super.connectionHandler;
+        connectionHandler.setBoard(OthelloBoard.getInstance());
+
         whiteMovesData = FXCollections.observableArrayList();
         blackMovesData = FXCollections.observableArrayList();
 
@@ -98,21 +107,25 @@ public class OthelloController {
         }
     }
 
-    public void addMove(OthelloPlayer player,OthelloItem item){
-        if(Objects.equals(player.getColor(), "black")) {
-            blackMovesData.add(item.getPositionString());
-            blackMoves.setItems(blackMovesData);
-        } else {
-            whiteMovesData.add(item.getPositionString());
-            whiteMoves.setItems(whiteMovesData);
-        }
+    public synchronized void addMove(OthelloPlayer player,OthelloItem item){
+        Platform.runLater(() -> {
+            if(Objects.equals(player.getColor(), "black")) {
+                blackMovesData.add(item.getPositionString());
+                blackMoves.setItems(blackMovesData);
+            } else {
+                whiteMovesData.add(item.getPositionString());
+                whiteMoves.setItems(whiteMovesData);
+            }
+        });
     }
 
-    public void resetMoveList(){
-        whiteMovesData = FXCollections.observableArrayList();
-        blackMovesData = FXCollections.observableArrayList();
-        blackMoves.setItems(blackMovesData);
-        whiteMoves.setItems(whiteMovesData);
+    public synchronized void resetMoveList(){
+        Platform.runLater(() -> {
+            whiteMovesData = FXCollections.observableArrayList();
+            blackMovesData = FXCollections.observableArrayList();
+            blackMoves.setItems(blackMovesData);
+            whiteMoves.setItems(whiteMovesData);
+        });
     }
 
     /**
@@ -130,10 +143,10 @@ public class OthelloController {
     }
 
     public void startGame(String activePlayer){
+        OthelloBoard.startGame();
         OthelloBoard.setActivePlayer(activePlayer);
 
         disableButtons(true);
-        OthelloBoard.startGame();
     }
 
     /**
@@ -174,8 +187,8 @@ public class OthelloController {
      *
      * @param status String with current status of the game.
      */
-    public void setStatus(String status){
-        statusLabel.setText(status);
+    public synchronized void setStatus(String status){
+        Platform.runLater(() -> statusLabel.setText(status));
     }
 
     /**
@@ -190,8 +203,10 @@ public class OthelloController {
      *
      * @param item OthelloItem to remove
      */
-    public void removeBlackList(OthelloItem item) {
-        blackMovesData.remove(item.getPositionString());
+    public synchronized void removeBlackList(OthelloItem item) {
+        Platform.runLater(() -> {
+            blackMovesData.remove(item.getPositionString());
+        });
     }
 
     /**
@@ -199,8 +214,10 @@ public class OthelloController {
      *
      * @param item OthelloItem to remove
      */
-    public void removeWhiteList(OthelloItem item) {
-        whiteMovesData.remove(item.getPositionString());
+    public synchronized void removeWhiteList(OthelloItem item) {
+        Platform.runLater(() -> {
+            whiteMovesData.remove(item.getPositionString());
+        });
     }
 
     public void makeWhiteAi(ActionEvent actionEvent) {
@@ -208,4 +225,46 @@ public class OthelloController {
 
     public void makeBlackAi(ActionEvent actionEvent) {
     }
+
+
+    /**
+     * //TODO should setup connection with the server
+     */
+    public void getConnection() {
+//        if (playerTypeChosen && playerChosen){
+            if (!connectionHandler.isConnected()){
+                super.getConnection();
+//                connectionHandler.setBoard(OthelloBoard);
+//                TODO somehow the othelloBoard should be set so that the methods yourTurn etc can be called.
+            } else {
+                serverOutput.appendText("\nWarning: You are already connected");
+            }
+//        } else {
+//            serverOutput.appendText("\nYou must first choose AI or GUI and X or O");
+//        }
+    }
+
+    /**
+     * Get the connectionhandler from this controller
+     *
+     * @return ConnectionHandler
+     */
+    public ConnectionHandler getConnectionHandler() {
+        return connectionHandler;
+    }
+
+    /**
+     * Subscribes user to Reversi on the Server
+     */
+    public void subscribe(){
+        super.subscribeForGame("Reversi");
+    }
+
+    /**
+     * Challenges another player for a Reversi
+     */
+    public void challenge(){
+        super.challengeForGame("Reversi");
+    }
+
 }

@@ -1,8 +1,9 @@
 package Games.Controllers.TabControllers;
 
-import Games.Controllers.GameController;
+import Games.Controllers.ConnectionController;
 import Games.Controllers.ObserveBoardInput;
-import Games.Models.Boards.TicTacToeBoard;
+import Games.Controllers.TicTacToeGameController;
+import Games.Models.Boards.TicTacToe.TicTacToeBoard;
 import Games.Models.Factories.PlayerFactory;
 import Games.Models.Factories.TicTacToePlayerFactory;
 import javafx.application.Platform;
@@ -19,6 +20,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+
 import java.util.ArrayList;
 
 
@@ -69,34 +71,17 @@ public class TicTacToeController extends ConnectionController implements GameCon
     }
 
     /**
-     * Subscribes user to current Game on the Server
+     * Subscribes user to Tic-tac-toe on the Server
      */
     public void subscribe(){
-        if (connectionHandler.isConnected() && loggedIn){
-                connectionHandler.subscribe("Tic-tac-toe");
-                serverOutput.appendText("\nSubscribed for game: \"Tic-tac-toe\"");
-        } else {
-            serverOutput.appendText("\nWarning: You must first connect and log in");
-        }
+        super.subscribeForGame("Tic-tac-toe");
     }
 
     /**
-     * Challenges another player for a specified game
+     * Challenges another player for a Tic-tac-toe
      */
     public void challenge(){
-        if (connectionHandler.isConnected() && loggedIn){
-            String challenge = challengeTf.getText();
-            challenge = challenge.replace("\\s+","");
-            System.out.println(challenge+"Challenged!!!!");
-            if(!challenge.equals("")){
-                connectionHandler.challenge(challenge,"Tic-tac-toe");
-                serverOutput.appendText("\nChallenged: \""+challenge+"\" for a game of: \"Tic-tac-toe\"");
-            }else{
-                serverOutput.appendText("\nWarning: Enter a valid name and game for the challenge");
-            }
-        } else {
-            serverOutput.appendText("\nWarning: You must first connect and log in");
-        }
+        super.challengeForGame("Tic-tac-toe");
     }
 
     /**
@@ -107,13 +92,13 @@ public class TicTacToeController extends ConnectionController implements GameCon
         clearButtons();board.clearBoard();
         PlayerFactory factory = new TicTacToePlayerFactory(this, board, connectionHandler.getCommandCalls());
         String[] players = getPlayers();
-        GameController gameController;
+        TicTacToeGameController ticTacToeGameController;
         if (myTurn){
-            gameController = new GameController(players[0], players[1], board, factory, this);
+            ticTacToeGameController = new TicTacToeGameController(players[0], players[1], board, factory);
         } else {
-            gameController = new GameController(players[1], players[0], board, factory, this);
+            ticTacToeGameController = new TicTacToeGameController(players[1], players[0], board, factory);
         }
-        new Thread(gameController).start();
+        new Thread(ticTacToeGameController).start();
     }
 
     /**

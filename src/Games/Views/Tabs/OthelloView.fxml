@@ -1,78 +1,169 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-
-<?import javafx.geometry.Insets?>
 <Tab text="Othello" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Games.Controllers.TabControllers.OthelloController">
-    <BorderPane prefHeight="480.0" prefWidth="720.0" stylesheets="@../../Style/Othello.css">
-
+    <BorderPane styleClass="contentPane">
         <center>
-            <HBox prefHeight="370" prefWidth="720" style="-fx-border-color: black; -fx-border-width: 0px" alignment="CENTER" >
-                <padding><Insets top="40" right="40" bottom="40" left="40"/></padding>
-                <VBox>
-                    <Label text="White"/>
-                    <ListView fx:id="whiteMoves">
-                    </ListView>
-                </VBox>
 
-                <VBox styleClass="coordinates" fx:id="yCoordinates">
-                    <Label/> <!-- empty label to move y coordinates 1 unit down -->
-                    <Label text="0"/>
-                    <Label text="1"/>
-                    <Label text="2"/>
-                    <Label text="3"/>
-                    <Label text="4"/>
-                    <Label text="5"/>
-                    <Label text="6"/>
-                    <Label text="7"/>
-                </VBox>
+            <BorderPane prefHeight="600.0" prefWidth="720.0" stylesheets="@../../Style/Othello.css">
 
-                <VBox prefWidth="250" >
-                    <HBox prefWidth="250" prefHeight="31" styleClass="coordinates" fx:id="xCoordinates">
-                        <Label text="0"/>
-                        <Label text="1"/>
-                        <Label text="2"/>
-                        <Label text="3"/>
-                        <Label text="4"/>
-                        <Label text="5"/>
-                        <Label text="6"/>
-                        <Label text="7"/>
+                <top>
+        
+                    <HBox prefHeight="370" prefWidth="720" alignment="CENTER" styleClass="othello-container">
+                        <VBox>
+                            <Label text="White"/>
+                            <ListView fx:id="whiteMoves">
+                            </ListView>
+                        </VBox>
+
+                        <VBox styleClass="coordinates" fx:id="yCoordinates">
+                            <Label/> <!-- empty label to move y coordinates 1 unit down -->
+                            <Label text="0"/>
+                            <Label text="1"/>
+                            <Label text="2"/>
+                            <Label text="3"/>
+                            <Label text="4"/>
+                            <Label text="5"/>
+                            <Label text="6"/>
+                            <Label text="7"/>
+                        </VBox>
+
+                        <VBox prefWidth="250" >
+                            <HBox prefWidth="250" prefHeight="41" styleClass="coordinates" fx:id="xCoordinates">
+                                <Label text="0"/>
+                                <Label text="1"/>
+                                <Label text="2"/>
+                                <Label text="3"/>
+                                <Label text="4"/>
+                                <Label text="5"/>
+                                <Label text="6"/>
+                                <Label text="7"/>
+                            </HBox>
+
+                            <GridPane fx:id="boardView" alignment="TOP_CENTER" prefHeight="200.0" prefWidth="250.0" >
+                            </GridPane>
+                        </VBox>
+                        <VBox styleClass="coordinates" fx:id="Coordinates">
+                            <Label/> <!-- empty label To space listview -->
+                        </VBox>
+
+                        <VBox>
+                            <Label text="Black"/>
+                            <ListView fx:id="blackMoves">
+                            </ListView>
+                        </VBox>
                     </HBox>
+                </top>
+                <bottom>
+                    <VBox prefHeight="120" styleClass="statusBox" alignment="BOTTOM_CENTER">
+                        <HBox prefHeight="15" styleClass="actionBox" spacing="5">
+                            <Label text="Choose color: " alignment="BASELINE_LEFT" styleClass="actionLabel"/>
+                            <VBox prefHeight="40">
+                                <Button text="White" id="white" fx:id="whitePlayerButton" onAction="#pickColor" styleClass="actionButton" alignment="BASELINE_LEFT"/>
+                                <CheckBox text="Make ai" fx:id="checkWhiteAi" styleClass="ai-checkbox" id="whiteAi" onAction="#makeWhiteAi" alignment="BOTTOM_LEFT"/>
+                            </VBox>
+                            <VBox prefHeight="30">
+                                <Button text="Black" id="black" onAction="#pickColor" fx:id="blackPlayerButton" styleClass="actionButton" alignment="BASELINE_LEFT"/>
+                                <CheckBox styleClass="ai-checkbox" fx:id="checkBlackAi" text="Make ai" id="blackAi" onAction="#makeBlackAi" alignment="BOTTOM_LEFT" />
+                            </VBox>
+                            <Button text="Reset Game" id="reset" onAction="#resetGame" styleClass="actionButton" alignment="BASELINE_RIGHT"/>
+                        </HBox>
+                        <Label text="Choose a player" fx:id="statusLabel" styleClass="statusLabel"/>
+                    </VBox>
+                </bottom>
+            </BorderPane>
+        </center>
+        <right>
+            <HBox spacing="5" stylesheets="@../../Style/Connection.css" styleClass="connectionBox">
+                <padding>
+                    <Insets top="10" right="10" bottom="10" left="10"/>
+                </padding>
 
-                    <GridPane fx:id="boardView" alignment="TOP_CENTER" prefHeight="200.0" prefWidth="250.0"/>
+                <VBox prefWidth="400" prefHeight="770" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml" spacing="5">
+                    <Button text="Connect" id="Connect" onAction="#buttonEventHandler" styleClass="connectBt"/>
+                    <Button text="Update gamelist" id="Get gamelist" onAction="#buttonEventHandler" styleClass="connectBt"/>
+                    <Button text="Update playerlist" id="Get playerlist" onAction="#buttonEventHandler" styleClass="connectBt"/>
 
+                    <VBox styleClass="box" spacing="5" prefWidth="100">
+                        <padding>
+                            <Insets top="3" right="3" bottom="3" left="3"/>
+                        </padding>
+                        <Button text="Login" id="Login" onAction="#buttonEventHandler"/>
+                        <Label text="Player name: "/>
+                        <TextField fx:id="loginTf"/>
+                    </VBox>
+
+                        <Button text="Subscribe for Othello" id="Subscribe" onAction="#buttonEventHandler"/>
+
+                    <VBox styleClass="box" spacing="5" prefWidth="100">
+                        <padding>
+                            <Insets top="3" right="3" bottom="3" left="3"/>
+                        </padding>
+                        <Button text="Challenge" id="Challenge" onAction="#buttonEventHandler"/>
+                        <Label text="&#60;PlayerName&#62;"/>
+                        <TextField fx:id="challengeTf"/>
+                    </VBox>
+
+                    <VBox styleClass="box" spacing="5">
+                        <padding>
+                            <Insets top="3" right="3" bottom="3" left="3"/>
+                        </padding>
+                        <Button text="Accept Challenge" id="Accept Challenge" onAction="#buttonEventHandler"/>
+                        <Label text="&#60;Challenge Number&#62;: "/>
+                        <TextField fx:id="acceptChallengeTf"/>
+                    </VBox>
+
+                    <Button text="Close connection" id="Close connection" onAction="#buttonEventHandler" styleClass="closeConnectBt"/>
+                    <Label/>
+
+                    <VBox styleClass="box" spacing="5">
+                        <padding>
+                            <Insets top="3" right="3" bottom="3" left="3"/>
+                        </padding>
+                        <Label text="Server:"/>
+                        <VBox styleClass="serverBox" spacing="3">
+                            <padding>
+                                <Insets top="3" right="3" bottom="3" left="3"/>
+                            </padding>
+                            <Label text="Output: "/>
+                            <TextArea styleClass="serverOutput" fx:id="serverOutput" editable="false" prefHeight="200"/>
+                        </VBox>
+
+                        <HBox styleClass="serverBox" spacing="3">
+                            <padding>
+                                <Insets top="3" right="3" bottom="3" left="3"/>
+                            </padding>
+                            <VBox>
+                                <Label text="Host: "/>
+                                <TextField fx:id="hostNumber"/>
+                            </VBox>
+                            <VBox>
+                                <Label text="Port: "/>
+                                <TextField fx:id="portNumber"/>
+                            </VBox>
+                            <Button text="Set" onAction="#setHost"/>
+                        </HBox>
+                    </VBox>
                 </VBox>
-                <VBox styleClass="coordinates" fx:id="Coordinates">
-                    <Label/> <!-- empty label To space listview -->
-                </VBox>
 
-                <VBox>
-                    <Label text="Black"/>
-                    <ListView fx:id="blackMoves">
-                    </ListView>
+
+                <VBox prefWidth="170" spacing="5">
+                    <VBox styleClass="box" spacing="5">
+                        <padding>
+                            <Insets top="3" right="3" bottom="3" left="3"/>
+                        </padding>
+                        <Label text="GameList"/>
+                        <TextArea fx:id="gameListOutput" styleClass="output" editable="false" prefHeight="150"/>
+                    </VBox>
+                    <VBox styleClass="box" spacing="5">
+                        <padding>
+                            <Insets top="3" right="3" bottom="3" left="3"/>
+                        </padding>
+                        <Label text="PlayerList"/>
+                        <TextArea fx:id="playerListOutput" styleClass="output" editable="false" prefHeight="480"/>
+                    </VBox>
                 </VBox>
             </HBox>
-        </center>
-
-
-        <bottom>
-            <VBox prefHeight="120" styleClass="statusBox" alignment="CENTER">
-                <HBox prefHeight="15" styleClass="actionBox" spacing="5">
-                    <Label text="Choose color: " alignment="BASELINE_LEFT" styleClass="actionLabel"/>
-                    <VBox prefHeight="40">
-                        <Button text="White" id="white" fx:id="whitePlayerButton" onAction="#pickColor" styleClass="actionButton" alignment="BASELINE_LEFT"/>
-                        <CheckBox text="Make ai" fx:id="checkWhiteAi" styleClass="ai-checkbox" id="whiteAi" onAction="#makeWhiteAi" alignment="BOTTOM_LEFT"/>
-                    </VBox>
-                    <VBox prefHeight="30">
-                        <Button text="Black" id="black" onAction="#pickColor" fx:id="blackPlayerButton" styleClass="actionButton" alignment="BASELINE_LEFT"/>
-                        <CheckBox styleClass="ai-checkbox" fx:id="checkBlackAi" text="Make ai" id="blackAi" onAction="#makeBlackAi" alignment="BOTTOM_LEFT" />
-                    </VBox>
-                    <Button text="Reset Game" id="reset" onAction="#resetGame" styleClass="actionButton" alignment="BASELINE_RIGHT"/>
-                </HBox>
-                <Label text="Choose a player" fx:id="statusLabel" styleClass="statusLabel"/>
-            </VBox>
-        </bottom>
-
-
+        </right>
     </BorderPane>
 </Tab>

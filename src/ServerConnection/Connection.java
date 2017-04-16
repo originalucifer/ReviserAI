@@ -1,6 +1,9 @@
 package ServerConnection;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.LinkedList;
@@ -15,11 +18,11 @@ public class Connection implements Runnable{
 	private volatile boolean running = true;
 
 
-	public Connection(ReceiveListener listener){
+	Connection(ReceiveListener listener){
 		listen = listener;
 	}
 
-	public void connect(){
+	private void connect(){
 		//https://docs.oracle.com/javase/tutorial/displayCode.html?code=https://docs.oracle.com/javase/tutorial/networking/sockets/examples/EchoClient.java
 		try (
 				Socket echoSocket = new Socket(hostAddress, hostPort);
@@ -61,25 +64,21 @@ public class Connection implements Runnable{
 		while (running) {connect();}
 	}
 
-	public void terminate(){
+	void terminate(){
 		running = false;
 	}
 
-	public void addToSend(String message){
+	void addToSend(String message){
 		toSend.add(message);
 	}
 
-	public void setHost(String adress){
-		this.hostAddress = adress;
-	}
-
-	public void setHost(int port){
-		this.hostPort = port;
-
-	}
-
-	public void setHost(String adress,int port){
-		this.hostAddress = adress;
+	/**
+	 * Sets the address and port for the server
+	 * @param address serverAdress
+	 * @param port serverPort
+	 */
+	void setHost(String address, int port){
+		this.hostAddress = address;
 		this.hostPort = port;
 	}
 

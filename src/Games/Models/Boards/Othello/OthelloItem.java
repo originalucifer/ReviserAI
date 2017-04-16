@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Objects;
 
-import static Games.Models.Boards.Othello.OthelloBoard.controller;
+import static Games.Models.Boards.Othello.OthelloBoard.*;
 
 /**
  * Class OthelloItem
@@ -19,7 +19,7 @@ import static Games.Models.Boards.Othello.OthelloBoard.controller;
  */
 public class OthelloItem extends Rectangle {
 
-    private final int itemSize = 30;
+    private final int itemSize = 40;
     private final String styleClass = "boardRectangle";
     private final String enableInnerShadow = "-fx-effect:innershadow(three-pass-box, rgba(0,0,0,0.8), 10, 0.2, 3, 3);";
     private final String disableInnerShadow = "-fx-effect:innershadow(three-pass-box, rgba(0,0,0,0), 10, 0.2, 3, 3);";
@@ -27,7 +27,7 @@ public class OthelloItem extends Rectangle {
     private int column;
     private int row;
     private OthelloPlayer player;
-    private ArrayList<OthelloItem> overrides;
+    private ArrayList<OthelloItem> overrides = null;
 
     OthelloItem(int column, int row) {
         this.column = column;
@@ -77,28 +77,67 @@ public class OthelloItem extends Rectangle {
             t -> {
                 OthelloItem rectangle = ((OthelloItem) (t.getSource()));
                 rectangle.setStyle(disableInnerShadow);
-                clicked();
+                clicked(true);
             };
 
     /**
      * Click this OthelloItem
      */
-    public void clicked() {
-        if(!OthelloBoard.validMoves.contains(this)){
-            OthelloBoard.controller.setStatus("Illegal move! Use the blue indications. "+OthelloBoard.getActivePlayer());
-            setColor(); // don't change the color of a players item when clicked.
-        } else{
-            setPlayer(OthelloBoard.getActivePlayer());
+    public synchronized void clicked(boolean humanClick) {
+        if(!hasPlayer()) {
+//            System.out.println("==");
+//            System.out.println("From:" + from);
+//            System.out.println("click " + this.toString() + " by " + getActivePlayer());
+//            System.out.println(OthelloBoard.validMoves);
+//            System.out.println("==");
 
-            // override the other players items if necessary
-            if(overrides != null){
-                for (OthelloItem item : overrides) {
-                    override(item);
+            if (!OthelloBoard.validMoves.contains(this)) {
+                OthelloBoard.controller.setStatus("Illegal move! Use the blue indications. " + OthelloBoard.getActivePlayer());
+                setColor(); // don't change the color of a players item when clicked.
+            } else if (OthelloBoard.activePlayer.isRemote() && humanClick) {
+                OthelloBoard.controller.setStatus("Wait for the remote player to make a move");
+                setColor(); // don't change the color of a players item when clicked.
+            } else {
+                setPlayer(OthelloBoard.getActivePlayer());
+                getActivePlayer().setLastMove(this);
+
+                // Only send a move command if we made a move, not when te remote player made a move.
+                if (!OthelloBoard.getActivePlayer().isRemote())
+                    connectionHandler.makeMove(String.valueOf(convertLocation(row, column)));
+
+                // override the other players items if necessary
+                if (overrides != null) {
+                    for (OthelloItem item : overrides) {
+                        override(item);
+                    }
+                    this.overrides = null;
                 }
-            }
 
-            OthelloBoard.nextTurn();
+                OthelloBoard.nextTurn();
+            }
+        }else{
+            setColor();
         }
+    }
+
+    /**
+     * Get the 1 dimension location integer.
+     *
+     * @return int with the location of this item.
+     */
+    public int getSingleLocation(){
+        return convertLocation(row,column);
+    }
+
+    /**
+     * Convert the row,column location to a single dimension integer
+     *
+     * @param row int of the item to convert
+     * @param column int of the item to convert
+     * @return int with the single dimension value of the location.
+     */
+    public int convertLocation(int row, int column){
+        return ((row+1)*getBoardSize())-(getBoardSize()-(column));
     }
 
     /**
@@ -128,6 +167,8 @@ public class OthelloItem extends Rectangle {
             } else {
                 setStyle("-fx-fill: white");
             }
+        } else if(validMoves.contains(this)){
+            setStyle("-fx-fill: blue;");
         }
     }
 
@@ -159,7 +200,7 @@ public class OthelloItem extends Rectangle {
      *
      * @return OthelloItem on the Left side of this OthelloItem.
      */
-    OthelloItem getLeftNeighbour(){
+    synchronized OthelloItem getLeftNeighbour(){
         if(column > 0) {
             return controller.getOthelloItemByLocation(row, column-1);
         } else{
@@ -173,7 +214,7 @@ public class OthelloItem extends Rectangle {
      *
      * @return OthelloItem on the Right side of this OthelloItem.
      */
-    OthelloItem getRightNeighbour() {
+    synchronized OthelloItem getRightNeighbour() {
         if(column < (OthelloBoard.getBoardSize() -1)) {
             return controller.getOthelloItemByLocation(row, column+1);
         } else{
@@ -187,7 +228,7 @@ public class OthelloItem extends Rectangle {
      *
      * @return OthelloItem on the TopLeft side of this OthelloItem.
      */
-    OthelloItem getTopLeftNeighbour(){
+    synchronized OthelloItem getTopLeftNeighbour(){
         if(row > 0 && column > 0) {
             return controller.getOthelloItemByLocation(row-1, column-1);
         } else{
@@ -201,7 +242,7 @@ public class OthelloItem extends Rectangle {
      *
      * @return OthelloItem on the TopRight side of this OthelloItem.
      */
-    OthelloItem getTopRightNeighbour(){
+    synchronized OthelloItem getTopRightNeighbour(){
         if(row > 0 && column < (OthelloBoard.getBoardSize() -1)) {
             return controller.getOthelloItemByLocation(row-1, column+1);
         } else{
@@ -215,7 +256,7 @@ public class OthelloItem extends Rectangle {
      *
      * @return OthelloItem on the Top side of this OthelloItem.
      */
-    OthelloItem getTopNeighbour(){
+    synchronized OthelloItem getTopNeighbour(){
         if(row > 0) {
             return controller.getOthelloItemByLocation(row-1, column);
         } else{
@@ -229,7 +270,7 @@ public class OthelloItem extends Rectangle {
      *
      * @return OthelloItem on the Bottom side of this OthelloItem.
      */
-    OthelloItem getBottomNeighbour(){
+    synchronized OthelloItem getBottomNeighbour(){
         if(row < (OthelloBoard.getBoardSize()-1)) {
             return controller.getOthelloItemByLocation(row+1, column);
         } else{
@@ -243,7 +284,7 @@ public class OthelloItem extends Rectangle {
      *
      * @return OthelloItem on the BottomRight side of this OthelloItem.
      */
-    OthelloItem getBottomRightNeighbour(){
+    synchronized OthelloItem getBottomRightNeighbour(){
         if(row < (OthelloBoard.getBoardSize()-1) && column < (OthelloBoard.getBoardSize() -1)) {
             return controller.getOthelloItemByLocation(row+1, column+1);
         } else{
@@ -257,7 +298,7 @@ public class OthelloItem extends Rectangle {
      *
      * @return OthelloItem on the BottomLeft side of this OthelloItem.
      */
-    OthelloItem getBottomLeftNeighbour(){
+    synchronized OthelloItem getBottomLeftNeighbour(){
         if(row < (OthelloBoard.getBoardSize()-1) && column > 0) {
             return controller.getOthelloItemByLocation(row+1, column-1);
         } else{
@@ -272,7 +313,7 @@ public class OthelloItem extends Rectangle {
      *
      * @return HashMap with the direction as key and the OthelloItem as value.
      */
-    public HashMap<String, OthelloItem> getNeighbours(){
+    public synchronized HashMap<String, OthelloItem> getNeighbours(){
         HashMap<String, OthelloItem> neighbours = new HashMap<>();
         if(getLeftNeighbour() != null)
             neighbours.put("Left",getLeftNeighbour());
@@ -317,7 +358,7 @@ public class OthelloItem extends Rectangle {
      * @return String with the Row and Column in a human fashion
      */
     public String getPositionString(){
-        return getColumn() + ":" + getRow();
+        return getColumn() + ":" + getRow() +" ("+convertLocation(row,column)+")";
     }
 
     @Override
@@ -341,7 +382,7 @@ public class OthelloItem extends Rectangle {
      *
      * @param overrides ArrayList with overrides
      */
-    public void setOverrides(ArrayList<OthelloItem> overrides) {
+    public synchronized void setOverrides(ArrayList<OthelloItem> overrides) {
         if(this.overrides != null){
             for (OthelloItem item : overrides) {
                 if(!this.overrides.contains(item))
@@ -350,5 +391,9 @@ public class OthelloItem extends Rectangle {
         } else {
             this.overrides = overrides;
         }
+    }
+
+    public void clearOverrides() {
+        this.overrides = null;
     }
 }

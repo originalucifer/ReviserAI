@@ -1,46 +1,48 @@
 package ServerConnection;
 
 /**
+ * Sends commands to the server. by adding them to the connection to send list.
+ *
  * Created by rik on 29-3-17.
  */
-public class ServerCommands {
+class ServerCommands {
 	private Connection connection;
 
-	public ServerCommands(Connection connection){
+	ServerCommands(Connection connection){
 		this.connection = connection;
 	}
 
-	public void login (String player){
+	void login(String player){
 		connection.addToSend("login " + player);
 	}
 
-	public void help () {
+	void help() {
 		connection.addToSend("help");
 	}
 
-	public void logout(){
+	void logout(){
 		connection.addToSend("logout");
 	}
 
-	public void getGameList() {
+	void getGameList() {
 		connection.addToSend("get gamelist");
 	}
 
-	public void getPlayerList() {
+	void getPlayerList() {
 		connection.addToSend("get playerlist");
 	}
 
-	public void move(String move) {
+	void move(String move) {
 		connection.addToSend("move " + move);
 	}
 
-	public void forfeit(){
+	void forfeit(){
 		connection.addToSend("forfeit");
 	}
 
-	public void subscribe(String game) {connection.addToSend("subscribe " + game);}
+	void subscribe(String game) {connection.addToSend("subscribe " + game);}
 
-	public void custom(String command) {
+	void custom(String command) {
 		connection.addToSend(command);
 	}
 }

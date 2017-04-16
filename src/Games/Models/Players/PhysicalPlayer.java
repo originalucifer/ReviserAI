@@ -2,7 +2,7 @@ package Games.Models.Players;
 
 import Games.Controllers.ObserveBoardInput;
 import Games.Controllers.TabControllers.GameControls;
-import Games.Models.Boards.TicTacToeBoard;
+import Games.Models.Boards.TicTacToe.TicTacToeBoard;
 
 /**
  * Player for the Manual playing.

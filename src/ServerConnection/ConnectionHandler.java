@@ -1,9 +1,11 @@
 package ServerConnection;
 
-import Games.Controllers.TabControllers.ConnectionController;
+import Games.Controllers.ConnectionController;
 import Games.Models.Boards.Board;
 
 /**
+ * Handles the connection, connects all classes needed
+ *
  * Created by rik on 3/30/17.
  */
 public class ConnectionHandler {
@@ -14,6 +16,9 @@ public class ConnectionHandler {
 	private CommandCalls commandCalls;
 	private boolean connected = false;
 	private ConnectionController connectionController;
+
+	private String hostAddress = "127.0.0.1";
+	private int hostPort = 7789;
 
 	public ConnectionHandler(ConnectionController c) {
 		this.connectionController = c;
@@ -26,6 +31,7 @@ public class ConnectionHandler {
 
 		listen = new ReceiveListener();
 		connection = new Connection(listen);
+		connection.setHost(hostAddress,hostPort);
 		new Thread(connection).start();
 		new Thread(listen).start();
 		serverCommands =new ServerCommands(connection);
@@ -52,7 +58,7 @@ public class ConnectionHandler {
 
     /**
      * subscribes user to specified game
-     * @param game
+     * @param game Name for the game to subscribe to
      */
 	public void subscribe(String game) {
 		serverCommands.subscribe(game);
@@ -68,7 +74,8 @@ public class ConnectionHandler {
     /**
      * requests the playerlist
      */
-	public void getPlayerList(){ serverCommands.getPlayerList();}
+	public void getPlayerList(){
+		serverCommands.getPlayerList();}
 
     /**
      * Challenges the speficied player for a specified game
@@ -77,14 +84,17 @@ public class ConnectionHandler {
 		serverCommands.custom("challenge \"" +name+ "\" \""+game+"\"");
 	}
 
-
+	/**
+	 * sends chosen move to the server
+	 * @param move chosen move
+	 */
 	public void makeMove(String move){
 		serverCommands.move(move);
 	}
 
     /**
      * accepts challenge belonging to challenge id
-     * @param challengeID
+     * @param challengeID id number for the challenge
      */
 	public void acceptChallenge(String challengeID){
 		serverCommands.custom("challenge accept " + challengeID);
@@ -103,7 +113,7 @@ public class ConnectionHandler {
 		commandCalls.setBoard(board);
 	}
 
-	public void setPlayerName(String name){
+	private void setPlayerName(String name){
 		commandCalls.setPlayerName(name);
 	}
 
@@ -115,13 +125,38 @@ public class ConnectionHandler {
      * update the output textarea in the connectionController
      *
      * Can possibly be done cleaner.
-     * @param serverResponse
+     * @param serverResponse response from te server
      */
-	public void updateOutput(String serverResponse){
+	void updateOutput(String serverResponse){
         connectionController.updateServerOutput(serverResponse);
 	}
+
+	/**
+	 * updates the playerlist textArea in the connectionController
+	 *
+	 * @param playerName name of the player
+	 */
+	void updatePlayerListOutput(String playerName) { connectionController.updatePlayerListOutput(playerName);}
+
+	/**
+	 * updates the gameList textArea in the connectionController
+	 *
+	 * @param gameName name of the game
+	 */
+	void updateGameListOutput(String gameName) { connectionController.updateGameListOutput(gameName);}
 
 	public CommandCalls getCommandCalls(){
 		return commandCalls;
 	}
+
+
+	/**
+	 * Allaws you to change the adress of the server
+	 * @param host IP address
+	 * @param port portNumber
+	 */
+    public void setHost(String host, int port) {
+		this.hostAddress = host;
+		this.hostPort = port;
+    }
 }

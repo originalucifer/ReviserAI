@@ -1,11 +1,13 @@
 package ServerConnection;
 
-import Games.Controllers.ObserveBoardInput;
 import Games.Models.Boards.Board;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 
 /**
+ * Recieves recieved message from server and executes correct steps.
+ *
  * Created by rik on 3/29/17.
  */
 public class CommandCalls implements Observer{
@@ -14,7 +16,7 @@ public class CommandCalls implements Observer{
 	private String playerName;
 	private ArrayList<ObserveServerInput> following;
 
-	public CommandCalls(Observable info, ConnectionHandler connectionHandler) {
+	CommandCalls(Observable info, ConnectionHandler connectionHandler) {
 		info.follow(this);
 		this.connectionHandler = connectionHandler;
 	}
@@ -37,11 +39,11 @@ public class CommandCalls implements Observer{
      */
 	private void findCommand(String com){
 		String split[] = com.split(" ");
-		System.out.println(Arrays.toString(split));
+//		System.out.println(Arrays.toString(split));
 		switch (split[0]) {
 			case "ERR": error(getArguments(split));
 			break;
-			case "OK": acknowledgement();
+			case "OK":
 			break;
 			case "SVR": SVR(getArguments(split));
 			break;
@@ -53,7 +55,7 @@ public class CommandCalls implements Observer{
 
     /**
      * Handles the SVR commands from the server
-     * @param arguments
+     * @param arguments array with the message details
      */
 	private void SVR(String[] arguments) {
 		switch (arguments[0]) {
@@ -62,10 +64,10 @@ public class CommandCalls implements Observer{
 			case "GAME":game(getArguments(arguments));
 				break;
 			// Display gameList here
-			case "GAMELIST": connectionHandler.updateOutput(Arrays.toString(arguments));
+			case "GAMELIST":gameList(getArguments(arguments));
 				break;
 			// Display playerList here
-			case "PLAYERLIST": connectionHandler.updateOutput(Arrays.toString(arguments));
+			case "PLAYERLIST":playerList(getArguments(arguments));
 				break;
 		}
 	}
@@ -132,21 +134,21 @@ public class CommandCalls implements Observer{
 
 	/**
 	 * Handles the move from the server.
-	 * @param arguments
+	 * @param arguments array with move details
 	 */
 	private void move(String[] arguments){
 	    String name = arguments[1].replaceAll("\\W", "");
 	    if (!name.equals(playerName)){
 			sendInput(arguments[3]);
-	        board.move(arguments[3],false);
+	        board.moveMade(arguments[3]);
         }else{
-	        board.move(arguments[3],true);
+	        board.moveMade(arguments[3]);
         }
     }
 
     /**
      * Prints the ERROR messages from the server to the output field.
-     * @param arguments
+     * @param arguments arguments in the error message
      */
     private void error(String arguments[]) {
         StringBuilder output = new StringBuilder("Warning: ");
@@ -156,9 +158,29 @@ public class CommandCalls implements Observer{
         connectionHandler.updateOutput(output.toString());
     }
 
+	/**
+	 * For each game recieved sent it to the gameList textArea.
+	 * @param arguments list with games
+	 */
+	private void gameList(String[] arguments){
+		for (String arg : arguments){
+			connectionHandler.updateGameListOutput(arg.replaceAll("\\W", ""));
+		}
+	}
 
-	private void acknowledgement(){
-
+	/**
+	 * for each player recieved sent it to the playerList textArea
+	 * @param arguments names of the players
+	 */
+    private void playerList(String[] arguments) {
+    	for (String arg : arguments){
+    		String name = arg.replaceAll("\\W", "");
+    		if (name.equals(playerName)){
+    			connectionHandler.updatePlayerListOutput("(Self) "+name);
+			} else {
+				connectionHandler.updatePlayerListOutput(name);
+			}
+		}
 	}
 
     /**
@@ -173,7 +195,7 @@ public class CommandCalls implements Observer{
 	 * sets the name of the player
 	 * @param name playerName
 	 */
-	public void setPlayerName(String name){
+	void setPlayerName(String name){
 		this.playerName = name;
 	}
 
@@ -188,7 +210,7 @@ public class CommandCalls implements Observer{
 
     /**
      * print the string to the outputArea
-     * @param s
+     * @param s message
      */
 	private void print(String s) {
 		connectionHandler.updateOutput(s);

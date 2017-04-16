@@ -1,30 +1,27 @@
 package Games.Controllers;
 
-import Games.Controllers.TabControllers.GameStatusView;
+import Games.Models.Boards.TicTacToe.TicTacToeBoard;
 import Games.Models.Factories.PlayerFactory;
 import Games.Models.Players.Player;
-import Games.Models.Boards.TicTacToeBoard;
 
 
 /**
- * GameController handles the playing of the game.
+ * TicTacToeGameController handles the playing of the game.
  *
  * Created by rik on 4/5/17.
  */
-public class GameController implements Runnable{
+public class TicTacToeGameController implements Runnable{
     private Player player0;
     private Player player1;
     private TicTacToeBoard board;
     private boolean finished = false;
     private Integer lastMove = null;
     private boolean playerTurn = false; //false = 0 & true = 1
-    private GameStatusView gui;
 
-    public GameController(String playerOne, String playerTwo, TicTacToeBoard board, PlayerFactory factory, GameStatusView gui){
+    public TicTacToeGameController(String playerOne, String playerTwo, TicTacToeBoard board, PlayerFactory factory){
         player0 = factory.getPlayer(playerOne);
         player1 = factory.getPlayer(playerTwo);
         this.board = board;
-        this.gui = gui;
     }
 
     private void endGame(){
@@ -53,7 +50,6 @@ public class GameController implements Runnable{
     private void checkEndSituation() {
         Boolean ended = board.getEnded();
         if (ended){
-            gui.gameEnded(board.getEndStatus());
             endGame();
         }
     }

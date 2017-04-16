@@ -8,12 +8,11 @@ package Games.Models.Boards;
 public interface Board {
     void updateBoard(int lastMove, boolean playerTurn);
     Boolean getEnded();
-    String getEndStatus();
     void receiveMove(int move, boolean player);
-    void matchStart(boolean myturn);
+    void matchStart(boolean myTurn);
     void win();
     void loss();
     void draw();
     void yourTurn();
-    void move(String move, boolean thisplayer);
+    void moveMade(String move);
 }

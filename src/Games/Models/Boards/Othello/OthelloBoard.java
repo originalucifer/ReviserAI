@@ -1,9 +1,13 @@
 package Games.Models.Boards.Othello;
 
-import Games.Controllers.TabControllers.OthelloController;
 import Games.Controllers.AI.OthelloAI;
+import Games.Controllers.TabControllers.OthelloController;
+import Games.Models.Boards.Board;
 import Games.Models.Players.OthelloPlayer;
+import ServerConnection.ConnectionHandler;
+import javafx.application.Platform;
 import javafx.scene.control.Alert;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -16,8 +20,9 @@ import java.util.Objects;
  * @author koen
  * @version 0.1 (4/3/17)
  */
-public class OthelloBoard {
+public final class OthelloBoard implements Board{
 
+    private static volatile OthelloBoard instance = null;
     private static final int boardSize = 8;
 
     static boolean started = false;
@@ -34,6 +39,20 @@ public class OthelloBoard {
     static OthelloPlayer white;
     static OthelloAI ai;
 
+    public static ConnectionHandler connectionHandler;
+
+    private OthelloBoard() {}
+
+    public static OthelloBoard getInstance() {
+        if (instance == null) {
+            synchronized(OthelloBoard.class) {
+                if (instance == null) {
+                    instance = new OthelloBoard();
+                }
+            }
+        }
+        return instance;
+    }
 
     /**
      * Initialize the static OthelloBoard with the OthelloController.
@@ -43,12 +62,13 @@ public class OthelloBoard {
     public static void initialize(OthelloController controller){
 
         OthelloBoard.controller = controller;
+        OthelloBoard.connectionHandler = controller.getConnectionHandler();
         OthelloBoard.black = new OthelloPlayer("black","BlackPlayer");
         OthelloBoard.white = new OthelloPlayer("white","whitePlayer");
         OthelloBoard.ai = new OthelloAI();
-
         controller.setStatus("Pick a color.");
-        draw();
+
+        drawItems();
     }
 
     /**
@@ -59,7 +79,13 @@ public class OthelloBoard {
      */
     public static void startGame(){
         started = true;
-        System.out.println("started!");
+    }
+
+    /**
+     * Receive updates from server
+     */
+    public static void update(String line){
+        System.out.println("LINE");
     }
 
     /**
@@ -69,7 +95,12 @@ public class OthelloBoard {
      */
     public static void setActivePlayer(OthelloPlayer player){
         OthelloBoard.activePlayer = player;
-        controller.setStatus(player.getName()+" is next.");
+        System.out.println("ACTIVE PLAYER IS "+player);
+
+        if(player.isRemote())
+            controller.setStatus("Remote player is next.");
+        else
+            controller.setStatus(player.getName()+" is next.");
 
         // Clear the valid moves block.
         removeValidMoves();
@@ -87,17 +118,6 @@ public class OthelloBoard {
     }
 
     /**
-     * Clean out the blue valid moves and the ArrayList with valid moves.
-     */
-    private static void removeValidMoves() {
-        for (OthelloItem validMove : validMoves) {
-            if(!validMove.hasPlayer())
-                validMove.setStyle("-fx-fill: red");
-        }
-        validMoves.clear();
-    }
-
-    /**
      * Set the active player by String with the color of the player.
      *
      * @param color black or white
@@ -107,6 +127,18 @@ public class OthelloBoard {
             setActivePlayer(black);
         else
             setActivePlayer(white);
+    }
+
+    /**
+     * Clean out the blue valid moves and the ArrayList with valid moves.
+     */
+    private static void removeValidMoves() {
+        for (OthelloItem validMove : validMoves) {
+            validMove.clearOverrides();
+            if(!validMove.hasPlayer())
+                validMove.setStyle("-fx-fill: red");
+        }
+        validMoves.clear();
     }
 
     /**
@@ -121,7 +153,7 @@ public class OthelloBoard {
     /**
      * Draw the OthelloBoard with 4 start items in the middle.
      */
-    public static void draw(){
+    public synchronized static void drawItems(){
         for (int row = 0; row < boardSize; row++) {
             for (int column = 0; column < boardSize; column++) {
                 OthelloItem othelloItem = new OthelloItem(column,row);
@@ -138,6 +170,38 @@ public class OthelloBoard {
         }
     }
 
+    @Override
+    public void yourTurn() {
+        System.out.println("yourturn");
+    }
+
+    @Override
+    public void moveMade(String move) {
+        if(activePlayer.isRemote()){
+
+            int moveInt = Integer.valueOf(move.replaceAll("[^\\d.]",""));
+
+            if(activePlayer.getOtherPlayer().getLastMove() == null){
+                int[] rowCol = convertLocation(moveInt);
+                OthelloItem item = controller.getOthelloItemByLocation(rowCol[0], rowCol[1]);
+                item.clicked(false);
+            } else {
+                // Only emulate the move if its not the same as the last move of the other player
+                if(activePlayer.getOtherPlayer().getLastMove().getSingleLocation() != moveInt){
+                    int[] rowCol = convertLocation(moveInt);
+                    OthelloItem item = controller.getOthelloItemByLocation(rowCol[0], rowCol[1]);
+                    item.clicked(false);
+                }
+            }
+        }
+    }
+
+    public int[] convertLocation(int location){
+        int row = (int) Math.floor(location / boardSize);
+        int col = location % boardSize;
+        return new int[]{row, col};
+    }
+
     /**
      * Getter for active player.
      *
@@ -151,19 +215,21 @@ public class OthelloBoard {
      * Clear the board and all necessary properties then recall the initialize.
      * This will reuse the GridPane and StatusLabel
      */
-    public static void reset() {
-        started = false;
-        activePlayer = null;
-        validMoves.clear();
-        whiteItems.clear();
-        blackItems.clear();
-        controller.resetMoveList();
-        controller.boardView.getChildren().clear();
-        controller.disableButtons(false);
-        controller.checkBlackAi.setSelected(false);
-        controller.checkWhiteAi.setSelected(false);
-        for (int i = 0; i < 50; ++i) System.out.println(); // clear log
-        initialize(controller);
+    public static synchronized void reset() {
+        Platform.runLater(() -> {
+            started = false;
+            activePlayer = null;
+            validMoves.clear();
+            whiteItems.clear();
+            blackItems.clear();
+            controller.resetMoveList();
+            controller.boardView.getChildren().clear();
+            controller.disableButtons(false);
+            controller.checkBlackAi.setSelected(false);
+            controller.checkWhiteAi.setSelected(false);
+            for (int i = 0; i < 50; ++i) System.out.println(); // clear log
+            initialize(controller);
+        });
     }
 
     /**
@@ -226,7 +292,7 @@ public class OthelloBoard {
      * @param overrides ArrayList with the items we will override with this move
      * @return ArrayList with items that will be taken where the last item is a legit move.
      */
-    public static ArrayList<OthelloItem> checkMoveInPosition(OthelloItem othelloItem, String position, ArrayList<OthelloItem> overrides){
+    public synchronized static ArrayList<OthelloItem> checkMoveInPosition(OthelloItem othelloItem, String position, ArrayList<OthelloItem> overrides){
 
 //        System.out.println("Checking "+othelloItem.getPositionString()+" to the "+position);
 
@@ -289,8 +355,8 @@ public class OthelloBoard {
      *
      * @param status String with current status of the game.
      */
-    public static void setStatus(String status){
-        controller.statusLabel.setText(status);
+    public synchronized static void setStatus(String status){
+        Platform.runLater(() -> controller.statusLabel.setText(status));
     }
 
     /**
@@ -299,7 +365,7 @@ public class OthelloBoard {
      *
      * @param othelloItem OthelloItem neighbour of player item to check valid moves from.
      */
-    public static void drawValidMoveFromItem(OthelloItem othelloItem) {
+    public synchronized static void drawValidMoveFromItem(OthelloItem othelloItem) {
 
         HashMap<String, OthelloItem> neighbours = othelloItem.getNeighbours();
 
@@ -315,10 +381,12 @@ public class OthelloBoard {
 //                    System.out.println("overrides with valid item:");
 //                    System.out.println(overrides);
                     if (overrides != null) {
-//                        System.out.println("Valid move at "+validMove.getPositionString());
 
                         // Last item of the array is the valid move
                         OthelloItem validMove = overrides.get(overrides.size()-1);
+
+//                        System.out.println("Valid move at "+validMove.getPositionString());
+
 
                         // We remove the valid move so we are left with the overrides
                         overrides.remove(validMove);
@@ -332,6 +400,62 @@ public class OthelloBoard {
             }
         }
     }
+
+    @Override
+    public void updateBoard(int lastMove, boolean playerTurn) {
+        System.out.println("update board lastMove: "+lastMove+" player turn: "+playerTurn);
+    }
+
+    @Override
+    public Boolean getEnded() {
+        return hasStarted();
+    }
+
+    @Override
+    public void receiveMove(int move, boolean player) {
+        System.out.println("receive move"+move+" from player: "+player);
+    }
+
+    @Override
+    public void matchStart(boolean myTurn) {
+
+        if (!OthelloBoard.hasStarted()){
+
+            // First run of match start
+            if (!myTurn) {
+                white.setAi(true);
+                black.setRemote(true);
+            }else {
+                black.setAi(true);
+                white.setRemote(true);
+            }
+            controller.startGame("black");
+        }else {
+            nextTurn();
+        }
+    }
+
+    @Override
+    public void win() {
+        System.out.println("win");
+        controller.setStatus("You Won!");
+        OthelloBoard.reset();
+    }
+
+    @Override
+    public void loss() {
+        System.out.println("loss");
+        controller.setStatus("You Lost!");
+        OthelloBoard.reset();
+    }
+
+    @Override
+    public void draw() {
+        System.out.println("draw");
+        controller.setStatus("Its a draw");
+        OthelloBoard.reset();
+    }
+
 
     /**
      * Add a OthelloItem from the white 1player to the board.

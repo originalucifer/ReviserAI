@@ -1,5 +1,6 @@
 package Games.Models.Players;
 
+import Games.Models.Boards.Othello.OthelloBoard;
 import Games.Models.Boards.Othello.OthelloItem;
 
 import java.util.ArrayList;
@@ -10,17 +11,48 @@ import java.util.ArrayList;
  * @author koen
  * @version 0.1 (4/3/17)
  */
-public class OthelloPlayer {
+public class OthelloPlayer implements Player {
 
     private String color;
     private String name;
     private ArrayList<OthelloItem> moves;
     private boolean ai = false;
+    private boolean remote = false;
+    private OthelloItem lastMove;
 
     public OthelloPlayer(String color, String name) {
         this.color = color;
         this.name = name;
         this.moves = new ArrayList<>();
+    }
+
+    /**
+     * If this is the white player return the black player and visa versa
+     *
+     * @return OthelloPlayer black if this is white, white if this is black
+     */
+    public OthelloPlayer getOtherPlayer(){
+        if(color.equals("black"))
+            return OthelloBoard.getWhite();
+        return OthelloBoard.getBlack();
+    }
+
+    /**
+     * Get the last OthelloItem that the player moved to.
+     *
+     * @return OthelloItem where the player clicked.
+     */
+    public OthelloItem getLastMove() {
+        return lastMove;
+    }
+
+    /**
+     * Set the last OthelloItem that te player moved to.
+     *
+     * @param lastMove OthelloItem where the player clicked.
+     */
+    public void setLastMove(OthelloItem lastMove) {
+        this.lastMove = lastMove;
     }
 
     /**
@@ -85,8 +117,39 @@ public class OthelloPlayer {
         this.ai = ai;
     }
 
+    /**
+     * Check if the player is a remote player over the server
+     *
+     * @return boolean true if the player is a remote player
+     */
+    public boolean isRemote() {
+        return remote;
+    }
+
+    /**
+     * Set the player as a remote player from the server.
+     *
+     * @param remote boolean true to set the player as a remote player
+     */
+    public void setRemote(boolean remote) {
+        this.remote = remote;
+    }
+
     @Override
     public String toString() {
-        return getName()+" ("+getColor()+")";
+        String player = getColor();
+        if(isRemote())
+            player += " (remote)";
+        if(isAi())
+            player += " (ai)";
+
+        return player;
+    }
+
+
+    @Override
+    public int getYourMove(Integer opponentsMove) {
+        System.out.println("get your move");
+        return 0;
     }
 }

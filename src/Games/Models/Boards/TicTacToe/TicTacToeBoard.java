@@ -1,6 +1,7 @@
-package Games.Models.Boards;
+package Games.Models.Boards.TicTacToe;
 
 import Games.Controllers.TabControllers.TicTacToeController;
+import Games.Models.Boards.Board;
 import javafx.application.Platform;
 
 /**
@@ -8,13 +9,12 @@ import javafx.application.Platform;
  *
  * Created by robin on 31-3-17.
  */
-public class TicTacToeBoard implements Board{
+public class TicTacToeBoard implements Board {
 
     private int boardSize = 3;
     public char[][] board = new char[boardSize][boardSize];
     private TicTacToeController gui;
     private Boolean ended = null;
-    private String endStatus;
 
     public TicTacToeBoard(TicTacToeController gui){
         this.gui = gui;
@@ -49,15 +49,6 @@ public class TicTacToeBoard implements Board{
     @Override
     public Boolean getEnded() {
         return ended;
-    }
-
-    /**
-     * Gets the status (win,draw,lost)
-     * @return endStatus
-     */
-    @Override
-    public String getEndStatus(){
-        return endStatus;
     }
 
     /**
@@ -111,7 +102,6 @@ public class TicTacToeBoard implements Board{
     @Override
     public void win() {
         ended = true;
-        endStatus = "won";
         gui.gameEnded("won");
     }
 
@@ -121,7 +111,6 @@ public class TicTacToeBoard implements Board{
     @Override
     public void loss(){
         ended = true;
-        endStatus = "lost";
         gui.gameEnded("lost");
     }
 
@@ -131,7 +120,6 @@ public class TicTacToeBoard implements Board{
     @Override
     public void draw(){
         ended = true;
-        endStatus = "draw";
         gui.gameEnded("draw");
     }
 
@@ -146,10 +134,9 @@ public class TicTacToeBoard implements Board{
     /**
      * recieve move made.
      * @param move move
-     * @param thisplayer which player
      */
     @Override
-    public void move(String move, boolean thisplayer) {
+    public void moveMade(String move) {
     }
 
 

@@ -1,7 +1,7 @@
 package Games.Models.Players;
 
 import Games.Controllers.AI.AI;
-import Games.Models.Boards.TicTacToeBoard;
+import Games.Models.Boards.TicTacToe.TicTacToeBoard;
 
 /**
  * AI Player with a type of Ai built in.

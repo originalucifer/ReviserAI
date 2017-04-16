@@ -4,16 +4,18 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 
 /**
+ * Recieves all messages from the server and passes them.
+ *
  * Created by rik on 29-3-17.
  */
 public class ReceiveListener implements Observable, Runnable {
-	private volatile LinkedList<String> incoming = new LinkedList<String>();
+	private volatile LinkedList<String> incoming = new LinkedList<>();
 	private ArrayList<Observer> following;
 	private boolean alive = true;
 
 	@Override
 	public void follow(Observer observer) {
-		if (following == null) following = new ArrayList<Observer>();
+		if (following == null) following = new ArrayList<>();
 		following.add(observer);
 	}
 
@@ -23,7 +25,7 @@ public class ReceiveListener implements Observable, Runnable {
 	}
 
 
-	public synchronized void addLine(String line) {
+	synchronized void addLine(String line) {
 		incoming.add(line);
 	}
 
@@ -36,7 +38,7 @@ public class ReceiveListener implements Observable, Runnable {
 		}
 	}
 
-	public void terminate(){
+	void terminate(){
 		alive = false;
 	}
 

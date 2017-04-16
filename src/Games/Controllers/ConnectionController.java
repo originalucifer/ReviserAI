@@ -1,4 +1,4 @@
-package Games.Controllers.TabControllers;
+package Games.Controllers;
 
 import ServerConnection.ConnectionHandler;
 import javafx.event.ActionEvent;
@@ -15,12 +15,19 @@ import javafx.scene.control.TextField;
  */
 public class ConnectionController {
 
-    @FXML TextArea serverOutput;
-    @FXML private TextField loginTf;
-    @FXML TextField challengeTf;
-    @FXML private TextField acceptChallengeTf;
-    public ConnectionHandler connectionHandler = new ConnectionHandler(this);
-    boolean loggedIn = false;
+    @FXML public TextArea serverOutput;
+    @FXML public TextArea gameListOutput;
+    @FXML public TextArea playerListOutput;
+    @FXML public TextField loginTf;
+    @FXML public TextField challengeTf;
+    @FXML public TextField acceptChallengeTf;
+    @FXML public TextField portNumber;
+    @FXML public TextField hostNumber;
+
+
+    protected ConnectionHandler connectionHandler = new ConnectionHandler(this);
+    private boolean loggedIn = false;
+
 
     public ConnectionController(){
     }
@@ -33,7 +40,7 @@ public class ConnectionController {
      */
     public void buttonEventHandler(ActionEvent actionEvent){
         Button clickedButton = (Button) actionEvent.getTarget();
-        String buttonLabel = clickedButton.getText();
+        String buttonLabel = clickedButton.getId();
         switch (buttonLabel){
             case "Connect" :
                 this.getConnection();break;
@@ -62,11 +69,13 @@ public class ConnectionController {
      *
      * If it fails it shutdown entire application
      */
-    void getConnection(){
+    public void getConnection(){
             try {
                 connectionHandler.connect();
                 Thread.sleep(1000);
                 serverOutput.appendText("\nConnection made");
+                connectionHandler.getGameList();
+                connectionHandler.getPlayerList();
             }catch (Exception e){
                 System.out.println(e);
                 serverOutput.appendText("\nConnection could not be made");
@@ -78,6 +87,7 @@ public class ConnectionController {
      */
     private void getGameList(){
         if (connectionHandler.isConnected()){
+            gameListOutput.setText("");
             connectionHandler.getGameList();
         } else {
             serverOutput.appendText("\nWarning: You are not connected");
@@ -89,6 +99,7 @@ public class ConnectionController {
      */
     private void getPlayerList(){
         if (connectionHandler.isConnected()){
+            playerListOutput.setText("");
             connectionHandler.getPlayerList();
         } else {
             serverOutput.appendText("\nWarning: You are not connected");
@@ -129,15 +140,48 @@ public class ConnectionController {
     }
 
     /**
-     * Subscribes user to specified Game on the Server
-     * should be overridden in the subclass
+     * Subscribe, should be overridden in the subclass
      */
     public void subscribe(){}
 
     /**
-     * Challenges another player for a specified game
+     * Subscribes user to specified Game
+     * @param game name of the game to subscribe to
      */
-    public void challenge(){}
+    protected void subscribeForGame(String game){
+        if (connectionHandler.isConnected() && loggedIn){
+            connectionHandler.subscribe(game);
+            serverOutput.appendText("\nSubscribed for game: \""+game+"\"");
+        } else {
+            serverOutput.appendText("\nWarning: You must first connect and log in");
+        }
+    }
+
+    /**
+     * Challenge, should be overridden in subclass.
+     */
+    public void challenge(){
+    }
+
+    /**
+     * Challenge another player for the specified game.
+     * @param game Name of current game.
+     */
+    protected void challengeForGame(String game){
+        if (connectionHandler.isConnected() && loggedIn){
+            String challenge = challengeTf.getText();
+            challenge = challenge.replace("\\s+","");
+            System.out.println(challenge+"Challenged!!!!");
+            if(!challenge.equals("")){
+                connectionHandler.challenge(challenge,game);
+                serverOutput.appendText("\nChallenged: \""+challenge+"\" for a game of: \""+game+"\"");
+            }else{
+                serverOutput.appendText("\nWarning: Enter a valid name and game for the challenge");
+            }
+        } else {
+            serverOutput.appendText("\nWarning: You must first connect and log in");
+        }
+    }
 
     /**
      * Accept challenge belonging to specified challenge ID
@@ -167,9 +211,24 @@ public class ConnectionController {
                 loggedIn = false;
             }
             connectionHandler.quitConnection();
+            playerListOutput.setText("");gameListOutput.setText("");
             serverOutput.appendText("\nConnection closed");
         } else {
             serverOutput.appendText("\nWarning: You are not connected");
+        }
+    }
+
+    public void setHost(ActionEvent actionEvent) {
+        if (!connectionHandler.isConnected()){
+            String host = hostNumber.getText();
+            String port = portNumber.getText();
+            if (!host.equals("") && !port.equals("")){
+                connectionHandler.setHost(host,Integer.parseInt(port));
+            } else {
+                serverOutput.setText("\nWarning: Specify a valid address");
+            }
+        } else {
+            serverOutput.setText("\nWarning: You are already connected");
         }
     }
 
@@ -181,4 +240,12 @@ public class ConnectionController {
         serverOutput.appendText("\n"+serverMessage);
     }
 
+    /**
+     * update the playerListOutput textArea with all players
+     * @param playerName name of the players
+     */
+    public void updatePlayerListOutput(String playerName) { playerListOutput.appendText("- "+playerName+"\n");
+    }
+
+    public void updateGameListOutput(String gameName){ gameListOutput.appendText("- "+gameName+"\n");}
 }
