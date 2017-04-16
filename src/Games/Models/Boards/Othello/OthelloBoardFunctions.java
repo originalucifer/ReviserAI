@@ -35,13 +35,13 @@ public class OthelloBoardFunctions {
     }
 
     public static int getBottomNeighbour(int root){
-        if (getCol(root) == 0 || getRow(root) == 7) return -1;
-        return root + 7;
+        if (getRow(root) == 7) return -1;
+        return root + 8;
     }
 
     public static int getBottomRightNeighbour(int root){
-        if (getCol(root) == 0 || getRow(root) == 7) return -1;
-        return root + 7;
+        if (getCol(root) == 7 || getRow(root) == 7) return -1;
+        return root + 9;
     }
 
     public static int searchForPlayerTopLeft(char[] board, char player, int base){

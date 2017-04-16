@@ -1,12 +1,10 @@
 package Games.Models;
 
-import Games.Controllers.AI.AI;
 import Games.Models.Boards.Othello.OthelloBoard;
 import Games.Models.Boards.Othello.OthelloBoardFunctions;
 import Games.Models.Boards.Othello.OthelloItem;
 
 import java.util.ArrayList;
-import java.util.Random;
 
 /**
  * Class OthelloAI
@@ -47,26 +45,35 @@ public class OthelloAI {
     public void makeMove(){
         updateBoard();
         updateMovesToDo();
-        printBoard(AIboard);
+//        System.out.println("updated");
+//        printBoard(AIboard);
         char player = OthelloBoard.activePlayer == OthelloBoard.black ? black : white;
         OthelloItem bestMove = null;
         int bestValue = -9999999;
         ArrayList<OthelloItem> validMoves = OthelloBoard.getValidMoves();
+//        System.out.println("check");
+//        for (int s : getPossibleMoves(AIboard, player)){
+//            System.out.print(" " + s);
+//        }
+        System.out.println();
         for (OthelloItem item : validMoves){
             int index = getIndex(item.getColumn(),item.getRow());
+//            System.out.print(" " + index);
             int v = getValue(index, getOpponent(player), AIboard, 0);
             if (v > bestValue){
                 bestMove = item;
                 bestValue = v;
             }
         }
-        bestMove.clicked();
+//        System.out.println("AI generate " + getIndex(bestMove.getColumn(),bestMove.getRow()));
+//        printBoard(doMove(AIboard, getIndex(bestMove.getColumn(),bestMove.getRow()), player));
+        bestMove.clicked();System.out.println();
     }
 
     private int getValue(int move, char player, char[] board, int depth){
         char[] newBoard = doMove(board, move, player);
         if (movesToDo + depth == 60) return directValue(newBoard);
-        if (depth >= 5) return calculateBoardPosition(newBoard);
+        if (depth >= 2) return calculateBoardPosition(newBoard);
         ArrayList<Integer> newMoves = getPossibleMoves(newBoard, player);
         char opponent = getOpponent(player);
         int bestValue = -999999;
@@ -193,6 +200,7 @@ public class OthelloAI {
         check = OthelloBoardFunctions.getBottomNeighbour(move);
         if (check != -1 && board[check] == opp){
             int e = OthelloBoardFunctions.searchForPlayerBottom(board, player, move);
+            System.out.println(e);
             if (e != -1){
                 for (int i = move; i != e; i += 8){
                     board[i] = player;
