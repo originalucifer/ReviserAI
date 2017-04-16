@@ -49,6 +49,7 @@ public class OthelloBoardFunctions {
         while (true){
             i = getTopLeftNeighbour(i);
             if (i == -1) return -1;
+            if (board[i] == 'n') return -1;
             if (board[i] == player) return i;
         }
     }
@@ -58,6 +59,7 @@ public class OthelloBoardFunctions {
         while (true){
             i = getTopNeighbour(i);
             if (i == -1) return -1;
+            if (board[i] == 'n') return -1;
             if (board[i] == player) return i;
         }
     }
@@ -67,6 +69,7 @@ public class OthelloBoardFunctions {
         while (true){
             i = getTopRightNeighbour(i);
             if (i == -1) return -1;
+            if (board[i] == 'n') return -1;
             if (board[i] == player) return i;
         }
     }
@@ -76,6 +79,7 @@ public class OthelloBoardFunctions {
         while (true){
             i = getLeftNeighbour(i);
             if (i == -1) return -1;
+            if (board[i] == 'n') return -1;
             if (board[i] == player) return i;
         }
     }
@@ -85,6 +89,7 @@ public class OthelloBoardFunctions {
         while (true){
             i = getRightNeighbour(i);
             if (i == -1) return -1;
+            if (board[i] == 'n') return -1;
             if (board[i] == player) return i;
         }
     }
@@ -94,6 +99,7 @@ public class OthelloBoardFunctions {
         while (true){
             i = getBottomLeftNeighbour(i);
             if (i == -1) return -1;
+            if (board[i] == 'n') return -1;
             if (board[i] == player) return i;
         }
     }
@@ -103,6 +109,7 @@ public class OthelloBoardFunctions {
         while (true){
             i = getBottomNeighbour(i);
             if (i == -1) return -1;
+            if (board[i] == 'n') return -1;
             if (board[i] == player) return i;
         }
     }
@@ -112,6 +119,7 @@ public class OthelloBoardFunctions {
         while (true){
             i = getBottomRightNeighbour(i);
             if (i == -1) return -1;
+            if (board[i] == 'n') return -1;
             if (board[i] == player) return i;
         }
     }
