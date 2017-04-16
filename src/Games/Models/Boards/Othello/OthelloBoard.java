@@ -28,14 +28,14 @@ public final class OthelloBoard implements Board{
     static boolean started = false;
 
     static OthelloController controller;
-    static OthelloPlayer activePlayer;
+    public static OthelloPlayer activePlayer;
 
     public static ArrayList<OthelloItem> blackItems = new ArrayList<>();
     public static ArrayList<OthelloItem> whiteItems = new ArrayList<>();
     static ArrayList<OthelloItem> validMoves = new ArrayList<>();
     static ArrayList<OthelloItem> overrides = new ArrayList<>();
 
-    static OthelloPlayer black;
+    public static OthelloPlayer black;
     static OthelloPlayer white;
     static OthelloAI ai;
 
