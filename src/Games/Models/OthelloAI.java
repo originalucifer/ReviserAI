@@ -17,6 +17,7 @@ import java.util.Random;
 public class OthelloAI {
 
     private char[] AIboard;
+    private int movesToDo;
     private char nothing = 'n';
     private char black = 'b';
     private char white = 'w';
@@ -45,6 +46,7 @@ public class OthelloAI {
 
     public void makeMove(){
         updateBoard();
+        updateMovesToDo();
         printBoard(AIboard);
         char player = OthelloBoard.activePlayer == OthelloBoard.black ? black : white;
         OthelloItem bestMove = null;
@@ -63,7 +65,8 @@ public class OthelloAI {
 
     private int getValue(int move, char player, char[] board, int depth){
         char[] newBoard = doMove(board, move, player);
-        if (depth >= 3) return calculateBoardPosition(newBoard);
+        if (movesToDo + depth == 60) return directValue(newBoard);
+        if (depth >= 5) return calculateBoardPosition(newBoard);
         ArrayList<Integer> newMoves = getPossibleMoves(newBoard, player);
         char opponent = getOpponent(player);
         int bestValue = -999999;
@@ -75,6 +78,15 @@ public class OthelloAI {
             }
         }
         return bestValue;
+    }
+
+    private void updateMovesToDo(){
+        movesToDo = 0;
+        for (int i = 0; i < 64; i++){
+            if (AIboard[i] == nothing){
+                movesToDo++;
+            }
+        }
     }
 
     private void updateBoard(){
@@ -95,6 +107,25 @@ public class OthelloAI {
         for (int field = 0; field < 64; field++){
             if (board[field] == player){
                 value += boardValues[field];
+            }
+        }
+        return value;
+    }
+
+    /**
+    * return the amount of fields white has more than black
+     */
+    private int directValue(char[] board){
+        return directValuePlayer(board, white) - directValuePlayer(board, black);
+    }
+    /**
+    * Returns the number of field the player has in possession.
+     */
+    private int directValuePlayer(char[] board, char player){
+        int value = 0;
+        for (int i = 0; i < 64; i++){
+            if (board[i] == player){
+                value++;
             }
         }
         return value;
