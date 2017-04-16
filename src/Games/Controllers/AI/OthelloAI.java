@@ -63,7 +63,7 @@ public class OthelloAI {
     private int getValue(int move, char player, char[] board, int depth){
         char[] newBoard = doMove(board, move, player);
         if (movesToDo + depth == 60) return directValue(newBoard);
-        if (depth >= 5) return calculateBoardPosition(newBoard);
+        if (depth >= 4) return calculateBoardPosition(newBoard);
         ArrayList<Integer> newMoves = getPossibleMoves(newBoard, player);
         char opponent = getOpponent(player);
         int bestValue = -999999;
