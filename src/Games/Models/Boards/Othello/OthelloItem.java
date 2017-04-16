@@ -77,13 +77,13 @@ public class OthelloItem extends Rectangle {
             t -> {
                 OthelloItem rectangle = ((OthelloItem) (t.getSource()));
                 rectangle.setStyle(disableInnerShadow);
-                clicked(true,"mouse event");
+                clicked(true);
             };
 
     /**
      * Click this OthelloItem
      */
-    public synchronized void clicked(boolean humanClick, String from) {
+    public synchronized void clicked(boolean humanClick) {
         if(!hasPlayer()) {
 //            System.out.println("==");
 //            System.out.println("From:" + from);

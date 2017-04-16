@@ -19,6 +19,6 @@ public class OthelloAI {
         ArrayList<OthelloItem> validMoves = OthelloBoard.getValidMoves();
         int index = randomGenerator.nextInt(validMoves.size());
         OthelloItem item = validMoves.get(index);
-        item.clicked(false,"AI MOVED");
+        item.clicked(false);
     }
 }

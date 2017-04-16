@@ -184,13 +184,13 @@ public final class OthelloBoard implements Board{
             if(activePlayer.getOtherPlayer().getLastMove() == null){
                 int[] rowCol = convertLocation(moveInt);
                 OthelloItem item = controller.getOthelloItemByLocation(rowCol[0], rowCol[1]);
-                item.clicked(false,"Server move made");
+                item.clicked(false);
             } else {
                 // Only emulate the move if its not the same as the last move of the other player
                 if(activePlayer.getOtherPlayer().getLastMove().getSingleLocation() != moveInt){
                     int[] rowCol = convertLocation(moveInt);
                     OthelloItem item = controller.getOthelloItemByLocation(rowCol[0], rowCol[1]);
-                    item.clicked(false,"Server move made");
+                    item.clicked(false);
                 }
             }
         }
