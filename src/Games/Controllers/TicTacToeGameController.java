@@ -1,9 +1,8 @@
 package Games.Controllers;
 
-import Games.Controllers.TabControllers.GameStatusView;
+import Games.Models.Boards.TicTacToe.TicTacToeBoard;
 import Games.Models.Factories.PlayerFactory;
 import Games.Models.Players.Player;
-import Games.Models.Boards.TicTacToe.TicTacToeBoard;
 
 
 /**

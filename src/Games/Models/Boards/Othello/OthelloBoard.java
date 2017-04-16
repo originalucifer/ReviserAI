@@ -1,12 +1,13 @@
 package Games.Models.Boards.Othello;
 
-import Games.Controllers.TabControllers.OthelloController;
 import Games.Controllers.AI.OthelloAI;
-import Games.Models.Players.OthelloPlayer;
+import Games.Controllers.TabControllers.OthelloController;
 import Games.Models.Boards.Board;
+import Games.Models.Players.OthelloPlayer;
 import ServerConnection.ConnectionHandler;
 import javafx.application.Platform;
 import javafx.scene.control.Alert;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -354,8 +355,8 @@ public final class OthelloBoard implements Board{
      *
      * @param status String with current status of the game.
      */
-    public static void setStatus(String status){
-        controller.statusLabel.setText(status);
+    public synchronized static void setStatus(String status){
+        Platform.runLater(() -> controller.statusLabel.setText(status));
     }
 
     /**
@@ -422,9 +423,10 @@ public final class OthelloBoard implements Board{
 
             // First run of match start
             if (!myTurn) {
+                white.setAi(true);
                 black.setRemote(true);
             }else {
-//                black.setAi(true);
+                black.setAi(true);
                 white.setRemote(true);
             }
             controller.startGame("black");
@@ -436,19 +438,22 @@ public final class OthelloBoard implements Board{
     @Override
     public void win() {
         System.out.println("win");
-//        OthelloBoard.reset();
+        controller.setStatus("You Won!");
+        OthelloBoard.reset();
     }
 
     @Override
     public void loss() {
         System.out.println("loss");
-//        OthelloBoard.reset();
+        controller.setStatus("You Lost!");
+        OthelloBoard.reset();
     }
 
     @Override
     public void draw() {
         System.out.println("draw");
-//        OthelloBoard.reset();
+        controller.setStatus("Its a draw");
+        OthelloBoard.reset();
     }
 
 

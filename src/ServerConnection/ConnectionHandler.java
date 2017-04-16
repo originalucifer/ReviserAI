@@ -2,9 +2,6 @@ package ServerConnection;
 
 import Games.Controllers.ConnectionController;
 import Games.Models.Boards.Board;
-import sun.net.TelnetInputStream;
-
-import java.awt.*;
 
 /**
  * Handles the connection, connects all classes needed

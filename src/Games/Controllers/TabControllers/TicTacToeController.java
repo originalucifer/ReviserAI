@@ -1,8 +1,8 @@
 package Games.Controllers.TabControllers;
 
 import Games.Controllers.ConnectionController;
-import Games.Controllers.TicTacToeGameController;
 import Games.Controllers.ObserveBoardInput;
+import Games.Controllers.TicTacToeGameController;
 import Games.Models.Boards.TicTacToe.TicTacToeBoard;
 import Games.Models.Factories.PlayerFactory;
 import Games.Models.Factories.TicTacToePlayerFactory;
@@ -20,6 +20,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+
 import java.util.ArrayList;
 
 

@@ -1,6 +1,7 @@
 package ServerConnection;
 
 import Games.Models.Boards.Board;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 

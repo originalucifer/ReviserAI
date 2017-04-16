@@ -1,7 +1,6 @@
 package Games.Controllers.TabControllers;
 
 import Games.Controllers.ConnectionController;
-import Games.Models.Boards.Board;
 import Games.Models.Boards.Othello.OthelloBoard;
 import Games.Models.Boards.Othello.OthelloItem;
 import Games.Models.Players.OthelloPlayer;

@@ -90,14 +90,11 @@ public class OthelloItem extends Rectangle {
 //            System.out.println("click " + this.toString() + " by " + getActivePlayer());
 //            System.out.println(OthelloBoard.validMoves);
 //            System.out.println("==");
-            System.out.println();
 
             if (!OthelloBoard.validMoves.contains(this)) {
-                System.out.println("not in valid logs");
                 OthelloBoard.controller.setStatus("Illegal move! Use the blue indications. " + OthelloBoard.getActivePlayer());
                 setColor(); // don't change the color of a players item when clicked.
             } else if (OthelloBoard.activePlayer.isRemote() && humanClick) {
-                System.out.println("remote turn");
                 OthelloBoard.controller.setStatus("Wait for the remote player to make a move");
                 setColor(); // don't change the color of a players item when clicked.
             } else {
@@ -110,9 +107,6 @@ public class OthelloItem extends Rectangle {
 
                 // override the other players items if necessary
                 if (overrides != null) {
-                    System.out.println("=");
-                    System.out.println("DOING THE OVERRIDE FOR "+getPositionString());
-                    System.out.println("=");
                     for (OthelloItem item : overrides) {
                         override(item);
                     }

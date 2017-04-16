@@ -2,7 +2,6 @@ package Games.Models.Players;
 
 import Games.Models.Boards.Othello.OthelloBoard;
 import Games.Models.Boards.Othello.OthelloItem;
-import Games.Models.Players.Player;
 
 import java.util.ArrayList;
 
