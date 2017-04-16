@@ -80,6 +80,42 @@ public class OthelloBoardFunctions {
         }
     }
 
+    public static int searchForPlayerRight(char[] board, char player, int base){
+        int i = base;
+        while (true){
+            i = getRightNeighbour(i);
+            if (i == -1) return -1;
+            if (board[i] == player) return i;
+        }
+    }
+
+    public static int searchForPlayerBottomLeft(char[] board, char player, int base){
+        int i = base;
+        while (true){
+            i = getBottomLeftNeighbour(i);
+            if (i == -1) return -1;
+            if (board[i] == player) return i;
+        }
+    }
+
+    public static int searchForPlayerBottom(char[] board, char player, int base){
+        int i = base;
+        while (true){
+            i = getBottomNeighbour(i);
+            if (i == -1) return -1;
+            if (board[i] == player) return i;
+        }
+    }
+
+    public static int searchForPlayerBottomRight(char[] board, char player, int base){
+        int i = base;
+        while (true){
+            i = getBottomRightNeighbour(i);
+            if (i == -1) return -1;
+            if (board[i] == player) return i;
+        }
+    }
+
     public static int getRow(int index){
         return index / 8;
     }

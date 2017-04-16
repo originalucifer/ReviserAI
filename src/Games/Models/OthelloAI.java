@@ -63,8 +63,8 @@ public class OthelloAI {
 
     private int getValue(int move, char player, char[] board, int depth){
         char[] newBoard = doMove(board, move, player);
-        if (depth >= 4) return calculateBoardPosition(newBoard);
-        ArrayList<Integer> newMoves = getAvailableMoves(newBoard, player);
+        if (depth >= 3) return calculateBoardPosition(newBoard);
+        ArrayList<Integer> newMoves = getPossibleMoves(newBoard, player);
         char opponent = getOpponent(player);
         int bestValue = -999999;
         int side = player == white ? 1 : -1;
@@ -229,137 +229,76 @@ public class OthelloAI {
         return board;
     }
 
-    private ArrayList<Integer> getAvailableMoves(char[] board, char player){
-        char opp = getOpponent(player);
-        ArrayList<Integer> moves = new ArrayList<>();
-        for (int i = 0; i < 64; i++){
-
-            //looking for opponents place
-            if (board[i] == opp){
-                int row = getRow(i);
-                int col = getCol(i);
-
-                if (i - 9 >= 0 && getCol(i-9) < col && board[i - 9] == nothing) {
-                    int search = i + 9;
-                    while(true){
-                        if (search < 0 || search > 63) break;
-                        if (getCol(search) < col) break;
-                        if (board[search] == nothing) break;
-                        if (board[search] == player){
-                            moves.add(i-9);
-                            break;
-                        }
-                    search += 9;
-                    }
-                }
-                if (i + 9 <= 63 && getCol(i+9) > col && board[i + 9] == nothing) {
-                    int search = i - 9;
-                    while(true){
-                        if (search < 0 || search > 63) break;
-                        if (getCol(search) > col) break;
-                        if (board[search] == nothing) break;
-                        if (board[search] == player){
-                            moves.add(i+9);
-                            break;
-                        }
-                        search -= 9;
-                    }
-                }
-
-                if (i + 8 <= 63 && board[i + 8] == nothing) {
-                    int search = i - 8;
-                    while(true){
-                        if (search < 0 || search > 63) break;
-                        if (board[search] == nothing) break;
-                        if (board[search] == player){
-                            moves.add(i+8);
-                            break;
-                        }
-                        search -= 8;
-                    }
-                }
-                if (i - 8 >= 0 && board[i - 8] == nothing) {
-                    int search = i + 8;
-                    while(true){
-                        if (search < 0 || search > 63) break;
-                        if (board[search] == nothing) break;
-                        if (board[search] == player){
-                            moves.add(i-8);
-                            break;
-                        }
-                        search += 8;
-                    }
-                }
-
-                if (i - 7 >= 0 && getCol(i-7) > col && board[i - 7] == nothing) {
-                    int search = i + 7;
-                    while(true){
-                        if (search < 0 || search > 63) break;
-                        if (getCol(search) > col) break;
-                        if (board[search] == nothing) break;
-                        if (board[search] == player){
-                            moves.add(i-7);
-                            break;
-                        }
-                        search += 7;
-                    }
-                }
-                if (i + 7 <= 63 && getCol(i+7) < col && board[i + 7] == nothing) {
-                    int search = i - 7;
-                    while(true){
-                        if (search < 0 || search > 63) break;
-                        if (getCol(search) < col) break;
-                        if (board[search] == nothing) break;
-                        if (board[search] == player){
-                            moves.add(i+7);
-                            break;
-                        }
-                        search -= 7;
-                    }
-                }
-                if (i + 1 <= 63 && getRow(i+1) == row && board[i + 1] == nothing) {
-                    int search = i - 1;
-                    while(true){
-                        if (search < 0 || search > 63) break;
-                        if (getRow(search) > row) break;
-                        if (board[search] == nothing) break;
-                        if (board[search] == player){
-                            moves.add(i+1);
-                            break;
-                        }
-                        search -= 1;
-                    }
-                }
-                if (i - 1 >= 0 && getRow(i-1) == row && board[i - 1] == nothing) {
-                    int search = i + 1;
-                    while(true){
-                        if (search < 0 || search > 63) break;
-                        if (getRow(search) < row) break;
-                        if (board[search] == nothing) break;
-                        if (board[search] == player){
-                            moves.add(i-1);
-                            break;
-                        }
-                        search += 1;
-                    }
-                }
-            }
-        }
-        return moves;
-    }
-
-
-
     private ArrayList<Integer> getPossibleMoves(char[] board, char player){
         char opponent = getOpponent(player);
 
         ArrayList<Integer> moves = new ArrayList<>();
         for (int i = 0; i < 64; i++){
+            int position;
             if (board[i] == nothing){
-                int r = OthelloBoardFunctions.searchForPlayerTopLeft(board, player, i);
-                if (r != -1){
-                    moves.add(i);
-                    continue;
+                position = OthelloBoardFunctions.getTopLeftNeighbour(i);
+                if (position != -1 && board[position] == opponent){
+                    int r = OthelloBoardFunctions.searchForPlayerTopLeft(board, player, i);
+                    if (r != -1){
+                        moves.add(i);
+                        continue;
+                    }
+                }
+                position = OthelloBoardFunctions.getTopNeighbour(i);
+                if (position != -1 && board[position] == opponent){
+                    int r = OthelloBoardFunctions.searchForPlayerTop(board, player, i);
+                    if (r != -1){
+                        moves.add(i);
+                        continue;
+                    }
+                }
+                position = OthelloBoardFunctions.getTopRightNeighbour(i);
+                if (position != -1 && board[position] == opponent){
+                    int r = OthelloBoardFunctions.searchForPlayerTopRight(board, player, i);
+                    if (r != -1){
+                        moves.add(i);
+                        continue;
+                    }
+                }
+                position = OthelloBoardFunctions.getLeftNeighbour(i);
+                if (position != -1 && board[position] == opponent){
+                    int r = OthelloBoardFunctions.searchForPlayerLeft(board, player, i);
+                    if (r != -1){
+                        moves.add(i);
+                        continue;
+                    }
+                }
+                position = OthelloBoardFunctions.getRightNeighbour(i);
+                if (position != -1 && board[position] == opponent){
+                    int r = OthelloBoardFunctions.searchForPlayerRight(board, player, i);
+                    if (r != -1){
+                        moves.add(i);
+                        continue;
+                    }
+                }
+                position = OthelloBoardFunctions.getBottomLeftNeighbour(i);
+                if (position != -1 && board[position] == opponent){
+                    int r = OthelloBoardFunctions.searchForPlayerBottomLeft(board, player, i);
+                    if (r != -1){
+                        moves.add(i);
+                        continue;
+                    }
+                }
+                position = OthelloBoardFunctions.getBottomNeighbour(i);
+                if (position != -1 && board[position] == opponent){
+                    int r = OthelloBoardFunctions.searchForPlayerBottom(board, player, i);
+                    if (r != -1){
+                        moves.add(i);
+                        continue;
+                    }
+                }
+                position = OthelloBoardFunctions.getBottomRightNeighbour(i);
+                if (position != -1 && board[position] == opponent){
+                    int r = OthelloBoardFunctions.searchForPlayerBottomRight(board, player, i);
+                    if (r != -1){
+                        moves.add(i);
+                        continue;
+                    }
                 }
             }
         }
