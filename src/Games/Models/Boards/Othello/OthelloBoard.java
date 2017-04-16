@@ -133,6 +133,7 @@ public final class OthelloBoard implements Board{
      */
     private static void removeValidMoves() {
         for (OthelloItem validMove : validMoves) {
+            validMove.clearOverrides();
             if(!validMove.hasPlayer())
                 validMove.setStyle("-fx-fill: red");
         }
@@ -151,7 +152,7 @@ public final class OthelloBoard implements Board{
     /**
      * Draw the OthelloBoard with 4 start items in the middle.
      */
-    public static void drawItems(){
+    public synchronized static void drawItems(){
         for (int row = 0; row < boardSize; row++) {
             for (int column = 0; column < boardSize; column++) {
                 OthelloItem othelloItem = new OthelloItem(column,row);
@@ -379,10 +380,12 @@ public final class OthelloBoard implements Board{
 //                    System.out.println("overrides with valid item:");
 //                    System.out.println(overrides);
                     if (overrides != null) {
-//                        System.out.println("Valid move at "+validMove.getPositionString());
 
                         // Last item of the array is the valid move
                         OthelloItem validMove = overrides.get(overrides.size()-1);
+
+//                        System.out.println("Valid move at "+validMove.getPositionString());
+
 
                         // We remove the valid move so we are left with the overrides
                         overrides.remove(validMove);

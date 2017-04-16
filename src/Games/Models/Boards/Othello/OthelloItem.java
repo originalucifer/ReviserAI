@@ -27,7 +27,7 @@ public class OthelloItem extends Rectangle {
     private int column;
     private int row;
     private OthelloPlayer player;
-    private ArrayList<OthelloItem> overrides;
+    private ArrayList<OthelloItem> overrides = null;
 
     OthelloItem(int column, int row) {
         this.column = column;
@@ -84,22 +84,20 @@ public class OthelloItem extends Rectangle {
      * Click this OthelloItem
      */
     public synchronized void clicked(boolean humanClick, String from) {
-        if(!
-                hasPlayer()) {
-
-            System.out.println("==");
-            System.out.println("From:" + from);
-            System.out.println("click " + this.toString() + " by " + getActivePlayer());
-            System.out.println(OthelloBoard.validMoves);
-            System.out.println("==");
-            System.out.println(
-
-            );
+        if(!hasPlayer()) {
+//            System.out.println("==");
+//            System.out.println("From:" + from);
+//            System.out.println("click " + this.toString() + " by " + getActivePlayer());
+//            System.out.println(OthelloBoard.validMoves);
+//            System.out.println("==");
+            System.out.println();
 
             if (!OthelloBoard.validMoves.contains(this)) {
+                System.out.println("not in valid logs");
                 OthelloBoard.controller.setStatus("Illegal move! Use the blue indications. " + OthelloBoard.getActivePlayer());
                 setColor(); // don't change the color of a players item when clicked.
             } else if (OthelloBoard.activePlayer.isRemote() && humanClick) {
+                System.out.println("remote turn");
                 OthelloBoard.controller.setStatus("Wait for the remote player to make a move");
                 setColor(); // don't change the color of a players item when clicked.
             } else {
@@ -112,13 +110,19 @@ public class OthelloItem extends Rectangle {
 
                 // override the other players items if necessary
                 if (overrides != null) {
+                    System.out.println("=");
+                    System.out.println("DOING THE OVERRIDE FOR "+getPositionString());
+                    System.out.println("=");
                     for (OthelloItem item : overrides) {
                         override(item);
                     }
+                    this.overrides = null;
                 }
 
                 OthelloBoard.nextTurn();
             }
+        }else{
+            setColor();
         }
     }
 
@@ -384,7 +388,7 @@ public class OthelloItem extends Rectangle {
      *
      * @param overrides ArrayList with overrides
      */
-    public void setOverrides(ArrayList<OthelloItem> overrides) {
+    public synchronized void setOverrides(ArrayList<OthelloItem> overrides) {
         if(this.overrides != null){
             for (OthelloItem item : overrides) {
                 if(!this.overrides.contains(item))
@@ -393,5 +397,9 @@ public class OthelloItem extends Rectangle {
         } else {
             this.overrides = overrides;
         }
+    }
+
+    public void clearOverrides() {
+        this.overrides = null;
     }
 }
