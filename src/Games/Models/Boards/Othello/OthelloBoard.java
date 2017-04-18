@@ -227,6 +227,7 @@ public final class OthelloBoard implements Board{
             controller.disableButtons(false);
             controller.checkBlackAi.setSelected(false);
             controller.checkWhiteAi.setSelected(false);
+            OthelloBoard.ai = new OthelloAI();
             for (int i = 0; i < 50; ++i) System.out.println(); // clear log
             initialize(controller);
         });
