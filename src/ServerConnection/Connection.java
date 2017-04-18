@@ -10,7 +10,8 @@ import java.util.LinkedList;
 
 public class Connection implements Runnable{
 
-	private String hostAddress = "127.0.0.1";
+	private String hostAddress = "145.33.225.170";
+//	private String hostAddress = "127.0.0.1";
 	private int hostPort = 7789;
 
 	private ReceiveListener listen;

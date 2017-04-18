@@ -57,7 +57,9 @@ public class OthelloAI {
                 bestValue = v;
             }
         }
-        bestMove.clicked(false);
+
+        if(bestMove != null)
+            bestMove.clicked(false);
     }
 
     private int getValue(int move, char player, char[] board, int depth){
