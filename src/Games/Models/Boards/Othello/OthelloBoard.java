@@ -6,7 +6,6 @@ import Games.Models.Boards.Board;
 import Games.Models.Players.OthelloPlayer;
 import ServerConnection.ConnectionHandler;
 import javafx.application.Platform;
-import javafx.scene.control.Alert;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -331,11 +330,11 @@ public final class OthelloBoard implements Board{
         if(totalItems >= boardSize*boardSize){
             gameOver();
         } else if(validMoves.size() < 1){
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Information Dialog");
-            alert.setHeaderText("No more moves for "+activePlayer.getName());
-            alert.setContentText(activePlayer.getName()+" will have to pass!");
-            alert.showAndWait();
+//            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+//            alert.setTitle("Information Dialog");
+//            alert.setHeaderText("No more moves for "+activePlayer.getName());
+//            alert.setContentText(activePlayer.getName()+" will have to pass!");
+//            alert.showAndWait();
             nextTurn();
         }
 
